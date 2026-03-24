@@ -106,7 +106,7 @@ router.post('/upload', upload.single('image'), (req, res) => {
 --------------------------------------------------------- */
 router.get('/popups', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project.onrender.com').replace(/\/$/, '');
+    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-plzq.onrender.com').replace(/\/$/, '');
     const [rows] = await pool.query(
       `SELECT idx, title, image_url, link_url, priority, is_active, 
         DATE_FORMAT(start_date, '%Y-%m-%d %H:%i:%s') as start_date, 
@@ -175,7 +175,7 @@ router.patch('/popups/:idx/active', async (req, res) => {
 --------------------------------------------------------- */
 router.get('/menu', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project.onrender.com').replace(/\/$/, '');
+    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-plzq.onrender.com').replace(/\/$/, '');
     const [rows] = await pool.query(
       `SELECT idx, type, name, eng_name, description, price,
         IF(thumbnail_url IS NOT NULL AND thumbnail_url != "", CONCAT(?, "/uploads/", thumbnail_url), "") AS thumbnail_url,
@@ -241,7 +241,7 @@ router.delete('/menu/:idx', async (req, res) => {
 --------------------------------------------------------- */
 router.get('/stores', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project.onrender.com').replace(/\/$/, '');
+    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-plzq.onrender.com').replace(/\/$/, '');
     const [rows] = await pool.query(
       `SELECT idx, store_name, address, phone, hours, lat, lng, thumbnail_url, 
       IF(thumbnail_url IS NOT NULL AND thumbnail_url != '', CONCAT(?, thumbnail_url), '') AS thumbnail_full_url, 
