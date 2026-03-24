@@ -1,0 +1,90 @@
+.popupWrapper {
+  // [수정] fixed에서 absolute로 변경하여 Hero 섹션에 종속시킴
+  position: absolute; 
+  top: 100px; // Hero 하단 스크롤 가이드보다 위로 배치
+  left: 50px;
+  display: flex;
+  gap: 20px;
+  z-index: 50; // Hero 컨텐츠보다 위, Header보다는 아래
+  align-items: flex-end;
+  pointer-events: none;
+
+  & > * {
+    pointer-events: auto;
+  }
+
+  // 데스크탑 반응형
+  @media (max-width: 1400px) {
+    left: 20px;
+    bottom: 80px;
+    gap: 15px;
+  }
+
+  // [반응형] 태블릿
+  @media (max-width: 1024px) {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    justify-content: center;
+  }
+
+  // [반응형] 모바일 슬라이드 배너 모드
+  @media (max-width: 600px) {
+    left: 0;
+    bottom: 60px; // 모바일 하단 여백 조절
+    width: 100%;
+    transform: none;
+    padding: 0 0 20px 0;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;
+
+    &::-webkit-scrollbar { display: none; }
+
+    .popupCard {
+      width: 85vw;
+      margin: 0 7.5vw;
+      flex-shrink: 0;
+      scroll-snap-align: center;
+    }
+  }
+}
+
+/* 나머지 .popupCard 및 애니메이션 코드는 동일하게 유지 */
+.popupCard {
+  width: 320px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  .imageArea {
+    width: 100%;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .bottomArea {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #fff;
+    border-top: 1px solid #f2f2f2;
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      color: #999;
+    }
+    .closeBtn { font-weight: 700; color: #333; }
+  }
+}

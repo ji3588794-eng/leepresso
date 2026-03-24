@@ -1,0 +1,372 @@
+/* app/admin/(main)/popup/popup.module.scss */
+
+.container {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+
+  .titleGroup {
+    h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+    p {
+      font-size: 14px;
+      color: #64748b;
+      margin: 6px 0 0;
+    }
+  }
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.searchSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+
+  .filterWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .filterIcon {
+      position: absolute;
+      left: 12px;
+      color: #64748b;
+      z-index: 1;
+    }
+
+    select {
+      appearance: none;
+      padding: 11px 36px 11px 36px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+      color: #475569;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+
+      &:hover {
+        background-color: #f8fafc;
+        border-color: #cbd5e1;
+      }
+    }
+  }
+
+  .searchWrapper {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+    max-width: 450px;
+
+    .searchIcon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 45px 11px 42px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      font-size: 14px;
+      color: #1e293b;
+      transition: all 0.2s;
+
+      &::placeholder {
+        color: #94a3b8;
+      }
+
+      &:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+      }
+    }
+
+    .resetBtn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #f1f5f9;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+      &:hover { background: #e2e8f0; color: #475569; }
+    }
+  }
+
+  .countInfo {
+    margin-left: auto;
+    font-size: 14px;
+    color: #64748b;
+    strong {
+      color: #2563eb;
+      font-weight: 700;
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  button {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+
+    &:hover:not(:disabled) {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    &.activePage {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: #cbd5e1;
+  }
+
+  &.disabled {
+    filter: grayscale(0.8);
+    opacity: 0.6;
+    &::after {
+      content: '비활성';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg);
+      border: 2px solid #ef4444; color: #ef4444;
+      padding: 4px 12px; font-weight: 900; font-size: 20px;
+      border-radius: 4px; pointer-events: none; z-index: 5;
+    }
+  }
+
+  .thumb {
+    position: relative;
+    height: 190px;
+    background: #f1f5f9;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .noImage { height: 100%; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 13px; }
+  }
+
+  .badge {
+    position: absolute; top: 15px; right: 15px;
+    padding: 6px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 800; color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); z-index: 2;
+    &.on { background: #10b981; }
+    &.off { background: #64748b; }
+  }
+
+  .info {
+    padding: 24px;
+    .topInfo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 11px;
+      .priority { color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 4px; font-weight: 800; }
+      .idx { color: #94a3b8; font-weight: 500; }
+    }
+    h4 { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: #1e293b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dateWrapper {
+      background: #f8fafc; padding: 10px; border-radius: 8px;
+      .date {
+        font-size: 12px; color: #64748b; margin: 2px 0; display: flex; justify-content: space-between;
+        &::before { content: attr(data-label); font-weight: 700; color: #94a3b8; font-size: 11px; }
+      }
+    }
+  }
+
+  .btnGroup {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid #f1f5f9;
+    button {
+      padding: 16px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 700; color: #64748b;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      &:not(:last-child) { border-right: 1px solid #f1f5f9; }
+      &:hover { background: #f8fafc; color: #0f172a; }
+    }
+    .toggleBtn { color: #2563eb; &:hover { background: #eff6ff; } }
+    .delBtn:hover { background: #fef2f2; color: #ef4444; }
+  }
+}
+
+/* ============================================================
+   새로 통합/복구된 PopupModal 관련 스타일
+   ============================================================ */
+.modalOverlay {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background: #fff;
+  width: 95%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .modalHeader {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px; border-bottom: 1px solid #f1f5f9;
+    h3 { margin: 0; font-size: 20px; font-weight: 800; color: #0f172a; }
+    .closeX { background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; }
+  }
+
+  .modalForm {
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 20px;
+
+    .formRow {
+      display: flex; flex-direction: column; gap: 8px;
+      label { font-size: 13px; font-weight: 800; color: #475569; text-transform: uppercase; }
+      input, select {
+        width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px;
+        background: #f8fafc; outline: none; font-size: 14px; transition: 0.2s;
+        &:focus { background: #fff; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+      }
+    }
+
+    .formGrid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    /* 이미지 업로드 박스 - 가로 풀사이즈 유지 */
+    .uploadBox {
+      width: 100%;
+      aspect-ratio: 16 / 9; /* 팝업 특성상 와이드 비율 권장 */
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: #f8fafc; transition: 0.2s;
+      position: relative;
+
+      &:hover { border-color: #2563eb; background: #f1f5f9; }
+
+      img { width: 100%; height: 100%; object-fit: contain; }
+      .placeholder { color: #94a3b8; font-weight: 700; font-size: 14px; }
+    }
+  }
+
+  .modalFooter {
+    display: flex; gap: 12px; padding: 24px; border-top: 1px solid #f1f5f9;
+    button { flex: 1; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s; }
+    .cancelBtn { background: #f1f5f9; color: #475569; &:hover { background: #e2e8f0; } }
+    .saveBtn { background: #2563eb; color: #fff; &:hover { background: #1d4ed8; } }
+  }
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 120px 0;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  .emptyIcon { font-size: 48px; margin-bottom: 16px; display: block; }
+  .emptyText { color: #94a3b8; font-weight: 700; font-size: 16px; }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }

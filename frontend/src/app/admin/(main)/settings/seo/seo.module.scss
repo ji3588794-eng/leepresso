@@ -1,0 +1,106 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  .header {
+    margin-bottom: 32px;
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+      svg { color: #10b981; } // SEO는 그린/에메랄드 포인트
+    }
+    p { color: #64748b; font-size: 0.95rem; }
+  }
+}
+
+.section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+
+  .sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+  }
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.95rem;
+    &:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+    }
+  }
+  textarea { min-height: 100px; }
+}
+
+// OG 이미지 미리보기 카드 디자인
+.ogPreview {
+  margin-top: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+  background: #f8fafc;
+  max-width: 400px;
+
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  &::after {
+    content: '공유 이미지 미리보기 (1.91:1 비율 권장)';
+    display: block;
+    padding: 10px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-align: center;
+  }
+}
+
+.saveBtn {
+  width: 100%; // SEO는 한 번에 큰 결정을 저장하는 느낌으로 넓게
+  background: #10b981;
+  color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #059669;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  }
+}

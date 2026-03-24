@@ -1,0 +1,28 @@
+.equipment {
+  background: linear-gradient(180deg, #f2ece3 0%, #fff 100%);
+  padding: 80px 24px;
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;
+    .sub { font-size: 12px; font-weight: 900; color: #8D7B68; }
+    h3 { font-size: clamp(24px, 4vw, 40px); font-weight: 900; .point { color: #8D7B68; } }
+    .deco { display: flex; gap: 8px; span { width: 8px; height: 8px; background: #8D7B68; border-radius: 50%; opacity: 0.5; } }
+  }
+
+  .grid {
+    display: grid; gap: 20px;
+    @media (min-width: 768px) { grid-template-cols: repeat(2, 1fr); }
+    @media (min-width: 1280px) { grid-template-cols: repeat(4, 1fr); }
+  }
+
+  .card {
+    position: relative; border-radius: 28px; background: #fff; padding: 32px; border: 1px solid rgba(0,0,0,0.08); transition: 0.5s;
+    &:hover { background: #8D7B68; color: #fff; .num, .desc { color: #fff; opacity: 0.8; } }
+    .shape { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; background: rgba(0,0,0,0.05); transform: translate(24px, 24px) rotate(45deg); }
+    .num { font-size: 10px; font-weight: 900; color: #8D7B68; margin-bottom: 20px; }
+    h4 { font-size: 20px; font-weight: 900; margin-bottom: 16px; }
+    .desc { font-size: 14px; opacity: 0.6; }
+  }
+}

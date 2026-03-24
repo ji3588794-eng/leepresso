@@ -1,0 +1,56 @@
+.interior {
+  background-color: #fff;
+  padding: 80px 0;
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+
+  .header {
+    text-align: center; margin-bottom: 64px;
+    .sub { font-size: 11px; font-weight: 1000; color: #8D7B68; }
+    h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 1000; .point { color: #8D7B68; } }
+  }
+
+  .grid {
+    display: flex; height: 700px; width: 100%; flex-direction: column;
+    @media (min-width: 1024px) { flex-direction: row; }
+  }
+
+  .card {
+    position: relative; flex: 1; overflow: hidden; transition: all 0.8s ease;
+    
+    @media (min-width: 1024px) {
+      &:not(:first-child) { margin-left: -4%; }
+      &:first-child { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); z-index: 1; }
+      &:nth-child(2), &:nth-child(3) { clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%); z-index: 2; }
+      &:last-child { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); z-index: 3; }
+    }
+
+    &.light { background: #F9F5F0; .bgAlpha, .title { color: #3E3232; } }
+    &.dark { background: #3E3232; .bgAlpha, .title { color: #fff; } }
+
+    &:hover {
+      .bgAlpha { transform: scale(1.1); }
+      .title { transform: translateY(-16px); }
+      .hoverContent { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  .bgAlpha {
+    position: absolute; inset: 0; font-size: 380px; font-weight: 1000; opacity: 0.04;
+    display: flex; align-items: center; justify-content: center; transition: 0.7s;
+  }
+
+  .content {
+    position: relative; height: 100%; padding: 40px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  .badge { padding: 4px 12px; font-size: 10px; background: #8D7B68; color: #fff; margin-bottom: 24px; }
+  .title { font-size: 48px; font-weight: 1000; transition: 0.5s; .point { color: #8D7B68; } }
+
+  .hoverContent {
+    position: absolute; bottom: 80px; width: 100%; opacity: 0; transform: translateY(40px); transition: 0.5s;
+    .line { width: 40px; height: 4px; background: #8D7B68; margin: 0 auto 20px; }
+    p { font-size: 14px; padding: 0 32px; font-weight: 700; }
+  }
+}
