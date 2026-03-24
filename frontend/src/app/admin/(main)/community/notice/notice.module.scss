@@ -1,0 +1,145 @@
+.container {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #1e293b; // 요청하신 깔끔한 하단 라인
+
+    h2 { 
+      font-size: 24px; 
+      font-weight: 700; 
+      color: #1e293b; 
+      margin: 0; 
+    }
+    
+    .headerControls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .searchWrapper {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 14px;
+      transition: all 0.2s;
+
+      &:focus-within {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+      }
+      
+      .searchInput {
+        border: none;
+        background: transparent;
+        outline: none;
+        margin-left: 8px;
+        font-size: 14px;
+        width: 220px;
+        color: #334155;
+        
+        &::placeholder {
+          color: #94a3b8;
+        }
+      }
+    }
+
+    .addBtn {
+      background-color: #2563eb; color: white; padding: 10px 20px;
+      border-radius: 8px; font-weight: 600; border: none; cursor: pointer;
+      &:hover { background-color: #1d4ed8; }
+    }
+  }
+}
+
+.tableWrapper {
+  background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); overflow: hidden;
+}
+
+.table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  th { background-color: #f1f5f9; padding: 14px; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; }
+  td { padding: 16px; border-bottom: 1px solid #f1f5f9; color: #334155; text-align: center; }
+  .pinned { background-color: #fffbeb; td { font-weight: 600; } }
+  .pinBadge { background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; }
+  .titleCell { text-align: left; cursor: pointer; color: #1e293b; &:hover { color: #2563eb; text-decoration: underline; } }
+  .actions {
+    display: flex; justify-content: center; gap: 12px;
+    button {
+      border: none; background: none; font-weight: 600; cursor: pointer; font-size: 13px;
+      &:first-child { color: #2563eb; } &:last-child { color: #ef4444; }
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+.modalOverlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(2px);
+}
+
+.modalContent {
+  background: white; width: 100%; max-width: 800px; max-height: 90vh;
+  border-radius: 16px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); overflow-y: auto;
+  .modalHeader {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+    h3 { margin: 0; font-size: 20px; font-weight: 700; }
+    .closeBtn { background: none; border: none; cursor: pointer; color: #999; }
+  }
+}
+
+.formRow {
+  margin-bottom: 24px;
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #475569; }
+  input[type="text"] {
+    width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none;
+    &:focus { border-color: #2563eb; }
+  }
+  .checkboxLabel { display: flex; align-items: center; gap: 8px; color: #ef4444; font-weight: 700; cursor: pointer; }
+}
+
+.tiptapWrapper {
+  border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
+  .toolbar {
+    background: #f8fafc; padding: 8px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 4px;
+    button {
+      padding: 6px; background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer; color: #64748b;
+      &:hover { background: #f1f5f9; color: #1e293b; }
+    }
+  }
+  .editorContent {
+    padding: 16px; min-height: 300px; max-height: 450px; overflow-y: auto; outline: none;
+    p { margin-bottom: 8px; } ul { padding-left: 20px; list-style: disc; } h2 { font-size: 1.25rem; font-weight: bold; }
+  }
+}
+
+.fileUploadArea {
+  border: 2px dashed #e2e8f0; padding: 20px; border-radius: 8px; background: #f8fafc; text-align: center;
+  .uploadBtn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: white; border: 1px solid #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  .fileList { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .fileItem {
+    display: flex; align-items: center; gap: 6px; background: white; padding: 6px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 12px;
+    .fileName { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fileRemove { color: #ef4444; cursor: pointer; }
+  }
+}
+
+.footer {
+  display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px;
+  button {
+    padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid #e2e8f0;
+    &:last-child { background-color: #2563eb; color: white; border: none; &:disabled { opacity: 0.6; } }
+  }
+}
+
+.spin { animation: rotate 1s linear infinite; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

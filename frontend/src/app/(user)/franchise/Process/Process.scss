@@ -1,0 +1,49 @@
+.process {
+  background: #F9F5F0; 
+  padding: 80px 24px; 
+  color: #3E3232;
+
+  .container { max-width: 1152px; margin: 0 auto; }
+  
+  .header {
+    display: flex; flex-direction: column; gap: 24px; border-bottom: 2px solid #3E3232; padding-bottom: 40px;
+    @media (min-width: 1024px) { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+    .sub { font-size: 11px; font-weight: 900; letter-spacing: 0.3em; color: #8D7B68; }
+    h2 { font-size: clamp(48px, 8vw, 72px); font-weight: 900; line-height: 1; span { color: #8D7B68; } }
+    .descText { max-width: 448px; font-size: 16px; font-weight: 700; line-height: 2; opacity: 0.8; }
+  }
+
+  .stepGrid {
+    display: grid; border-top: 1px solid rgba(62,50,50,0.1); border-left: 1px solid rgba(62,50,50,0.1);
+    @media (min-width: 768px) { grid-template-cols: repeat(2, 1fr); }
+    @media (min-width: 1280px) { grid-template-cols: repeat(3, 1fr); }
+  }
+
+  .stepCard {
+    background: #fff; padding: 40px; border-right: 1px solid rgba(62,50,50,0.1); border-bottom: 1px solid rgba(62,50,50,0.1); transition: 0.3s;
+    &:hover { background: #F9F5F0; .num { color: rgba(141,123,104,0.4); } }
+    .top { display: flex; align-items: center; justify-content: space-between; }
+    .num { font-size: 36px; font-weight: 900; font-style: italic; color: rgba(141,123,104,0.2); }
+    .line { height: 1px; width: 48px; background: rgba(141,123,104,0.3); }
+    h3 { font-size: 20px; font-weight: 900; margin-top: 32px; }
+    p { font-size: 14px; margin-top: 16px; opacity: 0.6; }
+  }
+
+  .docBox {
+    margin-top: 80px; background: #3E3232; padding: 48px; color: #fff;
+    .docGrid { display: grid; gap: 48px; @media (min-width: 1024px) { grid-template-cols: 0.6fr 1.4fr; } }
+    .docInfo {
+      .sub { font-size: 10px; font-weight: 900; color: #8D7B68; }
+      h3 { font-size: 32px; font-weight: 900; margin-top: 16px; }
+      .desc { font-size: 14px; opacity: 0.5; margin-top: 24px; line-height: 1.75; }
+    }
+    .docList { display: grid; gap: 8px; @media (min-width: 768px) { grid-template-cols: repeat(2, 1fr); } }
+    .docItem {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; transition: 0.3s;
+      &:hover { border-color: #8D7B68; background: rgba(255,255,255,0.1); }
+      span { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.9); }
+      .point { color: #8D7B68; font-weight: 900; margin-right: 12px; }
+      svg { width: 16px; height: 16px; color: #8D7B68; opacity: 0.4; }
+    }
+  }
+}
