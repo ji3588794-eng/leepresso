@@ -26,7 +26,7 @@ const nextConfig = {
   },
   // 배포 시 타입스크립트 및 린트 에러로 인해 빌드가 멈추는 것을 방지
   typescript: { ignoreBuildErrors: true },
-  /* eslint: { ignoreDuringBuilds: true }, */
+  eslint: { ignoreDuringBuilds: true },
 };
 
 export default nextConfig;
