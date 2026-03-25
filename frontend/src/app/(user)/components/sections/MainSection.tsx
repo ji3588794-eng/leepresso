@@ -140,7 +140,7 @@ export default function MainSection() {
                 당신의 일상에 따뜻한 <br />
                 <span className="text-[#A9443D]">쉼표</span>를 더하는 리프레소
               </h2>
-              <div className="mt-6 md:mt-8 space-y-5 md:space-y-6 text-[15px] md:text-[16px] leading-[1.8] text-[#3e3232]/70 break-keep font-normal">
+              <div className="mt-6 md:mt-8 space-y-5 md:space-y-6 text-[15px] md:text-[17px] leading-[1.8] text-[#3e3232]/70 break-keep font-normal">
                 <p>
                   리프레소는 누구나 언제든 편히 들러 여유를 즐길 수 있는 공간입니다. 
                   돌아오는 길엔 언제나 불이 켜져 있는 곳, 사람은 없지만 24시간 변함없는 온기를 담아 여러분을 반깁니다.
@@ -203,7 +203,7 @@ export default function MainSection() {
                 최고의 가성비 무인카페 <br />
                 <span className="text-[#A9443D]">리프레소</span>와 함께하세요.
               </h2>
-              <p className="mt-5 md:mt-6 text-[15px] md:text-[16px] leading-[1.8] text-[#3e3232]/70 font-normal break-keep">
+              <p className="mt-5 md:mt-6 text-[15px] md:text-[17px] leading-[1.8] text-[#3e3232]/70 font-normal break-keep">
                 리프레소는 단순한 매장을 넘어 점주님의 지속 가능한 성공을 위한 확실한 파트너가 되어드립니다.
               </p>
             </div>
@@ -216,10 +216,10 @@ export default function MainSection() {
               ].map((item, idx) => (
                 <div key={idx} className="flex flex-col gap-1">
                   <div className="flex items-center gap-3">
-                    <span className="text-[11px] md:text-[12px] font-black text-[#A9443D]">0{idx + 1}</span>
+                    <span className="text-[11px] md:text-[13px] font-black text-[#A9443D]">0{idx + 1}</span>
                     <h4 className="text-[16px] md:text-[17px] font-bold text-[#3e3232]">{item.title}</h4>
                   </div>
-                  <p className="text-[14px] text-[#3e3232]/60 pl-7">{item.desc}</p>
+                  <p className="text-[15px] text-[#3e3232]/60 pl-7">{item.desc}</p>
                 </div>
               ))}
             </div>
