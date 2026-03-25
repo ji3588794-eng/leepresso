@@ -8,6 +8,7 @@ import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
 import { useRouter } from "next/navigation";
 import api from '@/lib/api';
+import QuickMenu from "../components/common/QuickMenu";
 
 interface Store {
   idx: number;
@@ -52,13 +53,19 @@ export default function StorePage() {
       : `${API_BASE_URL}/uploads${cleanPath}`;
   };
 
+  // 1. 매장 데이터 페칭
   useEffect(() => {
     const fetchStores = async () => {
       try {
         setIsLoading(true);
         const res = await api.get('/user/stores');
-        setStores(res.data);
-        setFilteredStores(res.data);
+        const normalized = (res.data || []).map((store: any) => ({
+          ...store,
+          lat: Number(store.lat),
+          lng: Number(store.lng),
+        }));
+        setStores(normalized);
+        setFilteredStores(normalized);
       } catch (err) {
         console.error("매장 목록 로딩 실패:", err);
       } finally {
@@ -68,35 +75,59 @@ export default function StorePage() {
     fetchStores();
   }, []);
 
-  useEffect(() => {
-    if (!window.kakao || !mapRef.current) return;
+  // 2. 지도 초기화 로직 (핵심 수정 부분)
+const initMap = useCallback(() => {
+  if (!mapRef.current || !window.kakao || !window.kakao.maps) return;
 
-    window.kakao.maps.load(() => {
-      const options = {
-        center: new window.kakao.maps.LatLng(36.2683, 127.6358),
-        level: 12
-      };
+  window.kakao.maps.load(() => {
+    // 대한민국 중앙 쪽으로 시작
+    const koreaCenter = new window.kakao.maps.LatLng(36.35, 127.85);
 
-      const newMap = new window.kakao.maps.Map(mapRef.current, options);
-
-      window.kakao.maps.event.addListener(newMap, 'idle', () => {
-        setIsMapLoading(false);
-      });
-
-      setTimeout(() => {
-        newMap.relayout();
-      }, 300);
-
-      setMap(newMap);
-
-      window.kakao.maps.event.addListener(newMap, 'click', () => {
-        if (activeOverlayRef.current) {
-          activeOverlayRef.current.setMap(null);
-          activeOverlayRef.current = null;
-        }
-      });
+    const newMap = new window.kakao.maps.Map(mapRef.current, {
+      center: koreaCenter,
+      level: 13,
     });
-  }, []);
+
+    // 확대/축소 가능 범위 제한
+    newMap.setMinLevel(7);   // 너무 확대 방지
+    newMap.setMaxLevel(13);  // 너무 축소돼서 해외까지 보이는 것 방지
+
+    setMap(newMap);
+
+    const refreshMap = () => {
+      if (!mapRef.current) return;
+      newMap.relayout();
+      newMap.setCenter(koreaCenter);
+      setIsMapLoading(false);
+    };
+
+    requestAnimationFrame(() => {
+      setTimeout(refreshMap, 300);
+    });
+
+    setTimeout(refreshMap, 800);
+
+    window.addEventListener("resize", refreshMap);
+
+    window.kakao.maps.event.addListener(newMap, "click", () => {
+      if (activeOverlayRef.current) {
+        activeOverlayRef.current.setMap(null);
+        activeOverlayRef.current = null;
+      }
+    });
+  });
+}, []);
+
+  // 라이브러리 로드 대기 및 실행
+  useEffect(() => {
+    const checkKakao = setInterval(() => {
+      if (window.kakao && window.kakao.maps) {
+        initMap();
+        clearInterval(checkKakao);
+      }
+    }, 100);
+    return () => clearInterval(checkKakao);
+  }, [initMap]);
 
   const closeActiveOverlay = useCallback(() => {
     if (activeOverlayRef.current) {
@@ -182,38 +213,70 @@ export default function StorePage() {
     }
   }, [map, closeActiveOverlay]);
 
-  const updateMap = useCallback((data: Store[]) => {
-    if (!map || !window.kakao) return;
+const updateMap = useCallback((data: Store[]) => {
+  if (!map || !window.kakao || !mapRef.current) return;
 
-    markersRef.current.forEach((marker) => marker.setMap(null));
-    markersRef.current = [];
-    closeActiveOverlay();
+  map.relayout();
 
-    if (data.length === 0) return;
+  markersRef.current.forEach((marker) => marker.setMap(null));
+  markersRef.current = [];
+  closeActiveOverlay();
 
-    const bounds = new window.kakao.maps.LatLngBounds();
-    const imageSrc = 'https://cdn-icons-png.flaticon.com/512/924/924514.png';
-    const imageSize = new window.kakao.maps.Size(42, 42);
-    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, { offset: new window.kakao.maps.Point(21, 42) });
+  const defaultCenter = new window.kakao.maps.LatLng(36.35, 127.85);
 
-    data.forEach((store) => {
-      const position = new window.kakao.maps.LatLng(store.lat, store.lng);
-      const marker = new window.kakao.maps.Marker({
-        position,
-        map,
-        image: markerImage
-      });
+  if (data.length === 0) {
+    map.setCenter(defaultCenter);
+    map.setLevel(13);
+    return;
+  }
 
-      window.kakao.maps.event.addListener(marker, 'click', () => {
-        showStoreOverlay(store);
-      });
+  const bounds = new window.kakao.maps.LatLngBounds();
+  const imageSrc = "https://cdn-icons-png.flaticon.com/512/924/924514.png";
 
-      markersRef.current.push(marker);
-      bounds.extend(position);
+  // 마커 축소
+  const imageSize = new window.kakao.maps.Size(30, 30);
+  const markerImage = new window.kakao.maps.MarkerImage(
+    imageSrc,
+    imageSize,
+    { offset: new window.kakao.maps.Point(15, 30) }
+  );
+
+  data.forEach((store) => {
+    if (
+      typeof store.lat !== "number" ||
+      typeof store.lng !== "number" ||
+      Number.isNaN(store.lat) ||
+      Number.isNaN(store.lng)
+    ) return;
+
+    const position = new window.kakao.maps.LatLng(store.lat, store.lng);
+
+    const marker = new window.kakao.maps.Marker({
+      position,
+      map,
+      image: markerImage,
     });
 
-    map.setBounds(bounds);
-  }, [map, showStoreOverlay, closeActiveOverlay]);
+    window.kakao.maps.event.addListener(marker, "click", () => {
+      showStoreOverlay(store);
+    });
+
+    markersRef.current.push(marker);
+    bounds.extend(position);
+  });
+
+  if (markersRef.current.length > 0) {
+    map.setBounds(bounds, 40, 40, 40, 40);
+
+    // bounds 적용 후 한 단계 더 확대
+    setTimeout(() => {
+      const currentLevel = map.getLevel();
+
+      // 너무 넓게 보이면 1~2단계 확대
+      map.setLevel(Math.max(7, currentLevel - 1));
+    }, 120);
+  }
+}, [map, showStoreOverlay, closeActiveOverlay]);
 
   useEffect(() => {
     if (!map) return;
@@ -231,10 +294,7 @@ export default function StorePage() {
 
   return (
     <div className="bg-[#F8F5F2] min-h-screen font-suit text-[#3E3232] overflow-x-hidden">
-      {/* Header 수정: 
-          1. z-index를 최상위(z-[9999])로 상향 조정
-          2. 모바일 투명도 해결을 위해 bg-white 적용 (투명도 제거 또는 불투명도 100%)
-      */}
+      <QuickMenu />
       <header className="fixed top-0 left-0 w-full z-[9999] bg-white border-b border-[#E5E1DD]">
         <BrandHeader />
       </header>
@@ -260,11 +320,11 @@ export default function StorePage() {
             </h1>
           </motion.div>
 
-          <div className="max-w-sm border-l-2 border-[#8D7B68]/30 pl-6 pb-2 opacity-60">
+          {/* <div className="max-w-sm border-l-2 border-[#8D7B68]/30 pl-6 pb-2 opacity-60">
             <p className="text-[14px] font-medium leading-relaxed break-keep">
               리프레소의 최상의 커피 경험을<br className="md:hidden" /> 가까운 곳에서 만나보세요.
             </p>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -350,8 +410,8 @@ export default function StorePage() {
             </div>
           </aside>
 
-          <section className="flex-1 relative bg-[#F2F2F2] min-h-[400px] lg:min-h-full">
-            <div ref={mapRef} className="w-full h-full grayscale-[10%]" />
+          <section className="flex-1 relative bg-[#F2F2F2] min-h-[500px] lg:min-h-full">
+            <div ref={mapRef} className="absolute inset-0 w-full h-full grayscale-[10%]" />
             <AnimatePresence>
               {isMapLoading && (
                 <motion.div 

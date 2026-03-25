@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
 import api from '@/lib/api';
+import QuickMenu from "../components/common/QuickMenu";
 
 type MenuItem = {
   idx: number;
@@ -123,6 +124,7 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-[#F5EFE8] font-suit text-[#2F241F] selection:bg-[#8D6E52] selection:text-white">
+      <QuickMenu />
       <BrandHeader />
 
       <section className="relative overflow-hidden bg-[#2E241F] text-[#F8F4EF]">

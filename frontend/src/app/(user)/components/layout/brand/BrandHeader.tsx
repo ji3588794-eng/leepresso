@@ -64,7 +64,6 @@ export default function BrandHeader() {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-    // 이동 가능성이 높은 주요 페이지들을 미리 로드 (캐싱)
     router.prefetch('/brand');
     router.prefetch('/menu');
     router.prefetch('/franchise');
@@ -72,21 +71,15 @@ export default function BrandHeader() {
     router.prefetch('/community');
   }, [router]);
 
-// [수정 로직] 페이지 이동 및 부드러운 스크롤 통합 처리
   const handleNavClick = (path: string, id?: string) => {
-    // 1. 커뮤니티 페이지인 경우 (원페이지가 아니므로 예외 처리)
     if (path === '/community') {
       const targetPath = id ? `${path}#${id}` : path;
-      
-      // 현재 커뮤니티 페이지라면 해시만 바꿔서 useEffect가 감지하게 함
       if (pathname === '/community') {
         window.location.hash = id || '';
       } else {
-        // 다른 페이지라면 해당 탭으로 이동
         router.push(targetPath);
       }
     } 
-    // 2. 원페이지 스크롤이 필요한 페이지들 (Brand, Franchise 등)
     else if (pathname === path) {
       if (id) {
         const element = document.getElementById(id);
@@ -100,7 +93,6 @@ export default function BrandHeader() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } 
-    // 3. 완전히 다른 페이지로 이동
     else {
       const targetPath = id ? `${path}#${id}` : path;
       router.push(targetPath);
@@ -113,11 +105,12 @@ export default function BrandHeader() {
   const hasBg = !isMobileMenuOpen && (isScrolled || isHovered);
 
   return (
+    // 수정: hasBg일 때 배경색 #F4F0EA, 하단 테두리 #E0D9CE 적용
     <header className={`fixed w-full top-0 left-0 transition-all duration-500 ease-in-out ${
       isMobileMenuOpen ? "z-[150] bg-transparent" : "z-[100]"
-    } ${hasBg ? "bg-leepresso-bg dark:bg-[#111] shadow-md" : "bg-transparent"}`}>
+    } ${hasBg ? "bg-[#F4F0EA] dark:bg-[#F4F0EA] border-b border-[#E0D9CE] shadow-md" : "bg-transparent"}`}>
 
-      <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')] dark:invert ${
+      <div className={`absolute inset-0 transition-opacity duration-700 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')] ${
         isHovered ? "opacity-[0.04]" : "opacity-0"
       }`} />
 
@@ -127,6 +120,7 @@ export default function BrandHeader() {
           {/* 로고 영역 */}
           <div className="w-[120px] lg:w-[150px] flex items-center">
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="transition-transform duration-500 hover:scale-[1.03] inline-block">
+              {/* 다크모드 로고는 일단 유지하되, 필요시 logo_color로 변경 검토 가능 */}
               <Image src="/logo_white.png" alt="logo" width={110} height={40} priority className="object-contain transition-all duration-700 dark:block hidden" />
               <Image src={(hasBg || isMobileMenuOpen) ? "/logo_color.png" : "/logo_white.png"} alt="logo" width={110} height={40} priority className="object-contain transition-all duration-700 dark:hidden block" />
             </Link>
@@ -138,11 +132,13 @@ export default function BrandHeader() {
               <div key={menu.title} className="group py-4">
                 <button
                   onClick={() => handleNavClick(menu.path, menu.sub[0]?.id)}
+                  // 수정: hasBg일 때 글씨 색상 검은색(text-black) 적용
                   className={`relative font-black text-[16px] tracking-tight transition-colors duration-500 inline-block cursor-pointer ${
-                    hasBg ? "text-leepresso-deep dark:text-gray-200" : "text-white"
+                    hasBg ? "text-black dark:text-black" : "text-white"
                   }`}
                 >
                   {menu.title}
+                  {/* 언더라인 색상은 포인트 컬러 유지하거나 배경에 맞춰 조정 가능. 일단 유지 */}
                   <span className={`absolute -bottom-2 left-0 w-0 h-[2.5px] transition-all duration-500 group-hover:w-full ${
                     hasBg ? "bg-leepresso-point" : "bg-white/80"
                   }`} />
@@ -153,8 +149,8 @@ export default function BrandHeader() {
 
           {/* 우측 아이콘 & 모바일 햄버거 */}
           <div className="w-[120px] lg:w-[150px] flex justify-end items-center gap-6">
-            <div className={`hidden lg:flex items-center gap-6 ${hasBg ? "text-leepresso-deep dark:text-gray-200" : "text-white"}`}>
-              {/* 카카오톡 / 메시지 아이콘 */}
+            {/* 수정: hasBg일 때 아이콘 색상 검은색 적용 */}
+            <div className={`hidden lg:flex items-center gap-6 ${hasBg ? "text-black dark:text-black" : "text-white"}`}>
               <a 
                 href="#" 
                 target="_blank" 
@@ -165,11 +161,11 @@ export default function BrandHeader() {
                   size={23} 
                   fill="currentColor" 
                   strokeWidth={1.2} 
-                  className={hasBg ? "dark:fill-none" : "fill-white"} 
+                  // 수정: hasBg일 때 fill 색상 해제 (stroke 색상 text-black 따름)
+                  className={hasBg ? "" : "fill-white"} 
                 />
               </a>
 
-              {/* 인스타그램 아이콘 */}
               <a 
                 href="#" 
                 target="_blank" 
@@ -179,14 +175,14 @@ export default function BrandHeader() {
                 <Instagram size={23} strokeWidth={1.5} />
               </a>
 
-              {/* 네이버 블로그 아이콘 */}
               <a 
                 href="https://blog.naver.com/mhkopi" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="group transition-all duration-300 hover:scale-115"
               >
-                <div className={`w-[22px] h-[22px] flex items-center justify-center rounded-[3px] font-black text-[11px] border-[1.5px] leading-none ${hasBg ? "border-leepresso-deep dark:border-gray-400" : "border-white"}`}>
+                {/* 수정: hasBg일 때 블로그 아이콘 테두리 검은색 적용 */}
+                <div className={`w-[22px] h-[22px] flex items-center justify-center rounded-[3px] font-black text-[11px] border-[1.5px] leading-none ${hasBg ? "border-black dark:border-black" : "border-white"}`}>
                   B
                 </div>
               </a>
@@ -194,16 +190,18 @@ export default function BrandHeader() {
 
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden relative w-8 h-8 flex items-center justify-center group cursor-pointer">
               <div className="relative w-6 h-5">
-                <span className={`absolute block h-0.5 w-6 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-leepresso-deep dark:bg-white" : "bg-white"} ${isMobileMenuOpen ? "top-2 rotate-45" : "top-0"}`} />
-                <span className={`absolute block h-0.5 w-4 right-0 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-leepresso-deep dark:bg-white" : "bg-white"} ${isMobileMenuOpen ? "opacity-0 invisible" : "top-[9px]"}`} />
-                <span className={`absolute block h-0.5 w-6 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-leepresso-deep dark:bg-white" : "bg-white"} ${isMobileMenuOpen ? "top-2 -rotate-45" : "top-[18px]"}`} />
+                {/* 수정: hasBg일 때 햄버거 버튼 바 색상 검은색 적용 */}
+                <span className={`absolute block h-0.5 w-6 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-black dark:bg-black" : "bg-white"} ${isMobileMenuOpen ? "top-2 rotate-45" : "top-0"}`} />
+                <span className={`absolute block h-0.5 w-4 right-0 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-black dark:bg-black" : "bg-white"} ${isMobileMenuOpen ? "opacity-0 invisible" : "top-[9px]"}`} />
+                <span className={`absolute block h-0.5 w-6 transition-all duration-300 ${isMobileMenuOpen || hasBg ? "bg-black dark:bg-black" : "bg-white"} ${isMobileMenuOpen ? "top-2 -rotate-45" : "top-[18px]"}`} />
               </div>
             </button>
           </div>
         </div>
 
         {/* [PC] 메가 메뉴 커튼 */}
-        <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`absolute top-full left-0 w-full bg-leepresso-bg dark:bg-[#111] border-t border-leepresso-base dark:border-white/5 hidden lg:block transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${isHovered ? "max-h-[480px] opacity-100 shadow-2xl" : "max-h-0 opacity-0"}`}>
+        {/* 수정: 커튼 배경색 #F4F0EA, 상단 테두리 #E0D9CE 적용 */}
+        <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`absolute top-full left-0 w-full bg-[#F4F0EA] dark:bg-[#F4F0EA] border-t border-[#E0D9CE] hidden lg:block transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${isHovered ? "max-h-[480px] opacity-100 shadow-2xl" : "max-h-0 opacity-0"}`}>
           <div className="max-w-[1500px] mx-auto px-12 py-9 text-center font-pretendard">
             <div className="grid grid-cols-5 gap-10 max-w-[750px] mx-auto">
               {NAV_MENU.map((menu) => (
@@ -215,7 +213,8 @@ export default function BrandHeader() {
                   <ul className="flex flex-col space-y-4">
                     {menu.sub.map((subItem, idx) => (
                       <li key={idx}>
-                        <button onClick={() => handleNavClick(menu.path, subItem.id)} className="text-leepresso-deep/80 dark:text-gray-400 text-[15px] font-medium tracking-tight hover:text-leepresso-point dark:hover:text-white transition-all cursor-pointer whitespace-nowrap">
+                        {/* 수정: 서브 메뉴 글씨 색상 검은색 계열로 조정 */}
+                        <button onClick={() => handleNavClick(menu.path, subItem.id)} className="text-black/80 dark:text-black/80 text-[15px] font-medium tracking-tight hover:text-leepresso-point dark:hover:text-leepresso-point transition-all cursor-pointer whitespace-nowrap">
                           {subItem.name}
                         </button>
                       </li>
@@ -229,7 +228,8 @@ export default function BrandHeader() {
       </div>
 
       {/* [모바일] 사이드 메뉴 */}
-      <div className={`fixed inset-0 bg-leepresso-bg dark:bg-[#111] z-[140] lg:hidden transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+      {/* 수정: 모바일 메뉴 배경색 #F4F0EA 적용 */}
+      <div className={`fixed inset-0 bg-[#F4F0EA] dark:bg-[#F4F0EA] z-[140] lg:hidden transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="h-20" />
         <div className="px-8 py-10 h-[calc(100vh-80px)] flex flex-col overflow-y-auto font-pretendard font-bold">
           <div className="flex-1">
@@ -242,7 +242,8 @@ export default function BrandHeader() {
                 <ul className="grid grid-cols-2 gap-y-5 gap-x-5">
                   {menu.sub.map((subItem, idx) => (
                     <li key={idx}>
-                      <button onClick={() => handleNavClick(menu.path, subItem.id)} className="text-leepresso-deep dark:text-gray-200 text-[15.5px] font-bold tracking-tight active:text-leepresso-point transition-colors cursor-pointer text-left">
+                      {/* 수정: 모바일 서브 메뉴 글씨 색상 검은색 적용 */}
+                      <button onClick={() => handleNavClick(menu.path, subItem.id)} className="text-black dark:text-black text-[15.5px] font-bold tracking-tight active:text-leepresso-point transition-colors cursor-pointer text-left">
                         {subItem.name}
                       </button>
                     </li>
