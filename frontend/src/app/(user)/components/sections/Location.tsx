@@ -10,7 +10,8 @@ declare global {
   }
 }
 
-const KAKAO_SDK_KEY = "8bd27324dc0941a38a2738016ea94e4b";
+// 환경변수 체크를 위해 변수 선언
+const KAKAO_SDK_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
 const ADDRESS = "충남 천안시 서북구 차암동 13 룩소르비즈타워 B107호";
 const LAT = 36.85518;
 const LNG = 127.1176;
@@ -19,20 +20,37 @@ export default function Location() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // 지도 초기화 함수를 useCallback 수준으로 분리하여 useEffect에서 안전하게 호출
   const initMap = () => {
+    // window.kakao가 있고, maps가 로드되었으며, DOM 요소가 있을 때 실행
     if (window.kakao && window.kakao.maps && mapRef.current) {
-      const options = {
-        center: new window.kakao.maps.LatLng(LAT, LNG),
-        level: 3, // 오밀조밀한 느낌을 위해 줌 레벨을 살짝 높임 (숫자가 작을수록 확대)
-      };
-      const map = new window.kakao.maps.Map(mapRef.current, options);
-      const marker = new window.kakao.maps.Marker({
-        position: new window.kakao.maps.LatLng(LAT, LNG),
+      window.kakao.maps.load(() => {
+        const options = {
+          center: new window.kakao.maps.LatLng(LAT, LNG),
+          level: 3,
+        };
+        const map = new window.kakao.maps.Map(mapRef.current, options);
+        const marker = new window.kakao.maps.Marker({
+          position: new window.kakao.maps.LatLng(LAT, LNG),
+        });
+        marker.setMap(map);
+        setIsLoaded(true);
+
+        // [중요] 지도가 깨지는 현상 방지를 위해 강제로 크기 재계산
+        setTimeout(() => {
+          map.relayout();
+          map.setCenter(new window.kakao.maps.LatLng(LAT, LNG));
+        }, 100);
       });
-      marker.setMap(map);
-      setIsLoaded(true);
     }
   };
+
+  // 페이지 진입 시 라이브러리가 이미 로드되어 있다면 바로 실행
+  useEffect(() => {
+    if (window.kakao && window.kakao.maps) {
+      initMap();
+    }
+  }, []);
 
   const copyAddress = () => {
     navigator.clipboard.writeText(ADDRESS);
@@ -41,13 +59,14 @@ export default function Location() {
 
   return (
     <section id="location" className="relative py-12 md:py-25 bg-[#F7F3F0] dark:bg-[#121110] font-suit transition-colors duration-500 overflow-hidden">
+      {/* Script 전략을 'beforeInteractive' 또는 'afterInteractive'로 설정하고 
+          컴포넌트가 마운트될 때마다 window.kakao를 체크하여 실행하도록 함 */}
       <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
-        onLoad={() => window.kakao.maps.load(initMap)}
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_SDK_KEY}&autoload=false`}
+        onLoad={initMap} // 새로고침 시 로드 완료되면 실행
       />
 
       <div className="max-w-[1500px] mx-auto px-6 md:px-10 relative">
-        {/* --- 헤더: 하단 마진을 줄여 콘텐츠와 밀착 --- */}
         <div className="relative mb-8 md:mb-10 flex flex-col items-center md:items-stretch">
           <div className="w-full max-w-[480px] md:max-w-none flex flex-col md:flex-row items-baseline justify-between gap-4 pb-4 border-b-1 border-leepresso-deep dark:border-white/20 text-left">
             <div className="space-y-0">
@@ -59,14 +78,9 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 그리드 간격을 0으로 하고 내부 패딩으로 조절하여 더 밀도있게 구성 */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
-          
-          {/* --- 좌측 정보 영역 --- */}
           <div className="lg:col-span-4 py-4 md:py-6 pr-0 lg:pr-10 flex flex-col items-center md:items-start">
             <div className="w-full max-w-[480px] md:max-w-none space-y-0 text-left">
-              
-              {/* 01. 본사 주소: 패딩을 축소하여 밀도 상향 */}
               <div className="pb-7 border-b border-leepresso-deep/10 dark:border-white/5">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="font-mono text-leepresso-point font-bold text-xs">01</span>
@@ -87,14 +101,12 @@ export default function Location() {
                 </div>
               </div>
 
-              {/* 02. 대중교통 */}
               <div className="py-7 border-b border-leepresso-deep/10 dark:border-white/5">
                 <div className="flex items-center gap-2 mb-6">
                   <span className="font-mono text-leepresso-point font-bold text-xs">02</span>
                   <div className="h-[1px] w-4 bg-leepresso-point/40" />
                   <span className="text-[10px] font-black tracking-[0.1em] text-leepresso-point uppercase">지하철 & 버스 이용 시</span>
                 </div>
-
                 <div className="space-y-5">
                   <div className="flex gap-3">
                     <Train size={18} className="text-leepresso-point shrink-0 mt-0.5" />
@@ -102,7 +114,6 @@ export default function Location() {
                       1호선 <span className="text-leepresso-point underline underline-offset-4 decoration-2">두정역</span> 버스 환승
                     </p>
                   </div>
-
                   <div className="flex gap-3">
                     <Bus size={18} className="text-leepresso-point shrink-0 mt-0.5" />
                     <div className="space-y-2">
@@ -121,7 +132,6 @@ export default function Location() {
                 </div>
               </div>
 
-              {/* 03. 자가용 */}
               <div className="py-7 border-b lg:border-b-0 border-leepresso-deep/10 dark:border-white/5">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="font-mono text-leepresso-point font-bold text-xs">03</span>
@@ -143,20 +153,14 @@ export default function Location() {
             </div>
           </div>
 
-          {/* --- 우측 지도 영역: 지도를 더 크게 강조 --- */}
           <div className="lg:col-span-8 py-4 lg:py-0 lg:pl-10 relative flex items-stretch">
-            <div className="w-full h-[350px] md:h-[500px] lg:h-full min-h-[450px]">
-              <div className={`relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-xl transition-all duration-1000 border-2 border-white dark:border-stone-800 ${
-                  isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.99]'
+            <div className="w-full h-[350px] md:h-[500px] lg:h-full min-h-[450px] relative">
+              <div className={`relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-xl transition-all duration-700 border-2 border-white dark:border-stone-800 ${
+                  isLoaded ? 'opacity-100 scale-100' : 'opacity-30 scale-[0.99]'
                 }`}>
-                
-                {/* 1. 지도 본체: absolute와 inset-0으로 영역 복구 */}
                 <div ref={mapRef} className="absolute inset-0 w-full h-full" />
                 
-                {/* 2. 길찾기 버튼 그룹: 카카오 & 네이버 (호버 시 브라운 색상) */}
                 <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 z-10 flex flex-col md:flex-row gap-3">
-                  
-                  {/* 카카오맵 버튼: 카카오 옐로우 -> 호버 시 브라운 */}
                   <button 
                     onClick={() => window.open(`https://map.kakao.com/link/to/리프레소,${LAT},${LNG}`)}
                     className="w-full md:w-auto md:min-w-[180px] cursor-pointer bg-[#FEE500] text-[#191919] p-3 rounded-xl flex items-center justify-between gap-4 shadow-xl border border-[#FEE500] hover:bg-leepresso-deep hover:border-leepresso-deep hover:text-white transition-all duration-300 group"
@@ -168,9 +172,16 @@ export default function Location() {
                     <ExternalLink size={16} className="text-[#191919] group-hover:text-white transition-colors" />
                   </button>
 
-                  {/* 네이버맵 버튼: 네이버 그린 -> 호버 시 브라운 */}
                   <button 
-                    onClick={() => window.open(`https://map.naver.com/v5/directions/-/-/리프레소,${LAT},${LNG},PLACE_ID/`)}
+                    onClick={() => {
+                      // 1. 검색어 설정 (가장 정확한 검색어를 입력하세요)
+                      const searchQuery = encodeURIComponent("룩소르퍼스트비즈타워 천안지식산업센터"); 
+                      
+                      // 2. 네이버 지도 검색 결과 페이지 URL
+                      const url = `https://map.naver.com/v5/search/${searchQuery}`;
+                      
+                      window.open(url);
+                    }}
                     className="w-full md:w-auto md:min-w-[180px] cursor-pointer bg-[#03C75A] text-white p-3 rounded-xl flex items-center justify-between gap-4 shadow-xl border border-[#03C75A] hover:bg-leepresso-deep hover:border-leepresso-deep transition-all duration-300 group"
                   >
                     <div className="text-left">
@@ -179,12 +190,10 @@ export default function Location() {
                     </div>
                     <ExternalLink size={16} className="text-white transition-colors" />
                   </button>
-
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>

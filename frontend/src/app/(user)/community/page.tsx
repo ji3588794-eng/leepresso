@@ -7,6 +7,7 @@ import { Lock, Pin, PenLine, Home, Inbox, Calendar, ChevronLeft, ChevronRight } 
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
 import api from '@/lib/api';
+import QuickMenu from "../components/common/QuickMenu";
 
 interface Post {
   idx: number;
@@ -88,6 +89,7 @@ export default function CommunityPage() {
 
   return (
     <div className="bg-[#F9F5F0] min-h-screen font-suit text-[#3E3232]">
+      <QuickMenu />
       <BrandHeader />
 
       {/* HERO SECTION */}
@@ -192,7 +194,7 @@ export default function CommunityPage() {
                     // 공지사항인 경우 가상 번호 대신 PIN 아이콘을 보여줌
                     const virtualNo = posts.length - ((currentPage - 1) * ITEMS_PER_PAGE) - index;
                     // 💡 여기서 콘솔을 찍어서 idx가 제대로 나오는지 확인하세요!
-      console.log("Pushing to:", `/community/${post.idx}`);
+                    console.log("Pushing to:", `/community/${post.idx}`);
                     return (
                       <div
                         key={post.idx}
