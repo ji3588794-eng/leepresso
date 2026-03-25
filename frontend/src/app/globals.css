@@ -32,6 +32,21 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Incheon_himchan";
+  src: url("/fonts/incheon_himchan.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "incheon_jaram";
+  src: url("/fonts/incheon_jaram.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* 2. 변수 설정 */
 :root {
@@ -39,7 +54,10 @@
   --leepresso-deep: #3e3232;
   --leepresso-point: #8d7b68;
   --leepresso-base: #e8d5c4;
-  --leepresso-point-red : #A9443D;
+  --leepresso-point-red: #a9443d;
+  --leepresso-point-yellow: #ffb266;
+  --white: #fff;
+  --black: #000;
 
   --font-suite: "Suite", sans-serif;
   --font-pretendard: "Pretendard", sans-serif;
@@ -75,4 +93,5 @@ body {
   font-family: var(--font-suite);
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.01em;
+  word-break: keep-all;
 }
