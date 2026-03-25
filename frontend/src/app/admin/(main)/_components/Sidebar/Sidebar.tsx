@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
-import { ChevronDown } from 'lucide-react'; // 화살표 아이콘 추가
+import { ChevronDown } from 'lucide-react';
 
 const MENU_ITEMS = [
   { name: '대시보드', path: '/admin/dashboard' },
@@ -19,12 +19,21 @@ const MENU_ITEMS = [
     ],
   },
   { name: '창업 문의', path: '/admin/inquiry' },
+  // 💡 추가된 통계 및 인프라 관리 메뉴
+  {
+    name: '시스템 통계',
+    path: '/admin/analytics',
+    sub: [
+      { name: '방문자 통계', path: '/admin/analytics/visitors' }, // visitor_logs 테이블용
+      { name: '인프라/서버 관리', path: '/admin/analytics/infra' }, // infra_status 테이블용
+    ],
+  },
   { 
     name: '전체 설정', 
     path: '/admin/settings',
     sub: [
       { name: '관리자페이지 설정', path: '/admin/settings/admin' },
-      { name: 'SEO 설정 +]', path: '/admin/settings/seo' },
+      { name: 'SEO 설정', path: '/admin/settings/seo' },
     ]
   },
 ];
@@ -57,6 +66,7 @@ export default function Sidebar() {
                 <div
                   className={`${styles.menuItem} ${isActive ? styles.active : ''}`}
                   onClick={() => {
+                    // 서브메뉴가 있으면 첫 번째 서브메뉴로, 없으면 해당 경로로 이동
                     if (hasSub) {
                       router.push(item.sub![0].path);
                     } else {
@@ -73,7 +83,6 @@ export default function Sidebar() {
                   )}
                 </div>
 
-                {/* 활성화된 메뉴의 서브메뉴만 표시 (애니메이션을 위해 클래스로 제어 가능) */}
                 {hasSub && isActive && (
                   <ul className={styles.subMenu}>
                     {item.sub!.map((sub) => {
@@ -85,7 +94,10 @@ export default function Sidebar() {
                           className={`${styles.subMenuItem} ${
                             isSubActive ? styles.subActive : ''
                           }`}
-                          onClick={() => router.push(sub.path)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // 버블링 방지
+                            router.push(sub.path);
+                          }}
                         >
                           {sub.name}
                         </li>

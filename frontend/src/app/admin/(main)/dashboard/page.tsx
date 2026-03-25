@@ -1,23 +1,96 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import styles from './dashboard.module.scss';
 
-export default function DashboardPage() {
+type DashboardCounts = {
+  franchise: number;
+  event: number;
+  voc: number;
+  stores: number;
+  menu: number;
+  popup: number;
+};
+
+type RecentFranchiseItem = {
+  id: number;
+  hope_region: string;
+  customer_name: string;
+  created_at: string;
+};
+
+type DashboardStats = {
+  counts: DashboardCounts;
+  recentFranchise: RecentFranchiseItem[];
+};
+
+type VisitorRow = {
+  date: string;
+  visitors: number;
+  pv: number;
+};
+
+type InfraItem = {
+  id: number;
+  service_name: string;
+  target_url: string;
+  status: string;
+  usage_percent: number | null;
+  d_day: number | null;
+  expiry_date: string | null;
+};
+
+const DashboardPage = () => {
   const router = useRouter();
-  const [stats, setStats] = useState<any>(null);
+
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [visitors, setVisitors] = useState<VisitorRow[]>([]);
+  const [infra, setInfra] = useState<InfraItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
     try {
-      const res = await api.get('/admin/dashboard/stats');
-      if (res.data.success) {
-        setStats(res.data.data);
+      setLoading(true);
+
+      const [statsRes, visitorsRes, infraRes] = await Promise.allSettled([
+        api.get('/admin/dashboard/stats'),
+        api.get('/admin/analytics/visitors'),
+        api.get('/admin/infra/status'),
+      ]);
+
+      if (
+        statsRes.status === 'fulfilled' &&
+        statsRes.value?.data?.success
+      ) {
+        setStats(statsRes.value.data.data);
+      } else {
+        setStats(null);
+      }
+
+      if (
+        visitorsRes.status === 'fulfilled' &&
+        visitorsRes.value?.data?.success
+      ) {
+        setVisitors(Array.isArray(visitorsRes.value.data.data) ? visitorsRes.value.data.data : []);
+      } else {
+        setVisitors([]);
+      }
+
+      if (
+        infraRes.status === 'fulfilled' &&
+        infraRes.value?.data?.success
+      ) {
+        setInfra(Array.isArray(infraRes.value.data.data) ? infraRes.value.data.data : []);
+      } else {
+        setInfra([]);
       }
     } catch (err) {
-      console.error('Dash Load Error:', err);
+      console.error('Dashboard Load Error:', err);
+      setStats(null);
+      setVisitors([]);
+      setInfra([]);
     } finally {
       setLoading(false);
     }
@@ -27,77 +100,390 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
-  if (loading) return <div className={styles.loading}>데이터 수집 중...</div>;
+  const counts = useMemo(
+    () => ({
+      franchise: stats?.counts?.franchise ?? 0,
+      event: stats?.counts?.event ?? 0,
+      voc: stats?.counts?.voc ?? 0,
+      stores: stats?.counts?.stores ?? 0,
+      menu: stats?.counts?.menu ?? 0,
+      popup: stats?.counts?.popup ?? 0,
+    }),
+    [stats]
+  );
+
+  const visitorSummary = useMemo(() => {
+    const totalVisitors = visitors.reduce((sum, item) => sum + Number(item.visitors || 0), 0);
+    const totalPv = visitors.reduce((sum, item) => sum + Number(item.pv || 0), 0);
+    const latest = visitors.length > 0 ? visitors[visitors.length - 1] : null;
+    const prev = visitors.length > 1 ? visitors[visitors.length - 2] : null;
+
+    const diff = latest && prev
+      ? Number(latest.visitors || 0) - Number(prev.visitors || 0)
+      : 0;
+
+    return {
+      totalVisitors,
+      totalPv,
+      latestVisitors: latest ? Number(latest.visitors || 0) : 0,
+      latestDate: latest?.date || '-',
+      diff,
+    };
+  }, [visitors]);
+
+  const infraSummary = useMemo(() => {
+    const activeCount = infra.filter((item) => item.status === 'active').length;
+    const warningCount = infra.filter((item) => item.status !== 'active').length;
+
+    const highUsageCount = infra.filter((item) => {
+      if (item.usage_percent === null || item.usage_percent === undefined) return false;
+      return Number(item.usage_percent) >= 80;
+    }).length;
+
+    const domainDangerCount = infra.filter((item) => {
+      if (item.d_day === null || item.d_day === undefined) return false;
+      return Number(item.d_day) <= 30;
+    }).length;
+
+    return {
+      activeCount,
+      warningCount,
+      highUsageCount,
+      domainDangerCount,
+    };
+  }, [infra]);
+
+  const quickMenus = [
+    {
+      title: '방문자 분석',
+      desc: '최근 7일 UV / PV 확인',
+      icon: '📈',
+      path: '/admin/analytics/visitors',
+    },
+    {
+      title: '인프라 현황',
+      desc: '도메인, 리소스, 상태 점검',
+      icon: '🖥️',
+      path: '/admin/analytics/infra',
+    },
+    {
+      title: '창업 문의',
+      desc: '신규 문의 접수/관리',
+      icon: '📩',
+      path: '/admin/inquiry',
+    },
+    {
+      title: '이벤트 관리',
+      desc: '프로모션 등록 및 수정',
+      icon: '🎁',
+      path: '/admin/community/event',
+    },
+    {
+      title: '공지사항',
+      desc: '운영 공지 작성/관리',
+      icon: '📢',
+      path: '/admin/community/notice',
+    },
+    {
+      title: '고객의 소리',
+      desc: 'VOC 확인 및 대응',
+      icon: '🗣️',
+      path: '/admin/community/voice',
+    },
+    {
+      title: '팝업 관리',
+      desc: '메인 팝업 노출 제어',
+      icon: '🪟',
+      path: '/admin/popup',
+    },
+    {
+      title: '매장 관리',
+      desc: '매장 정보 및 노출 관리',
+      icon: '🏪',
+      path: '/admin/stores',
+    },
+  ];
+
+  const overviewCards = [
+    {
+      label: '신규 창업 문의',
+      value: `${counts.franchise}건`,
+      icon: '📩',
+      tone: 'primary',
+      path: '/admin/inquiry',
+    },
+    {
+      label: '미답변 VOC',
+      value: `${counts.voc}건`,
+      icon: '🚨',
+      tone: 'danger',
+      path: '/admin/community/voice',
+    },
+    {
+      label: '진행 중 이벤트',
+      value: `${counts.event}건`,
+      icon: '🎁',
+      tone: 'purple',
+      path: '/admin/community/event',
+    },
+    {
+      label: '등록된 매장',
+      value: `${counts.stores}개`,
+      icon: '🏪',
+      tone: 'default',
+      path: '/admin/stores',
+    },
+    {
+      label: '활성 메뉴',
+      value: `${counts.menu}개`,
+      icon: '☕',
+      tone: 'default',
+      path: '/admin/menu',
+    },
+    {
+      label: '등록 팝업',
+      value: `${counts.popup}개`,
+      icon: '🪟',
+      tone: 'default',
+      path: '/admin/popup',
+    },
+  ];
+
+  if (loading) {
+    return <div className={styles.loading}>관리자 대시보드 데이터를 불러오는 중...</div>;
+  }
 
   return (
     <div className={styles.dashboardContainer}>
-      <h2 className={styles.mainTitle}>LEEPRESSO 현황 요약</h2>
-      
-      {/* 주요 현황 카드 (실시간 카운트) */}
-      <section className={styles.statsGrid}>
-        <div className={styles.statCard} onClick={() => router.push('/admin/inquiry')}>
-          <div className={styles.info}>
-            <p>신규 창업 문의</p>
-            <h3 className={styles.highlight}>{stats?.counts.franchise}건</h3>
-          </div>
-          <div className={styles.icon}>📩</div>
+      <section className={styles.heroSection}>
+        <div>
+          <p className={styles.heroEyebrow}>ADMIN DASHBOARD</p>
+          <h2 className={styles.mainTitle}>LEEPRESSO 운영 현황</h2>
+          <p className={styles.heroDesc}>
+            문의, 콘텐츠, 인프라, 방문 흐름까지 한 화면에서 확인할 수 있도록 구성했습니다.
+          </p>
         </div>
-        <div className={styles.statCard} onClick={() => router.push('/admin/community/event')}>
-          <div className={styles.info}>
-            <p>진행 중인 이벤트</p>
-            <h3>{stats?.counts.event}건</h3>
-          </div>
-          <div className={styles.icon}>🎁</div>
-        </div>
-        <div className={styles.statCard} onClick={() => router.push('/admin/board/voc')}>
-          <div className={styles.info}>
-            <p>고객의 소리 (미답변)</p>
-            <h3 className={styles.danger}>{stats?.counts.voc}건</h3>
-          </div>
-          <div className={styles.icon}>🗣️</div>
+
+        <div className={styles.heroActions}>
+          <button
+            className={styles.primaryBtn}
+            onClick={() => router.push('/admin/inquiry')}
+          >
+            문의 관리
+          </button>
+          <button
+            className={styles.secondaryBtn}
+            onClick={() => router.push('/admin/analytics/visitors')}
+          >
+            방문자 분석
+          </button>
         </div>
       </section>
 
-      <section className={styles.managementGrid}>
-        {/* 운영 관리 현황 (팝업, 메뉴 연동) */}
-        <div className={styles.contentCard}>
-          <h3>운영 관리 현황</h3>
-          <ul className={styles.summaryList}>
-            <li>
-              <span>등록된 매장 수</span> 
-              <strong>{stats?.counts.stores}개</strong>
-            </li>
-            <li>
-              <span>활성화된 메뉴 (cafe_menu)</span> 
-              <strong>{stats?.counts.menu}개</strong>
-            </li>
-            <li>
-              <span>등록된 팝업 (popup)</span> 
-              <strong>{stats?.counts.popup}개</strong>
-            </li>
-          </ul>
+      <section className={styles.statsGrid}>
+        {overviewCards.map((card) => (
+          <div
+            key={card.label}
+            className={`${styles.statCard} ${styles[card.tone]}`}
+            onClick={() => router.push(card.path)}
+          >
+            <div className={styles.statText}>
+              <p>{card.label}</p>
+              <h3>{card.value}</h3>
+            </div>
+            <div className={styles.statIcon}>{card.icon}</div>
+          </div>
+        ))}
+      </section>
+
+      <section className={styles.topGrid}>
+        <div className={`${styles.panel} ${styles.emphasisPanel}`}>
+          <div className={styles.panelHeader}>
+            <div>
+              <h3>최근 7일 방문 요약</h3>
+              <p>유입 흐름과 일별 방문 추이를 빠르게 확인</p>
+            </div>
+            <button
+              className={styles.inlineBtn}
+              onClick={() => router.push('/admin/analytics/visitors')}
+            >
+              전체 보기
+            </button>
+          </div>
+
+          <div className={styles.kpiRow}>
+            <div className={styles.kpiBox}>
+              <span>7일 방문자 합계</span>
+              <strong>{visitorSummary.totalVisitors.toLocaleString()}</strong>
+            </div>
+            <div className={styles.kpiBox}>
+              <span>7일 페이지뷰 합계</span>
+              <strong>{visitorSummary.totalPv.toLocaleString()}</strong>
+            </div>
+            <div className={styles.kpiBox}>
+              <span>최신 일자</span>
+              <strong>{visitorSummary.latestDate}</strong>
+            </div>
+            <div className={styles.kpiBox}>
+              <span>전일 대비</span>
+              <strong className={visitorSummary.diff >= 0 ? styles.up : styles.down}>
+                {visitorSummary.diff >= 0 ? `+${visitorSummary.diff}` : visitorSummary.diff}
+              </strong>
+            </div>
+          </div>
+
+          <div className={styles.miniTable}>
+            <div className={styles.miniHead}>
+              <span>날짜</span>
+              <span>UV</span>
+              <span>PV</span>
+            </div>
+
+            {visitors.length > 0 ? (
+              visitors.map((item) => (
+                <div key={item.date} className={styles.miniRow}>
+                  <span>{item.date}</span>
+                  <span>{Number(item.visitors || 0).toLocaleString()}</span>
+                  <span>{Number(item.pv || 0).toLocaleString()}</span>
+                </div>
+              ))
+            ) : (
+              <div className={styles.emptyBox}>방문자 데이터가 없습니다.</div>
+            )}
+          </div>
         </div>
 
-        {/* 최근 창업 문의 목록 (실제 리스트) */}
-        <div className={styles.contentCard}>
-          <h3>최근 창업 문의</h3>
-          <div className={styles.recentInquiry}>
-            {stats?.recentFranchise.length > 0 ? (
-              stats.recentFranchise.map((item: any) => (
+        <div className={styles.panel}>
+          <div className={styles.panelHeader}>
+            <div>
+              <h3>인프라 상태 요약</h3>
+              <p>서비스 상태와 점검 필요 항목 확인</p>
+            </div>
+            <button
+              className={styles.inlineBtn}
+              onClick={() => router.push('/admin/analytics/infra')}
+            >
+              상세 보기
+            </button>
+          </div>
+
+          <div className={styles.alertGrid}>
+            <div className={styles.alertCard}>
+              <span>정상 서비스</span>
+              <strong>{infraSummary.activeCount}개</strong>
+            </div>
+            <div className={styles.alertCard}>
+              <span>주의 상태</span>
+              <strong>{infraSummary.warningCount}개</strong>
+            </div>
+            <div className={styles.alertCard}>
+              <span>리소스 80% 이상</span>
+              <strong>{infraSummary.highUsageCount}개</strong>
+            </div>
+            <div className={styles.alertCard}>
+              <span>도메인 30일 이내</span>
+              <strong>{infraSummary.domainDangerCount}개</strong>
+            </div>
+          </div>
+
+          <div className={styles.infraList}>
+            {infra.length > 0 ? (
+              infra.slice(0, 5).map((item) => (
+                <div key={item.id} className={styles.infraRow}>
+                  <div className={styles.infraLeft}>
+                    <b>{item.service_name}</b>
+                    <small>{item.target_url || '-'}</small>
+                  </div>
+
+                  <div className={styles.infraRight}>
+                    {item.usage_percent !== null && item.usage_percent !== undefined ? (
+                      <span
+                        className={`${styles.statusChip} ${
+                          Number(item.usage_percent) >= 80 ? styles.chipDanger : styles.chipSafe
+                        }`}
+                      >
+                        {item.usage_percent}%
+                      </span>
+                    ) : (
+                      <span
+                        className={`${styles.statusChip} ${
+                          item.d_day !== null && Number(item.d_day) <= 30
+                            ? styles.chipDanger
+                            : styles.chipSafe
+                        }`}
+                      >
+                        {item.d_day !== null && item.d_day !== undefined ? `D-${item.d_day}` : '-'}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className={styles.emptyBox}>인프라 데이터가 없습니다.</div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.bottomGrid}>
+        <div className={styles.panel}>
+          <div className={styles.panelHeader}>
+            <div>
+              <h3>빠른 이동</h3>
+              <p>관리 페이지로 바로 이동</p>
+            </div>
+          </div>
+
+          <div className={styles.quickGrid}>
+            {quickMenus.map((menu) => (
+              <button
+                key={menu.title}
+                className={styles.quickCard}
+                onClick={() => router.push(menu.path)}
+              >
+                <div className={styles.quickIcon}>{menu.icon}</div>
+                <div className={styles.quickText}>
+                  <strong>{menu.title}</strong>
+                  <span>{menu.desc}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.panel}>
+          <div className={styles.panelHeader}>
+            <div>
+              <h3>최근 창업 문의</h3>
+              <p>최신 접수 문의를 바로 확인</p>
+            </div>
+            <button
+              className={styles.inlineBtn}
+              onClick={() => router.push('/admin/inquiry')}
+            >
+              전체 보기
+            </button>
+          </div>
+
+          <div className={styles.inquiryList}>
+            {stats?.recentFranchise && stats.recentFranchise.length > 0 ? (
+              stats.recentFranchise.map((item) => (
                 <div key={item.id} className={styles.inquiryRow}>
-                  <span>[{item.hope_region}] {item.customer_name}님</span>
+                  <div className={styles.inquiryLeft}>
+                    <strong>{item.customer_name}님</strong>
+                    <span>{item.hope_region ? `[${item.hope_region}] 창업 문의` : '창업 문의'}</span>
+                  </div>
                   <small>{new Date(item.created_at).toLocaleDateString()}</small>
                 </div>
               ))
             ) : (
-              <p className={styles.noData}>접수된 문의가 없습니다.</p>
+              <div className={styles.emptyBox}>접수된 문의가 없습니다.</div>
             )}
-            <button className={styles.moreBtn} onClick={() => router.push('/admin/inquiry')}>
-              전체 창업문의 관리 이동
-            </button>
           </div>
         </div>
       </section>
     </div>
   );
-}
+};
+
+export default DashboardPage;

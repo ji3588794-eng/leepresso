@@ -16,7 +16,6 @@ export default function AdminMainLayout({
   return (
     <div className="adminContainer">
       <aside className="sidebar">
-        {/* 메뉴 내용 */}
       </aside>
       <main className="content">
         {children}

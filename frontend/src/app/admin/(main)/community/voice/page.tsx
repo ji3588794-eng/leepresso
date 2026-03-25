@@ -17,14 +17,14 @@ export interface VoiceData {
   writer_email: string;
   password?: string;
   is_private: number;
-  is_answered: number; 
-  answer?: string;     
+  is_answered: number;
+  answer?: string;
   created_at: string;
 }
 
 export default function VoicePage() {
   const [list, setList] = useState<VoiceData[]>([]);
-  const [keyword, setKeyword] = useState(''); 
+  const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<VoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

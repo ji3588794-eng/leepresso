@@ -8,6 +8,7 @@ import Competitiveness from "./Competitiveness/Competitiveness";
 import Process from "./Process/Process";
 import Price from "./Price/Price";
 import Contact from "./Contact/Contact";
+import Review from "./review/review";
 
 export default function FranchisePage() {
   // 스크롤 로직(Hash 처리)은 페이지 전체에 영향을 주므로 여기에 남겨둡니다.
@@ -71,6 +72,9 @@ export default function FranchisePage() {
 
       {/* 7. 가맹 상담 신청 및 하단 고정 바 */}
       <Contact />
+
+      {/* 8. 리뷰섹션 */}
+      <Review />
     </div>
   );
 }

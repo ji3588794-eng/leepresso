@@ -437,30 +437,6 @@ router.put('/franchise/:id', async (req, res) => {
 });
 
 /* ---------------------------------------------------------
-   대시보드 실시간 통계
---------------------------------------------------------- */
-router.get('/dashboard/stats', async (req, res) => {
-  try {
-    const [[{ f_count }]] = await pool.query("SELECT COUNT(*) as f_count FROM franchise_inquiries WHERE status = 'RECEIVED'").catch(()=>[[{f_count:0}]]);
-    const [[{ e_count }]] = await pool.query("SELECT COUNT(*) as e_count FROM board WHERE category = 'event'").catch(()=>[[{e_count:0}]]);
-    const [[{ v_count }]] = await pool.query("SELECT COUNT(*) as v_count FROM board WHERE category = 'voc' AND is_answered = 0").catch(()=>[[{v_count:0}]]);
-    const [[{ p_count }]] = await pool.query("SELECT COUNT(*) as p_count FROM popups").catch(()=>[[{p_count:0}]]);
-    const [[{ s_count }]] = await pool.query("SELECT COUNT(*) as s_count FROM store_list").catch(()=>[[{s_count:0}]]);
-    const [[{ m_count }]] = await pool.query("SELECT COUNT(*) as m_count FROM cafe_menu").catch(()=>[[{m_count:0}]]);
-
-    const [recent] = await pool.query("SELECT customer_name, hope_region, created_at FROM franchise_inquiries ORDER BY created_at DESC LIMIT 5").catch(()=>[[]]);
-
-    res.json({
-      success: true,
-      data: {
-        counts: { franchise: f_count, event: e_count, voc: v_count, stores: s_count, menu: m_count, popup: p_count },
-        recentFranchise: recent
-      }
-    });
-  } catch (error) { res.status(500).json({ error: error.message }); }
-});
-
-/* ---------------------------------------------------------
    시스템 환경설정 (site_settings)
 --------------------------------------------------------- */
 router.get('/settings', async (req, res) => {
@@ -491,6 +467,97 @@ router.post('/register', async (req, res) => {
     );
     res.json({ success: true });
   } catch (error) { res.status(500).json({ error: error.message }); }
+});
+
+/* ---------------------------------------------------------
+    [신규] 시스템 통계 및 인프라 관리 API
+--------------------------------------------------------- */
+
+/* ---------------------------------------------------------
+    [신규] 시스템 통계 및 인프라 관리 API (admin.js)
+--------------------------------------------------------- */
+// 1. 방문자 통계 데이터 조회 (7일간의 추이)
+// URL: http://localhost:3001/admin/analytics/visitors
+router.get('/analytics/visitors', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        DATE_FORMAT(created_at, '%Y-%m-%d') AS date,
+        COUNT(DISTINCT session_id) AS visitors,
+        COUNT(*) AS pv
+      FROM visitor_logs
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+      GROUP BY date
+      ORDER BY date ASC
+    `);
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 2. 인프라 상태 조회
+// URL: http://localhost:3001/admin/infra/status
+router.get('/infra/status', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT *, DATEDIFF(expiry_date, CURDATE()) as d_day 
+      FROM infra_status 
+      ORDER BY id ASC
+    `);
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 3. 인프라 정보 업데이트
+router.put('/infra/status/:id', async (req, res) => {
+  const { id } = req.params;
+  const { usage_percent, status, expiry_date } = req.body;
+  try {
+    await pool.query(
+      `UPDATE infra_status SET usage_percent = ?, status = ?, expiry_date = ?, last_checked = NOW() WHERE id = ?`,
+      [usage_percent, status, expiry_date, id]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/* ---------------------------------------------------------
+    [수정] 대시보드 실시간 통계 (접속 통계 요약 추가)
+--------------------------------------------------------- */
+router.get('/dashboard/stats', async (req, res) => {
+  try {
+    // 기존 카운트 쿼리들
+    const [[{ f_count }]] = await pool.query("SELECT COUNT(*) as f_count FROM franchise_inquiries WHERE status = 'RECEIVED'").catch(()=>[[{f_count:0}]]);
+    const [[{ e_count }]] = await pool.query("SELECT COUNT(*) as e_count FROM board WHERE type = 'event'").catch(()=>[[{e_count:0}]]);
+    const [[{ v_count }]] = await pool.query("SELECT COUNT(*) as v_count FROM board WHERE type = 'voc' AND is_answered = 0").catch(()=>[[{v_count:0}]]);
+    
+    // [신규 추가] 오늘 접속자 수 및 도메인 디데이
+    const [[{ today_uv }]] = await pool.query("SELECT COUNT(DISTINCT session_id) as today_uv FROM visitor_logs WHERE DATE(created_at) = CURDATE()").catch(()=>[[{today_uv:0}]]);
+    const [[{ domain_dday }]] = await pool.query("SELECT DATEDIFF(expiry_date, CURDATE()) as domain_dday FROM infra_status WHERE service_name = 'Main-Domain' LIMIT 1").catch(()=>[[{domain_dday:0}]]);
+
+    const [recent] = await pool.query("SELECT customer_name, hope_region, created_at FROM franchise_inquiries ORDER BY created_at DESC LIMIT 5").catch(()=>[[]]);
+
+    res.json({
+      success: true,
+      data: {
+        counts: { 
+          franchise: f_count, 
+          event: e_count, 
+          voc: v_count, 
+          today_visitors: today_uv, // 메인 대시보드용 신규 데이터
+          domain_dday: domain_dday   // 메인 대시보드용 신규 데이터
+        },
+        recentFranchise: recent
+      }
+    });
+  } catch (error) { 
+    res.status(500).json({ error: error.message }); 
+  }
 });
 
 module.exports = router;

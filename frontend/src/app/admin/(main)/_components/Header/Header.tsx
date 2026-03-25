@@ -6,7 +6,12 @@ import api from '@/lib/api';
 import styles from './Header.module.scss';
 import { Clock, ExternalLink, LogOut, User } from 'lucide-react'; 
 
-export default function Header() {
+// 💡 AdminMainShell에서 던져주는 title을 받기 위한 인터페이스 추가
+interface HeaderProps {
+  title: string;
+}
+
+export default function Header({ title }: HeaderProps) {
   const router = useRouter();
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
@@ -68,6 +73,11 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.leftSection}>
+        {/* 💡 여기에 TITLE_MAP에서 번역된 한글 타이틀이 찍힙니다 */}
+        <div className={styles.pageTitle}>
+          <h2>{title}</h2>
+        </div>
+        
         <div className={styles.clockWrapper}>
           <Clock size={16} className={styles.icon} />
           <span className={styles.dateText}>{formatDate(currentTime)}</span>

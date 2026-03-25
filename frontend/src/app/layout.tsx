@@ -6,8 +6,8 @@ const SITE_INFO = {
   title: '리프레소(LEEPRESSO) | 본질에 집중한 프리미엄 무인카페',
   description: '20년 노하우의 무인카페 창업 파트너 리프레소. 최저 비용, 인건비 0원, 압도적 상권 분석으로 안정적인 수익을 제안합니다.',
   keywords: '리프레소, 무인카페, 무인카페창업, 카페창업, 커피프랜차이즈, 소자본창업, 무인매장관리',
-  url: 'https://leepresso.com', // 실제 도메인 주소로 변경하세요.
-  ogImage: '/og-image.png',     // public 폴더에 og-image.jpg 파일을 넣어주세요.
+  url: 'https://leepresso.com',
+  ogImage: '/og-image.png',
 };
 
 // 💡 브라우저 테마 및 반응형 설정
