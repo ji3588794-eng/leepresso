@@ -1,13 +1,12 @@
 'use client';
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function GatePage() {
   const router = useRouter();
 
   return (
-    <div className="relative w-full h-screen flex flex-col md:flex-row overflow-hidden bg-[#F9F5F0] font-sans">
+    <div className="relative w-full h-[100dvh] flex flex-col md:flex-row overflow-hidden bg-[#0A0A0A] font-sans">
       <style jsx global>{`
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
@@ -16,101 +15,114 @@ export default function GatePage() {
         .animate-spin-slow {
           animation: spin-slow 15s linear infinite;
         }
-        .bg-grain {
-          background-image: url("https://www.transparenttextures.com/patterns/p6-mini.png");
-        }
-        /* 배경 이미지 가독성을 위한 유틸리티 */
         .bg-gate-brand {
           background-image: url('/gate-brand.png');
           background-size: cover;
           background-position: center;
-          background-repeat: no-repeat;
         }
         .bg-gate-franchise {
           background-image: url('/gate-franchise.png');
           background-size: cover;
           background-position: center;
-          background-repeat: no-repeat;
+        }
+        .paper-texture {
+          background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
         }
       `}</style>
-
-      {/* 전체 배경 종이 질감 레이어 */}
-      <div className="absolute inset-0 bg-grain opacity-[0.1] pointer-events-none z-50" />
       
-      {/* 1. BRAND SIDE (좌측) */}
+      {/* 1. BRAND SIDE */}
       <div 
         onClick={() => router.push('/brand')}
-        className="relative flex-1 group cursor-pointer overflow-hidden transition-all duration-700 ease-in-out hover:flex-[1.2] bg-gate-brand"
+        className="relative flex-1 group cursor-pointer overflow-hidden transition-all duration-1000 bg-gate-brand"
       >
-        {/* 전체 오버레이: 밝기 추가 향상 (bg-black/15) */}
-        <div className="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors duration-700" />
+        {/* 왼쪽: 확실히 더 밝게 */}
+        <div className="absolute inset-0 group-hover:bg-black/18 transition-all duration-700 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/45 z-10" />
         
-        {/* 하단 그라데이션: 어두운 정도를 크게 완화 (to-black/70 -> to-black/40) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/40 pointer-events-none" />
+        <div className="relative h-full flex items-center justify-center p-8 z-20">
+          <div className="relative flex flex-col items-center max-w-[320px] w-full pt-16 pb-20 px-8 transition-transform duration-700 group-hover:scale-[1.02]">
+            
+            <div className="w-12 h-[1px] bg-white/70 mb-10" />
+            
+            <span className="block text-white/85 font-medium tracking-[0.5em] mb-4 text-[10px] uppercase drop-shadow-md">
+              BRAND STORY
+            </span>
+            
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8 tracking-tight font-medium drop-shadow-[0_4px_16px_rgba(0,0,0,0.35)]">
+              브랜드 소개
+            </h2>
 
-        <div className="relative h-full flex flex-col items-center justify-center p-12 text-center z-20">
-          <span className="text-white font-bold tracking-[0.4em] mb-2 text-[13px] uppercase drop-shadow-md">
-            Since 2026
-          </span>
-          
-          <h2 className="inline-block text-5xl md:text-6xl font-black text-white mb-10 leading-tight border-b-1 border-white/30 pb-3 transition-colors group-hover:border-white drop-shadow-lg">
-            브랜드 소개
-          </h2>
+            <p className="text-white/90 text-[13px] leading-relaxed text-center font-normal tracking-wide break-keep drop-shadow-md">
+              리프레소만의 깊은 철학과<br/>
+              시간이 빚어낸 공간의 기록.
+            </p>
 
-          <div className="relative w-48 h-48 flex items-center justify-center">
-            <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-              <defs>
-                <path id="circlePath1" d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-              </defs>
-              <text className="fill-white text-[5.4px] font-bold uppercase" style={{ letterSpacing: '0.24em' }}>
-                <textPath href="#circlePath1">
-                  LEEPRESSO COFFEE • LEEPRESSO COFFEE • LEEPRESSO COFFEE •
-                </textPath>
-              </text>
-            </svg>
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-[#3E3232] hover:scale-110 z-30">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8D7B68" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
-              </svg>
+            <div className="absolute -bottom-6 -right-6 flex items-center justify-center">
+              <div className="relative w-24 h-24 flex items-center justify-center">
+                <svg className="absolute w-full h-full animate-spin-slow opacity-65" viewBox="0 0 100 100">
+                  <path id="circlePath1" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+                  <text className="fill-white text-[5.2px] font-light uppercase tracking-[0.3em]">
+                    <textPath href="#circlePath1">LEEPRESSO COFFEE • LEEPRESSO COFFEE • LEEPRESSO COFFEE •</textPath>
+                  </text>
+                </svg>
+                <div className="w-11 h-11 bg-white/24 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/35 group-hover:bg-white group-hover:scale-110 transition-all duration-500 shadow-2xl">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white group-hover:text-black transition-colors duration-500">
+                    <path d="M5 12h14m-4-4 4 4-4 4"/>
+                  </svg>
+                </div>
+              </div>
             </div>
+
+            {/* 왼쪽 글라스박스도 조금 더 또렷하게 */}
+            <div className="absolute inset-0 bg-black/12 backdrop-blur-[10px] border border-white/30 -z-10 paper-texture shadow-[0_0_50px_rgba(0,0,0,0.35)]" />
           </div>
         </div>
       </div>
 
-      {/* 2. FRANCHISE SIDE (우측) */}
+      {/* 2. FRANCHISE SIDE */}
       <div 
         onClick={() => router.push('/franchise')}
-        className="relative flex-1 group cursor-pointer overflow-hidden transition-all duration-700 ease-in-out hover:flex-[1.2] border-t md:border-t-0 md:border-l border-[#3E3232]/5 bg-gate-franchise"
+        className="relative flex-1 group cursor-pointer overflow-hidden transition-all duration-1000 border-t md:border-t-0 md:border-l border-white/10 bg-gate-franchise"
       >
-        {/* 전체 오버레이: 밝기 추가 향상 (bg-black/15) */}
-        <div className="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors duration-700" />
+        {/* 오른쪽: 조금만 덜 어둡게 */}
+        <div className="absolute inset-0 bg-black/32 group-hover:bg-black/18 transition-all duration-700 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/42 via-transparent to-black/52 z-10" />
         
-        {/* 하단 그라데이션: 어두운 정도를 크게 완화 (to-black/70 -> to-black/40) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/40 pointer-events-none" />
-        
-        <div className="relative h-full flex flex-col items-center justify-center p-12 text-center z-20">
-          <span className="text-white font-bold tracking-[0.4em] mb-2 text-[13px] uppercase drop-shadow-md">FRANCHISE</span>
-          
-          <h2 className="inline-block text-5xl md:text-6xl font-black text-white mb-10 leading-tight border-b-1 border-white/30 pb-3 transition-colors group-hover:border-white drop-shadow-lg">
-            창업 문의
-          </h2>
+        <div className="relative h-full flex items-center justify-center p-8 z-20">
+          <div className="relative flex flex-col items-center max-w-[320px] w-full pt-16 pb-20 px-8 transition-transform duration-700 group-hover:scale-[1.02]">
+            
+            <div className="w-12 h-[1px] bg-white/50 mb-10" />
+            
+            <span className="block text-white/72 font-light tracking-[0.5em] mb-4 text-[10px] uppercase">
+              Partnership
+            </span>
+            
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8 tracking-tight font-medium">
+              창업 문의
+            </h2>
 
-          <div className="relative w-48 h-48 flex items-center justify-center">
-            <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-              <defs>
-                <path id="circlePath2" d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-              </defs>
-              <text className="fill-white text-[5.4px] font-bold uppercase" style={{ letterSpacing: '0.24em' }}>
-                <textPath href="#circlePath2">
-                  LEEPRESSO COFFEE • LEEPRESSO COFFEE • LEEPRESSO COFFEE •
-                </textPath>
-              </text>
-            </svg>
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-[#8D7B68] hover:scale-110 z-30">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3E3232" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
-              </svg>
+            <p className="text-white/78 text-[13px] leading-relaxed text-center font-light tracking-wide break-keep">
+              함께 성장하는 비즈니스를 위한<br/>
+              리프레소의 성공 파트너십.
+            </p>
+
+            <div className="absolute -bottom-6 -right-6 flex items-center justify-center">
+              <div className="relative w-24 h-24 flex items-center justify-center">
+                <svg className="absolute w-full h-full animate-spin-slow opacity-45" viewBox="0 0 100 100">
+                  <path id="circlePath2" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+                  <text className="fill-white text-[5.2px] font-light uppercase tracking-[0.3em]">
+                    <textPath href="#circlePath2">LEEPRESSO COFFEE • LEEPRESSO COFFEE • LEEPRESSO COFFEE •</textPath>
+                  </text>
+                </svg>
+                <div className="w-11 h-11 bg-white/12 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/22 group-hover:bg-white group-hover:scale-110 transition-all duration-500 shadow-2xl">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white group-hover:text-black transition-colors duration-500">
+                    <path d="M5 12h14m-4-4 4 4-4 4"/>
+                  </svg>
+                </div>
+              </div>
             </div>
+
+            <div className="absolute inset-0 bg-white/[0.05] backdrop-blur-[5px] border border-white/12 -z-10 paper-texture shadow-[0_0_40px_rgba(0,0,0,0.25)]" />
           </div>
         </div>
       </div>

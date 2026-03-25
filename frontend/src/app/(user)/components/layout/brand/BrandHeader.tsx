@@ -72,10 +72,22 @@ export default function BrandHeader() {
     router.prefetch('/community');
   }, [router]);
 
-  // [수정 로직] 페이지 이동 및 부드러운 스크롤 통합 처리
+// [수정 로직] 페이지 이동 및 부드러운 스크롤 통합 처리
   const handleNavClick = (path: string, id?: string) => {
-    // 1. 현재 있는 페이지와 가려는 페이지가 같은 경우 (해시 이동 처리)
-    if (pathname === path) {
+    // 1. 커뮤니티 페이지인 경우 (원페이지가 아니므로 예외 처리)
+    if (path === '/community') {
+      const targetPath = id ? `${path}#${id}` : path;
+      
+      // 현재 커뮤니티 페이지라면 해시만 바꿔서 useEffect가 감지하게 함
+      if (pathname === '/community') {
+        window.location.hash = id || '';
+      } else {
+        // 다른 페이지라면 해당 탭으로 이동
+        router.push(targetPath);
+      }
+    } 
+    // 2. 원페이지 스크롤이 필요한 페이지들 (Brand, Franchise 등)
+    else if (pathname === path) {
       if (id) {
         const element = document.getElementById(id);
         if (element) {
@@ -88,16 +100,14 @@ export default function BrandHeader() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } 
-    // 2. 다른 페이지로 이동해야 하는 경우
+    // 3. 완전히 다른 페이지로 이동
     else {
-      // 해시가 있으면 붙여서 이동
       const targetPath = id ? `${path}#${id}` : path;
       router.push(targetPath);
-      // 참고: 스크롤이 자동으로 안 올라간다면 아까 만든 ScrollToTop 전역 컴포넌트가 필요해!
     }
     
     setIsMobileMenuOpen(false);
-    setIsHovered(false); // 마우스 떼기 효과
+    setIsHovered(false);
   };
 
   const hasBg = !isMobileMenuOpen && (isScrolled || isHovered);
