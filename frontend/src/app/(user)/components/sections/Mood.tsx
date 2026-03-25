@@ -27,7 +27,7 @@ export default function Mood() {
       { id: 1, title: '천안두정점', img: '/store-1.png' },
       { id: 2, title: '브랜드 공간', img: '/store-2.jpg' },
       { id: 3, title: '무인 운영 공간', img: '/store-3.jpg' },
-      { id: 4, title: '브랜드 무드', img: '/store-4.png' },
+      { id: 4, title: '브랜드 무드', img: '/store-4.jpeg' },
       { id: 5, title: '리프레소 스토어', img: '/store-5.jpg' },
     ],
     []

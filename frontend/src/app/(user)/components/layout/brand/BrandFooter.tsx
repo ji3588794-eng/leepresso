@@ -33,7 +33,7 @@ useEffect(() => {
 3. 사업자등록번호 : 254-88-03655
 4. 주소 : 충남 천안시 서북구 차암동 13 룩소르비즈타워 B107호
 5. 대표번호 : 1522-0290
-6. 이메일 : mhddcoffee@naver.com
+6. 이메일 : leepresso24@naver.com
 
 제3조 (제공 서비스)
 회사는 다음 각 호의 서비스를 제공합니다.
@@ -152,7 +152,7 @@ useEffect(() => {
 11. 개인정보 관련 문의
 개인정보 보호와 관련한 문의는 아래 연락처로 하실 수 있습니다.
 - 대표번호 : 1522-0290
-- 이메일 : mhddcoffee@naver.com
+- 이메일 : leepresso24@naver.com
 - 개인정보 보호책임자 이메일 : horus97alas@gmail.com
 
 12. 방침 변경
@@ -292,7 +292,7 @@ useEffect(() => {
                 <div className="flex flex-col gap-1">
                   <span className="text-[11px] font-bold opacity-50">이메일 문의</span>
                   <span className="text-[14px] font-bold tracking-tight text-[#EAE3D9]">
-                    mhddcoffee@naver.com
+                    leepresso24@naver.com
                   </span>
                 </div>
               </div>
