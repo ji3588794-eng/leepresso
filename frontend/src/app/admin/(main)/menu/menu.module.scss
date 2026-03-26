@@ -1,0 +1,300 @@
+/* app/admin/(main)/menu/menu.module.scss */
+
+.container {
+  min-height: 100vh;
+  padding: 24px;
+  padding-bottom: 80px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+
+    .titleGroup {
+      h2 {
+        font-size: 26px;
+        font-weight: 800;
+        margin: 0;
+        color: #0f172a;
+        letter-spacing: -0.5px;
+      }
+      p {
+        font-size: 14px;
+        color: #64748b;
+        margin: 6px 0 0;
+      }
+    }
+
+    .addBtn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      }
+    }
+  }
+
+  /* 수정된 버튼형 탭 스타일 */
+  .tabNav {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .tabBtn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .count {
+        font-size: 12px;
+        padding: 2px 8px;
+        background: #e2e8f0;
+        color: #64748b;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      &:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+
+      &.activeTab {
+        background: #fff; // 블랙 포인트
+        color: #000;
+        border-color: #2563eb;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+
+        .count {
+          background: #2563eb; // 활성화 시 카운트 색상 포인트
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .searchSection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+
+    .searchWrapper {
+      position: relative;
+      flex: 1;
+      min-width: 300px;
+      max-width: 450px;
+
+      .searchIcon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        padding: 11px 45px 11px 42px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #fff;
+        outline: none;
+        font-size: 14px;
+        color: #1e293b;
+        transition: all 0.2s;
+
+        &:focus {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+      }
+
+      .resetBtn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #f1f5f9;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        &:hover { background: #e2e8f0; color: #475569; }
+      }
+    }
+    .countInfo { margin-left: auto; font-size: 14px; color: #64748b; strong { color: #2563eb; } }
+  }
+
+  .menuGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px;
+
+    @media (max-width: 1600px) { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 0;
+    color: #94a3b8;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px dashed #cbd5e1;
+    .emptyText { font-weight: 600; font-size: 15px; }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 50px;
+
+    button {
+      min-width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #64748b;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+
+      &:hover:not(:disabled) {
+        background: #f1f5f9;
+        color: #0f172a;
+      }
+
+      &.activePage {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+      }
+    }
+  }
+}
+
+// 개별 메뉴 카드 스타일
+.menuCard {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+  }
+
+  &.disabled {
+    .thumb { filter: grayscale(1); opacity: 0.7; }
+    .info { opacity: 0.6; }
+  }
+
+  .thumb {
+    height: 180px;
+    background: #f1f5f9;
+    position: relative;
+    border-bottom: 1px solid #f1f5f9;
+    img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+    .noImage { display: flex; align-items: center; justify-content: center; height: 100%; color: #94a3b8; font-size: 12px; }
+    .badge { position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.8); color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; z-index: 2; }
+    .statusOverlay { position: absolute; inset: 0; background: rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; color: #ef4444; font-weight: 900; font-size: 18px; border: 2px solid #ef4444; margin: 30px; border-radius: 4px; transform: rotate(-15deg); pointer-events: none; }
+  }
+
+  .info {
+    padding: 16px;
+    flex: 1;
+    h4 { margin: 0 0 4px; font-size: 16px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .engName { color: #94a3b8; font-size: 12px; margin: 0 0 12px; height: 1.2em; overflow: hidden; }
+    .priceRow { .price { font-weight: 800; color: #2563eb; font-size: 16px; } }
+  }
+
+  .btnGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #f1f5f9;
+    button {
+      padding: 12px; border: none; background: none; cursor: pointer; font-size: 12px; font-weight: 700; color: #64748b; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
+      &:first-child { border-right: 1px solid #f1f5f9; }
+      &:hover { background: #f8fafc; color: #0f172a; }
+    }
+    .delBtn:hover { background: #fef2f2; color: #ef4444; }
+  }
+}
+
+// 모달 스타일
+.modalOverlay {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); display: flex; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px);
+}
+.modalContent {
+  background: #fff; padding: 30px; border-radius: 16px; width: 95%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  h3 { margin: 0 0 25px; font-size: 20px; font-weight: 800; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
+  .inputRow {
+    margin-bottom: 20px;
+    label { display: block; font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 8px; text-transform: uppercase; }
+    input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; outline: none; transition: 0.2s; &:focus { background: #fff; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); } }
+    textarea { height: 100px; resize: none; }
+    .thumbUpload {
+      display: flex; gap: 15px; align-items: flex-end;
+      .uploadPlaceholder { width: 100px; height: 100px; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; background: #f8fafc; transition: 0.2s; &:hover { border-color: #2563eb; background: #f1f5f9; } }
+      .previewBox { width: 100px; height: 100px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid #e2e8f0; img { width: 100%; height: 100%; object-fit: cover; } .removeBtn { position: absolute; top: 4px; right: 4px; background: rgba(15, 23, 42, 0.6); color: #fff; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; } }
+    }
+    .radioGroup { display: flex; gap: 24px; padding: 8px 0; label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #475569; margin: 0; } input[type="radio"] { width: auto; cursor: pointer; } }
+  }
+  .modalBtns {
+    display: flex; gap: 12px; margin-top: 30px;
+    button { flex: 1; padding: 16px; border-radius: 8px; cursor: pointer; border: none; font-weight: 700; font-size: 15px; transition: 0.2s; }
+    .cancelBtn { background: #f1f5f9; color: #475569; &:hover { background: #e2e8f0; } }
+    .saveBtn { background: #2563eb; color: #fff; &:hover { background: #1d4ed8; } }
+  }
+}

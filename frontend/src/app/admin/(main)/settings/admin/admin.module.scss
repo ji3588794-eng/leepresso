@@ -1,0 +1,116 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  .header {
+    margin-bottom: 32px;
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 8px;
+      svg { color: #2563eb; }
+    }
+    p { color: #64748b; font-size: 0.95rem; }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+
+  .sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #2563eb;
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+  }
+
+  textarea { min-height: 120px; line-height: 1.6; resize: vertical; }
+
+  // 점검 모드 강조 스타일
+  .maintenanceOn {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+    color: #b45309;
+    font-weight: 700;
+  }
+}
+
+.btnWrapper {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+
+  .saveBtn {
+    background: #1e293b;
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+
+    &:hover {
+      background: #0f172a;
+      transform: translateY(-2px);
+    }
+    &:active { transform: translateY(0); }
+  }
+}
+
+.loading {
+  padding: 100px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 600;
+}
