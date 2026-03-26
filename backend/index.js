@@ -7,8 +7,8 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
-//const PORT = process.env.PORT || 4000;
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
+//const PORT = process.env.PORT || 3001;
 
 // 미들웨어
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
