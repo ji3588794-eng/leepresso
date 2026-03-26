@@ -47,6 +47,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "NanumPen";
+  src: url("/fonts/NanumPenScript-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* 2. 변수 설정 */
 :root {
@@ -56,12 +63,14 @@
   --leepresso-base: #e8d5c4;
   --leepresso-point-red: #a9443d;
   --leepresso-point-yellow: #ffb266;
+  --leepresso-point-brown: #c46a2d;
   --white: #fff;
   --black: #000;
 
   --font-suite: "Suite", sans-serif;
   --font-pretendard: "Pretendard", sans-serif;
   --font-uiyeon: "Uiyeon", cursive;
+  --font-pen: "NanumPen", cursive;
 }
 
 html.dark {

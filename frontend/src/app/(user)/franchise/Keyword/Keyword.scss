@@ -1,0 +1,181 @@
+@use "../../../mixin" as *;
+
+.keyword {
+  background-color: var(--white);
+  padding: 90px 0;
+  color: var(--leepresso-deep);
+  .container {
+    max-width: 1500px;
+    margin: 0 auto;
+    color: var(--leepresso-deep);
+    text-align: center;
+    .int_title_box {
+      display: inline-block;
+      font-size: 40px;
+      text-align: center;
+      padding-bottom: 50px;
+      .int_title {
+        font-weight: 600;
+      }
+      .int_title_bottom {
+        font-weight: 900;
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 10px;
+
+          width: 100%;
+          height: 30px;
+
+          @include bg("/under_line.png");
+
+          z-index: -1;
+        }
+      }
+    }
+    .int_content_box {
+      padding-bottom: 80px;
+      .int_content_row {
+        display: inline-block;
+        width: calc(100% / 4);
+        height: auto;
+
+        .int_row_image {
+          @include bg("/mark_budget.png");
+          width: 100%;
+          height: 10vw;
+          // margin-bottom: ;
+          &.row2 {
+            @include bg("/mark_economic.png");
+          }
+          &.row3 {
+            @include bg("/mark_smart.png");
+          }
+          &.row4 {
+            @include bg("/mark_tena.png");
+          }
+        }
+        .int_row_text_box {
+          .int_row_title {
+            .int_title_point {
+              font-size: 40px;
+              color: var(--leepresso-point-red);
+              font-weight: 900;
+            }
+            .int_title {
+              font-size: 35px;
+              font-weight: 900;
+            }
+          }
+          .int_row_sub {
+            font-size: 20px;
+            font-weight: 600;
+          }
+        }
+        &.active {
+          .int_row_image {
+            &.row1 {
+              @include bg("/mark_budget_active.png");
+            }
+            &.row2 {
+              @include bg("/mark_economic_active.png");
+            }
+            &.row3 {
+              @include bg("/mark_smart_active.png");
+            }
+            &.row4 {
+              @include bg("/mark_tena_active.png");
+            }
+          }
+        }
+      }
+    }
+    .int_bottom_box {
+      width: 100%;
+      height: 140px;
+      position: relative;
+      .int_bottom_deco {
+        position: absolute;
+        display: inline-block;
+        @include bg("/text_deco_1.png");
+        width: 10%;
+        height: 3vw;
+        vertical-align: middle;
+        &.deco_1 {
+          top: 0;
+          left: 0;
+        }
+        &.deco_2 {
+          @include bg("/text_deco_2.png");
+          vertical-align: middle;
+          bottom: 0;
+          right: 0;
+        }
+      }
+      .int_bottom_text {
+        display: inline-block;
+        font-size: 20px;
+        font-weight: 600;
+        position: relative;
+        @include pos-center;
+        &::before {
+          content: "";
+          position: absolute;
+          height: 10px;
+          bottom: 0;
+          transform: translateX(0%);
+          z-index: -1;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          @include bg("/check_1.png");
+          height: 70px;
+        }
+        &.active_1::before {
+          @include bg-cover("/underline_4.png");
+          width: 260px;
+          left: 50%;
+        }
+        &.active_1::after {
+          @include bg-cover("/check_1.png");
+          top: -70px;
+          width: 100px;
+          left: 50%;
+          transform: translateX(220%);
+        }
+        &.active_2::before {
+          @include bg-cover("/circle_1.png");
+          height: 30px;
+          width: 120px;
+          right: 0;
+        }
+        &.active_2::after {
+          @include bg("/star_1.png");
+          left: 90%;
+          top: -70px;
+          width: 100px;
+        }
+        &.active_3::before {
+          @include bg-cover("/underline_2.png");
+          width: 220px;
+          height: 30px;
+          top: 10px;
+          right: 20px;
+        }
+
+        &.active_4::after {
+          @include bg("/star_1.png");
+          left: 90%;
+          top: -70px;
+          width: 100px;
+        }
+      }
+    }
+  }
+}

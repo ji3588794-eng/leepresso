@@ -1,137 +1,148 @@
 @use "../../../mixin" as *;
 
 .interior {
-  background-color: var(--white);
-  padding: 90px 0;
+  background-color: var(--leepresso-bg);
+  color: var(--leepresso-deep);
 
   .container {
-    max-width: 90%;
+    max-width: 100%;
     margin: 0 auto;
-    color: var(--leepresso-deep);
     text-align: center;
-    .int_title_box {
-      display: inline-block;
-      font-size: 50px;
-      text-align: center;
-      padding-bottom: 100px;
-      .int_title {
-        font-weight: 600;
+
+    .comp_bg {
+      position: relative;
+      width: 100%;
+      padding: 100px 0;
+
+      // ⭐ deco는 content랑 분리된 레이어
+      .comp_deco {
+        position: absolute;
+        width: 500px;
+        height: 38vw;
+        z-index: 20; // ⭐ 최상단
+
+        pointer-events: none; // 클릭 방해 방지 (선택)
+
+        &.deco_1 {
+          @include bg-cover("/comp_deco_1.png");
+          top: -300px;
+          right: -120px;
+        }
+
+        &.deco_2 {
+          @include bg-cover("/comp_deco_2.png");
+          bottom: -150px; // ⭐ 더 세게 빼줌
+          left: -200px;
+        }
       }
-      .int_title_bottom {
-        font-weight: 900;
+
+      .comp_content_box {
         position: relative;
-        display: inline-block;
-        z-index: 1;
+        z-index: 2;
 
-        &::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 10px;
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
 
-          width: 100%;
-          height: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: inset 0 8px 32px rgba(0, 0, 0, 0.1);
 
-          @include bg("/under_line.png");
+        width: 90%;
+        margin: 0 auto;
+        padding: 50px;
 
-          z-index: -1;
-        }
-      }
-    }
-    .int_content_box {
-      padding-bottom: 100px;
-      .int_content_row {
-        display: inline-block;
-        width: calc((100% - 210px) / 4);
-        height: auto;
-        margin-right: 70px;
-        &:last-child {
-          margin-right: 0;
-        }
-        .int_row_image {
-          @include bg("/mark_budget.png");
-          width: 100%;
-          height: 13vw;
-          // margin-bottom: ;
-          &.row2 {
-            @include bg("/mark_economic.png");
-          }
-          &.row3 {
-            @include bg("/mark_smart.png");
-          }
-          &.row4 {
-            @include bg("/mark_tena.png");
+        .comp_title {
+          font-size: 50px;
+          font-weight: 700;
+          padding-bottom: 50px;
+
+          .comp_point {
+            background-color: var(--leepresso-point-red);
+            margin: 0 10px;
+            color: var(--white);
           }
         }
-        .int_row_text_box {
-          .int_row_title {
-            .int_title_point {
-              font-size: 50px;
-              color: var(--leepresso-point-red);
-              font-weight: 900;
-            }
-            .int_title {
-              font-size: 35px;
-              font-weight: 900;
-            }
-          }
-          .int_row_sub {
-            font-size: 20px;
+
+        .comp_bottom_box {
+          padding-top: 50px;
+
+          .comp_bottom_text {
+            font-size: 30px;
             font-weight: 600;
           }
         }
-      }
-    }
-    .int_bottom_box {
-      width: 100%;
-      height: 200px;
-      position: relative;
-      .int_bottom_deco {
-        position: absolute;
-        display: inline-block;
-        @include bg("/text_deco_1.png");
-        width: 20%;
-        height: 5vw;
-        vertical-align: middle;
-        &.deco_1 {
-          top: 0;
-          left: 0;
-        }
-        &.deco_2 {
-          @include bg("/text_deco_2.png");
-          vertical-align: middle;
-          bottom: 0;
-          right: 0;
-        }
-      }
-      .int_bottom_text {
-        display: inline-block;
-        font-size: 25px;
-        font-weight: 600;
-        position: relative;
-        @include pos-center;
-        &::before {
-          content: "";
-          position: absolute;
-          @include bg("/underline_4.png");
-          background-size: cover;
-          width: 260px;
-          height: 10px;
-          left: 50%;
-          bottom: 0;
-          transform: translateX(0%);
-          z-index: -1;
-        }
-        &::after {
-          content: "";
-          position: absolute;
-          @include bg("/check_1.png");
-          background-size: cover;
-          width: 100px;
-          height: 70px;
-          left: 50%;
-          top: -70px;
-          transform: translateX(220%);
+
+        .comp_swipe_box {
+          width: 100vw;
+          margin-left: calc(-50vw + 50%);
+
+          .slider-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            overflow: hidden; // 👉 여기 있어도 이제 영향 없음
+
+            .slider-track {
+              display: flex;
+              width: max-content;
+              animation: infinite-slider 20s linear infinite;
+
+              &:hover {
+                animation-play-state: paused;
+              }
+
+              .slider-set {
+                display: flex;
+                gap: 0.75rem;
+                padding-right: 0.75rem;
+
+                @media (min-width: 640px) {
+                  gap: 1rem;
+                  padding-right: 1rem;
+                }
+
+                @media (min-width: 1024px) {
+                  gap: 1.25rem;
+                  padding-right: 1.25rem;
+                }
+
+                .slider-card {
+                  flex-shrink: 0;
+
+                  .card-inner {
+                    position: relative;
+                    overflow: hidden;
+                    background-color: #e0dcd3;
+
+                    height: 250px;
+                    width: 350px;
+
+                    @media (min-width: 640px) {
+                      height: 300px;
+                      width: 420px;
+                    }
+                    @media (min-width: 768px) {
+                      height: 350px;
+                      width: 480px;
+                    }
+                    @media (min-width: 1024px) {
+                      height: 400px;
+                      width: 550px;
+                    }
+
+                    img {
+                      position: absolute;
+                      inset: 0;
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

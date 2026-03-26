@@ -1,61 +1,60 @@
 import "./Interior.scss";
+import React, { useMemo } from "react";
 
 export default function Interior() {
+  const cardsPart3 = useMemo(
+    () => [
+      { id: 1, title: "천안두정점", img: "/store_1.jpg" },
+      { id: 2, title: "브랜드 공간", img: "/store_2.png" },
+      { id: 3, title: "무인 운영 공간", img: "/store_3.png" },
+      { id: 4, title: "브랜드 무드", img: "/store_4.png" },
+      { id: 5, title: "리프레소 스토어", img: "/store-2.jpg" },
+    ],
+    [],
+  );
+
   return (
-    <section id="strength" className="interior">
+    <section className="interior">
       <div className="container">
-        <div className="int_title_box">
-          <div className="int_title">리프레소를 완성하는</div>
-          <div className="int_title_bottom">핵심 키워드</div>
-        </div>
-        <div className="int_content_box">
-          <div className="int_content_row">
-            <div className="int_row_image row1"></div>
-            <div className="int_row_text_box">
-              <div className="int_row_title">
-                <span className="int_title_point">B</span>
-                <span className="int_title">udget</span>
+        <div className="comp_bg">
+          <div className="comp_deco deco_1"></div>
+          <div className="comp_deco deco_2"></div>
+
+          <div className="comp_content_box">
+            <div className="comp_title">
+              리프레소의 공간 무드는
+              <span className="comp_point"> COZY </span>
+              입니다.
+            </div>
+
+            {/* 풀 너비 슬라이더 */}
+            <div className="comp_swipe_box">
+              <div className="slider-wrapper">
+                <div className="slider-track">
+                  {[1, 2].map((setIndex) => (
+                    <div key={setIndex} className="slider-set">
+                      {cardsPart3.map((card, idx) => (
+                        <div key={`${card.id}-${idx}`} className="slider-card">
+                          <div className="card-inner">
+                            <img
+                              src={card.img}
+                              alt={card.title}
+                              loading={setIndex === 1 && idx < 4 ? "eager" : "lazy"}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="int_row_sub">최저비용</div>
+            </div>
+
+            <div className="comp_bottom_box">
+              <div className="comp_bottom_text">인테리어 자유도 UP!</div>
+              <div className="comp_bottom_text">내 카페는 내 스타일로 디자인한다.</div>
             </div>
           </div>
-          <div className="int_content_row">
-            <div className="int_row_image row2"></div>
-            <div className="int_row_text_box">
-              <div className="int_row_title">
-                <span className="int_title_point">E</span>
-                <span className="int_title">conomic</span>
-              </div>
-              <div className="int_row_sub">인건비 0원</div>
-            </div>
-          </div>
-          <div className="int_content_row">
-            <div className="int_row_image row3"></div>
-            <div className="int_row_text_box">
-              <div className="int_row_title">
-                <span className="int_title_point">S</span>
-                <span className="int_title">mart</span>
-              </div>
-              <div className="int_row_sub">상권분석</div>
-            </div>
-          </div>
-          <div className="int_content_row">
-            <div className="int_row_image row4"></div>
-            <div className="int_row_text_box">
-              <div className="int_row_title">
-                <span className="int_title_point">T</span>
-                <span className="int_title">enacious</span>
-              </div>
-              <div className="int_row_sub">안정적 롱런</div>
-            </div>
-          </div>
-        </div>
-        <div className="int_bottom_box">
-          <div className="int_bottom_deco deco_1"></div>
-          <div className="int_bottom_text">
-            예비 창업주를 생각한 최적의 예산 설계. 불필요한 거품을 걷어내고 실질적 수익 구간을 앞당깁니다.
-          </div>
-          <div className="int_bottom_deco deco_2"></div>
         </div>
       </div>
     </section>

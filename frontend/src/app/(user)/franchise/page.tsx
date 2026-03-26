@@ -2,13 +2,15 @@
 
 import { useEffect } from "react";
 import Hero from "./Hero/Hero";
+import Keyword from "./Keyword/Keyword";
+import Graph from "./Graph/Graph";
 import Interior from "./Interior/Interior";
-import Equipment from "./Equipment/Equipment";
-import Competitiveness from "./Competitiveness/Competitiveness";
 import Process from "./Process/Process";
 import Price from "./Price/Price";
 import Contact from "./Contact/Contact";
 import Review from "./review/review";
+import FranchiseMenu from "./FranchiseMenu/FranchiseMenu";
+import MachineFirst from "./Machine/MachineFirst";
 
 export default function FranchisePage() {
   // 스크롤 로직(Hash 처리)은 페이지 전체에 영향을 주므로 여기에 남겨둡니다.
@@ -55,14 +57,20 @@ export default function FranchisePage() {
       {/* 1. 메인 HERO */}
       <Hero />
 
-      {/* 2. 인테리어/매장 (기존 BEST 전략 기반) */}
+      {/* 핵심 키워드 */}
+      <Keyword />
+
+      {/* 그래프 */}
+      <Graph />
+
+      {/* 매장사진 */}
       <Interior />
 
-      {/* 3. 장비 설명 섹션 */}
-      <Equipment />
+      {/* 메뉴 */}
+      <FranchiseMenu />
 
-      {/* 4. 브랜드 경쟁력 (Strengths/Value 기반) */}
-      <Competitiveness />
+      {/* 머신 */}
+      <MachineFirst />
 
       {/* 5. 창업 실행 프로세스 */}
       <Process />
