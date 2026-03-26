@@ -214,13 +214,14 @@ useEffect(() => {
 
               <div className="-mt-[10px] flex items-center gap-3">
                 <a
-                  href="#"
+                  href="https://pf.kakao.com/_unsxbn"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex h-8 w-8 items-center justify-center rounded-full border border-white/20 transition-all hover:border-leepresso-point hover:bg-leepresso-point"
                 >
-                  <Instagram
+                  <MessageCircle
                     size={15}
+                    fill="currentColor"
                     className="text-white/80 transition-colors group-hover:text-white"
                   />
                 </a>
@@ -231,9 +232,8 @@ useEffect(() => {
                   rel="noopener noreferrer"
                   className="group flex h-8 w-8 items-center justify-center rounded-full border border-white/20 transition-all hover:border-leepresso-point hover:bg-leepresso-point"
                 >
-                  <MessageCircle
+                  <Instagram
                     size={15}
-                    fill="currentColor"
                     className="text-white/80 transition-colors group-hover:text-white"
                   />
                 </a>

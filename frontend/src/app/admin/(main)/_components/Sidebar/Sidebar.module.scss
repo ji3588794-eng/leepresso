@@ -13,10 +13,22 @@
 }
 
 .logo {
+  cursor: pointer;
+  margin-bottom: 32px; // 기존 여백 유지
+  
+  // 💡 [수정] 로고 이미지 스타일: 크기 제한 및 중앙 정렬
+  .logoImg {
+    display: block; // 중앙 정렬을 위해 block 설정
+    max-width: 160px; // 💡 사이드바 너비(260px)에 맞춰 적절히 축소 (기존 꽉 참 방지)
+    height: auto; // 비율 유지
+    margin: 0 auto; // 💡 가로 중앙 정렬
+    object-fit: contain;
+    
+  }
+
+  // 로고 텍스트 스타일 (이미지 없을 때 대비 - 기존 유지)
   font-size: 22px;
   font-weight: 800;
-  cursor: pointer;
-  margin-bottom: 32px;
   padding-left: 10px;
   letter-spacing: -0.5px;
   line-height: 1.2;

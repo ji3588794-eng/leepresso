@@ -5,7 +5,6 @@ import Link from "next/link";
 import api from "@/lib/api"; 
 import styles from "./Popup.module.scss";
 
-// API_BASE 끝에 슬래시가 있을 경우 제거하여 중복 방지
 const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001")
   .replace(/\/api\/admin|\/admin|\/api/g, "")
   .replace(/\/$/, "");
@@ -17,8 +16,7 @@ export default function BrandPopup() {
     const fetchPopups = async () => {
       try {
         const response = await api.get('/user/popups');
-        
-        // response.data.data 구조인지 response.data 구조인지 확인 후 처리
+        // 💡 백엔드 응답 구조(data.data)에 맞춰 접근
         const rawData = response.data?.data || response.data;
 
         if (Array.isArray(rawData)) {
@@ -26,13 +24,16 @@ export default function BrandPopup() {
             .map((item: any) => {
               const id = item.idx || item.id;
               
-              // 💡 DB에 "/파일명"만 있으므로 중간에 "/uploads"를 강제로 삽입
-              // item.image_url이 "/"로 시작하든 아니든 대응할 수 있도록 처리
-              const imagePath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
-              const imgUrl = `${API_BASE}/uploads${imagePath}`;
+              // 이미지 경로 처리
+              let imgUrl = item.image_url;
+              if (imgUrl && !imgUrl.startsWith('http')) {
+                const cleanPath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
+                imgUrl = `${API_BASE}/uploads${cleanPath}`.replace(/\/uploads\/uploads/g, '/uploads');
+              }
 
               return {
                 id,
+                title: item.title || "NOTICE", // 💡 데이터에 title이 있는지 확인
                 imgUrl,
                 linkUrl: item.link_url || "#",
               };
@@ -62,13 +63,20 @@ export default function BrandPopup() {
     <aside className={styles.popupWrapper}>
       {popups.map((popup) => (
         <article key={popup.id} className={styles.popupCard}>
+          {/* 💡 타이틀 바 디자인 */}
+          <div className={styles.titleBar}>
+            <span>{popup.title}</span>
+          </div>
+
           <Link href={popup.linkUrl} target="_blank" className={styles.imageArea}>
-            {/* 정제된 imgUrl 사용 */}
-            <img src={popup.imgUrl} alt="Leepresso" loading="lazy" />
+            <img src={popup.imgUrl} alt={popup.title} loading="lazy" />
           </Link>
           <div className={styles.bottomArea}>
             <button onClick={() => handleHideToday(popup.id)}>오늘 하루 보지 않기</button>
-            <button onClick={() => setPopups(prev => prev.filter(p => p.id !== popup.id))} className={styles.closeBtn}>
+            <button 
+              onClick={() => setPopups(prev => prev.filter(p => p.id !== popup.id))} 
+              className={styles.closeBtn}
+            >
               닫기
             </button>
           </div>

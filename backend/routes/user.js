@@ -20,7 +20,6 @@ const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 // [GET] /api/user/popups
 router.get('/popups', async (req, res) => {
   try {
-    // 컬럼명: idx, title, image_url, link_url, is_active, priority
     const sql = `
       SELECT idx, title, image_url, link_url 
       FROM popups 
@@ -29,11 +28,12 @@ router.get('/popups', async (req, res) => {
       LIMIT 5
     `;
     const [rows] = await pool.query(sql);
-    res.json(rows);
+    
+    // 💡 프론트엔드와 규격을 맞추기 위해 객체로 감싸서 보냅니다.
+    res.json({ success: true, data: rows });
   } catch (error) {
-    // 서버 로그 확인용
     console.error('❌ SQL ERROR:', error.message);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

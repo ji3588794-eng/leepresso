@@ -152,7 +152,7 @@ export default function BrandHeader() {
             {/* 수정: hasBg일 때 아이콘 색상 검은색 적용 */}
             <div className={`hidden lg:flex items-center gap-6 ${hasBg ? "text-black dark:text-black" : "text-white"}`}>
               <a 
-                href="#" 
+                href="https://pf.kakao.com/_unsxbn" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="transition-all duration-300 hover:scale-115"

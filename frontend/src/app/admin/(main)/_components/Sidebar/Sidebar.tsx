@@ -1,8 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 import { ChevronDown } from 'lucide-react';
+import api from '@/lib/api';
+
+const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
 
 const MENU_ITEMS = [
   { name: '대시보드', path: '/admin/dashboard' },
@@ -19,13 +23,12 @@ const MENU_ITEMS = [
     ],
   },
   { name: '창업 문의', path: '/admin/inquiry' },
-  // 💡 추가된 통계 및 인프라 관리 메뉴
   {
     name: '시스템 통계',
     path: '/admin/analytics',
     sub: [
-      { name: '방문자 통계', path: '/admin/analytics/visitors' }, // visitor_logs 테이블용
-      { name: '인프라/서버 관리', path: '/admin/analytics/infra' }, // infra_status 테이블용
+      { name: '방문자 통계', path: '/admin/analytics/visitors' }, 
+      { name: '인프라/서버 관리', path: '/admin/analytics/infra' }, 
     ],
   },
   { 
@@ -41,6 +44,33 @@ const MENU_ITEMS = [
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  
+  // 💡 로고 및 사이트명 상태 관리
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [siteName, setSiteName] = useState<string>(''); 
+
+  // 💡 마운트 시 설정(settings)을 불러와 로고와 사이트명 세팅
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await api.get('/admin/settings');
+        if (res.data.success) {
+          const { site_logo, site_name } = res.data.data;
+          
+          // 로고가 있으면 URL 세팅
+          if (site_logo) {
+            setLogoUrl(`${PUBLIC_BASE_URL}/uploads/${site_logo}`);
+          }
+          
+          // site_name 세팅 (없으면 기본값 'ADMIN')
+          setSiteName(site_name || 'ADMIN');
+        }
+      } catch (err) {
+        console.error('사이드바 설정 로딩 실패', err);
+      }
+    };
+    fetchSettings();
+  }, []);
 
   const isActiveMenu = (path: string) => {
     return pathname === path || pathname.startsWith(`${path}/`);
@@ -48,11 +78,18 @@ export default function Sidebar() {
 
   return (
     <aside className={styles.sidebar}>
+      {/* 💡 로고 영역: 로고 이미지 우선, 없을 시 siteName 텍스트 출력 */}
       <div
         className={styles.logo}
         onClick={() => router.push('/admin/dashboard')}
       >
-        LEEPRESSO <span>ADMIN</span>
+        {logoUrl ? (
+          <img src={logoUrl} alt={`${siteName} LOGO`} className={styles.logoImg} />
+        ) : (
+          <>
+            {siteName} <span>ADMIN</span>
+          </>
+        )}
       </div>
 
       <nav className={styles.nav}>
@@ -66,7 +103,6 @@ export default function Sidebar() {
                 <div
                   className={`${styles.menuItem} ${isActive ? styles.active : ''}`}
                   onClick={() => {
-                    // 서브메뉴가 있으면 첫 번째 서브메뉴로, 없으면 해당 경로로 이동
                     if (hasSub) {
                       router.push(item.sub![0].path);
                     } else {
@@ -95,7 +131,7 @@ export default function Sidebar() {
                             isSubActive ? styles.subActive : ''
                           }`}
                           onClick={(e) => {
-                            e.stopPropagation(); // 버블링 방지
+                            e.stopPropagation(); 
                             router.push(sub.path);
                           }}
                         >
