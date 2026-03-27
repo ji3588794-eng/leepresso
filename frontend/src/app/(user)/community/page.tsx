@@ -27,6 +27,15 @@ const CATEGORIES = [
 
 const ITEMS_PER_PAGE = 10;
 
+// 환경변수 NEXT_PUBLIC_API_URL을 사용하는 이미지 경로 변환 함수
+const getImageUrl = (url?: string) => {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  return `${baseUrl}${url}`;
+};
+
 export default function CommunityPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('notice');
@@ -61,11 +70,10 @@ export default function CommunityPage() {
       const res = await api.get(`/user/community?type=${activeTab}`);
       const data = Array.isArray(res.data) ? res.data : [];
       
-      // [로직 수정] 공지사항(is_notice === 1)인 데이터를 최상단으로 정렬
       const sortedData = [...data].sort((a, b) => {
         if (a.is_notice === 1 && b.is_notice !== 1) return -1;
         if (a.is_notice !== 1 && b.is_notice === 1) return 1;
-        return 0; // 둘 다 공지거나 둘 다 일반이면 기존 순서 유지
+        return 0; 
       });
       
       setPosts(sortedData);
@@ -81,7 +89,6 @@ export default function CommunityPage() {
 
   const totalPages = Math.ceil(posts.length / ITEMS_PER_PAGE);
   
-  // 현재 페이지에 보여줄 아이템 계산
   const currentItems = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return posts.slice(start, start + ITEMS_PER_PAGE);
@@ -157,14 +164,13 @@ export default function CommunityPage() {
                   {currentItems.map((post) => (
                     <div
                       key={post.idx}
-                      /* 클릭 시 DB의 실제 고유번호인 post.idx를 사용하여 이동 */
                       onClick={() => router.push(`/community/${post.idx}`)}
                       className="group cursor-pointer"
                     >
                       <div className="relative aspect-[4/3] overflow-hidden bg-[#EAE3DB] mb-6 shadow-sm">
                         {post.thumbnail_url ? (
                           <img 
-                            src={post.thumbnail_url} 
+                            src={getImageUrl(post.thumbnail_url)} 
                             alt={post.title} 
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           />
@@ -190,15 +196,10 @@ export default function CommunityPage() {
               ) : (
                 <div className="flex flex-col">
                   {currentItems.map((post, index) => {
-                    // [화면 표시 번호 로직] 전체 글 개수에서 현재 위치를 뺀 가상 번호
-                    // 공지사항인 경우 가상 번호 대신 PIN 아이콘을 보여줌
                     const virtualNo = posts.length - ((currentPage - 1) * ITEMS_PER_PAGE) - index;
-                    // 💡 여기서 콘솔을 찍어서 idx가 제대로 나오는지 확인하세요!
-                    console.log("Pushing to:", `/community/${post.idx}`);
                     return (
                       <div
                         key={post.idx}
-                        /* 화면 번호와 상관없이 실제 상세 페이지 이동은 DB idx 사용 */
                         onClick={() => router.push(`/community/${post.idx}`)}
                         className={`group flex flex-col md:flex-row md:items-center px-6 md:px-10 py-6 md:py-8 border-b border-[#3E3232]/10 cursor-pointer transition-all duration-300 hover:bg-white hover:shadow-xl hover:z-10 relative ${post.is_notice === 1 ? 'bg-[#FDFBF9]' : ''}`}
                       >

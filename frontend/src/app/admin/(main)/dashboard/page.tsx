@@ -48,44 +48,57 @@ const DashboardPage = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [visitors, setVisitors] = useState<VisitorRow[]>([]);
   const [infra, setInfra] = useState<InfraItem[]>([]);
+  
+  // 💡 [추가] 매장, 메뉴, 팝업 개수를 담을 상태 추가
+  const [storeCount, setStoreCount] = useState(0);
+  const [menuCount, setMenuCount] = useState(0);
+  const [popupCount, setPopupCount] = useState(0);
+  
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
 
-      const [statsRes, visitorsRes, infraRes] = await Promise.allSettled([
+      // 💡 [수정] 누락되었던 매장, 메뉴, 팝업 데이터를 가져오는 API 호출 추가
+      const [statsRes, visitorsRes, infraRes, storesRes, menuRes, popupsRes] = await Promise.allSettled([
         api.get('/admin/dashboard/stats'),
         api.get('/admin/analytics/visitors'),
         api.get('/admin/infra/status'),
+        api.get('/admin/stores'),
+        api.get('/admin/menu'),
+        api.get('/admin/popups'),
       ]);
 
-      if (
-        statsRes.status === 'fulfilled' &&
-        statsRes.value?.data?.success
-      ) {
+      if (statsRes.status === 'fulfilled' && statsRes.value?.data?.success) {
         setStats(statsRes.value.data.data);
       } else {
         setStats(null);
       }
 
-      if (
-        visitorsRes.status === 'fulfilled' &&
-        visitorsRes.value?.data?.success
-      ) {
+      if (visitorsRes.status === 'fulfilled' && visitorsRes.value?.data?.success) {
         setVisitors(Array.isArray(visitorsRes.value.data.data) ? visitorsRes.value.data.data : []);
       } else {
         setVisitors([]);
       }
 
-      if (
-        infraRes.status === 'fulfilled' &&
-        infraRes.value?.data?.success
-      ) {
+      if (infraRes.status === 'fulfilled' && infraRes.value?.data?.success) {
         setInfra(Array.isArray(infraRes.value.data.data) ? infraRes.value.data.data : []);
       } else {
         setInfra([]);
       }
+
+      // 💡 [추가] 각 데이터의 길이를 측정하여 개수 상태에 저장
+      if (storesRes.status === 'fulfilled' && storesRes.value?.data?.success) {
+        setStoreCount(storesRes.value.data.data.length || 0);
+      }
+      if (menuRes.status === 'fulfilled' && menuRes.value?.data?.success) {
+        setMenuCount(menuRes.value.data.data.length || 0);
+      }
+      if (popupsRes.status === 'fulfilled' && popupsRes.value?.data?.success) {
+        setPopupCount(popupsRes.value.data.data.length || 0);
+      }
+
     } catch (err) {
       console.error('Dashboard Load Error:', err);
       setStats(null);
@@ -100,16 +113,17 @@ const DashboardPage = () => {
     fetchDashboardData();
   }, []);
 
+  // 💡 [수정] 새로 가져온 개수 데이터(storeCount, menuCount, popupCount)를 매핑
   const counts = useMemo(
     () => ({
       franchise: stats?.counts?.franchise ?? 0,
       event: stats?.counts?.event ?? 0,
       voc: stats?.counts?.voc ?? 0,
-      stores: stats?.counts?.stores ?? 0,
-      menu: stats?.counts?.menu ?? 0,
-      popup: stats?.counts?.popup ?? 0,
+      stores: storeCount,
+      menu: menuCount,
+      popup: popupCount,
     }),
-    [stats]
+    [stats, storeCount, menuCount, popupCount]
   );
 
   const visitorSummary = useMemo(() => {
@@ -117,6 +131,8 @@ const DashboardPage = () => {
     const totalPv = visitors.reduce((sum, item) => sum + Number(item.pv || 0), 0);
     const latest = visitors.length > 0 ? visitors[visitors.length - 1] : null;
     const prev = visitors.length > 1 ? visitors[visitors.length - 2] : null;
+
+    //console.log("asd", visitorSummary);
 
     const diff = latest && prev
       ? Number(latest.visitors || 0) - Number(prev.visitors || 0)
@@ -156,7 +172,7 @@ const DashboardPage = () => {
   const quickMenus = [
     {
       title: '방문자 분석',
-      desc: '최근 7일 UV / PV 확인',
+      desc: '최근 7일 방문자수 / 페이지뷰 확인',
       icon: '📈',
       path: '/admin/analytics/visitors',
     },
@@ -213,7 +229,7 @@ const DashboardPage = () => {
       path: '/admin/inquiry',
     },
     {
-      label: '미답변 VOC',
+      label: '미답변 고객의소리',
       value: `${counts.voc}건`,
       icon: '🚨',
       tone: 'danger',
@@ -234,7 +250,7 @@ const DashboardPage = () => {
       path: '/admin/stores',
     },
     {
-      label: '활성 메뉴',
+      label: '메뉴',
       value: `${counts.menu}개`,
       icon: '☕',
       tone: 'default',
@@ -259,9 +275,6 @@ const DashboardPage = () => {
         <div>
           <p className={styles.heroEyebrow}>ADMIN DASHBOARD</p>
           <h2 className={styles.mainTitle}>LEEPRESSO 운영 현황</h2>
-          <p className={styles.heroDesc}>
-            문의, 콘텐츠, 인프라, 방문 흐름까지 한 화면에서 확인할 수 있도록 구성했습니다.
-          </p>
         </div>
 
         <div className={styles.heroActions}>
@@ -300,8 +313,7 @@ const DashboardPage = () => {
         <div className={`${styles.panel} ${styles.emphasisPanel}`}>
           <div className={styles.panelHeader}>
             <div>
-              <h3>최근 7일 방문 요약</h3>
-              <p>유입 흐름과 일별 방문 추이를 빠르게 확인</p>
+              <h3>최근 7일 접속자 통계</h3>
             </div>
             <button
               className={styles.inlineBtn}
@@ -321,7 +333,7 @@ const DashboardPage = () => {
               <strong>{visitorSummary.totalPv.toLocaleString()}</strong>
             </div>
             <div className={styles.kpiBox}>
-              <span>최신 일자</span>
+              <span>사용자 마지막 접속일자</span>
               <strong>{visitorSummary.latestDate}</strong>
             </div>
             <div className={styles.kpiBox}>
@@ -335,8 +347,8 @@ const DashboardPage = () => {
           <div className={styles.miniTable}>
             <div className={styles.miniHead}>
               <span>날짜</span>
-              <span>UV</span>
-              <span>PV</span>
+              <span>방문자수</span>
+              <span>페이지뷰</span>
             </div>
 
             {visitors.length > 0 ? (

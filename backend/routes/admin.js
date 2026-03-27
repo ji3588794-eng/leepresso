@@ -97,10 +97,25 @@ router.get('/me', (req, res) => {
 });
 
 router.post('/upload', upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ message: '업로드된 파일이 없습니다.' });
-  res.json({ success: true, filename: req.file.filename });
-});
+  // 💡 서버 터미널에서 아래 로그를 확인하세요.
+  console.log('--- [Upload Request] ---');
+  console.log('File:', req.file); // undefined라면 프론트 전송 실패
+  console.log('Body:', req.body); // 텍스트 데이터 확인
 
+  if (!req.file) {
+    return res.status(400).json({ 
+      success: false, 
+      message: '파일이 전송되지 않았습니다. 필드명(image)을 확인하세요.',
+      received_body: req.body 
+    });
+  }
+
+  res.json({ 
+    success: true, 
+    filename: req.file.filename,
+    path: `/uploads/${req.file.filename}` 
+  });
+});
 /* ---------------------------------------------------------
     팝업 관리 API (popups) - 수정본
 --------------------------------------------------------- */
@@ -436,25 +451,35 @@ router.put('/franchise/:id', async (req, res) => {
   } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
+router.delete('/franchise/:id', async (req, res) => {
+  try {
+    await pool.query("DELETE FROM franchise_inquiries WHERE id = ?", [req.params.id]);
+    res.json({ success: true });
+  } catch (error) { 
+    res.status(500).json({ error: error.message }); 
+  }
+});
 /* ---------------------------------------------------------
    시스템 환경설정 (site_settings)
 --------------------------------------------------------- */
 router.get('/settings', async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM site_settings WHERE id = 1");
-    res.json({ success: true, data: rows[0] });
+    res.json({ success: true, data: rows[0] || {} });
   } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
 router.put('/settings', async (req, res) => {
-  const { site_name, site_description, seo_keywords, og_image_url, is_maintenance, footer_info } = req.body;
+  const { site_name, site_logo, is_maintenance, footer_info } = req.body; // 💡 site_logo가 들어있는지 확인!
   try {
     await pool.query(
-      "UPDATE site_settings SET site_name=?, site_description=?, seo_keywords=?, og_image_url=?, is_maintenance=?, footer_info=? WHERE id = 1",
-      [site_name, site_description, seo_keywords, og_image_url, Number(is_maintenance), footer_info]
+      "UPDATE site_settings SET site_name=?, site_logo=?, is_maintenance=?, footer_info=? WHERE id = 1",
+      [site_name, site_logo, Number(is_maintenance), footer_info]
     );
     res.json({ success: true });
-  } catch (error) { res.status(500).json({ error: error.message }); }
+  } catch (error) { 
+    res.status(500).json({ error: error.message }); 
+  }
 });
 
 router.post('/register', async (req, res) => {
@@ -477,7 +502,6 @@ router.post('/register', async (req, res) => {
     [신규] 시스템 통계 및 인프라 관리 API (admin.js)
 --------------------------------------------------------- */
 // 1. 방문자 통계 데이터 조회 (7일간의 추이)
-// URL: http://localhost:3001/admin/analytics/visitors
 router.get('/analytics/visitors', async (req, res) => {
   try {
     const [rows] = await pool.query(`

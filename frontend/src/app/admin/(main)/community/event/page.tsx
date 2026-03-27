@@ -20,6 +20,24 @@ export interface EventData {
 
 const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
 
+// 💡 날짜 포맷 변환 함수 (YYYY-MM-DD HH:mm:ss)
+const formatDate = (dateString?: string) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  
+  // 날짜 파싱이 불가능한 예외 상황이면 원본 텍스트 그대로 반환
+  if (isNaN(date.getTime())) return dateString; 
+
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  const ss = String(date.getSeconds()).padStart(2, '0');
+
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+};
+
 export default function EventPage() {
   const [events, setEvents] = useState<EventData[]>([]);
   const [keyword, setKeyword] = useState('');
@@ -88,7 +106,8 @@ export default function EventPage() {
               </div>
               <div className={styles.info}>
                 <h4>{event.title}</h4>
-                <p className={styles.date}>작성일: {event.created_at?.split(' ')[0]}</p>
+                {/* 💡 날짜 포맷 함수 적용 */}
+                <p className={styles.date}>작성일: {formatDate(event.created_at)}</p>
               </div>
               <div className={styles.btnGroup}>
                 <button onClick={() => { setSelectedEvent(event); setIsModalOpen(true); }}>수정</button>
