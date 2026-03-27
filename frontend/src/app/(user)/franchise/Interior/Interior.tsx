@@ -1,45 +1,60 @@
-import './Interior.scss';
-
-const bestValues = [
-  { alpha: "B", keyword: "Budget-friendly", title: "최저비용", desc: "예비 창업주를 생각한 최적의 예산 설계. 불필요한 거품을 걷어내고 실질적 수익 구간을 앞당깁니다." },
-  { alpha: "E", keyword: "Economic", title: "인건비 무풍", desc: "인력 리스크가 없는 100% 무인 운영. 인건비 0원, 하루 30분 관리로 완성되는 비즈니스 자유를 누리세요." },
-  { alpha: "S", keyword: "Smart Location", title: "상권분석", desc: "성공의 80%를 결정짓는 압도적 입지 전략. 데이터가 말해주는 이길 수밖에 없는 자리를 리프레소가 선점합니다." },
-  { alpha: "T", keyword: "Tenacious", title: "안정적인 롱런", desc: "반짝 유행이 아닌 지속 가능한 수익 구조. 유행을 타지 않는 본질적 가치로 흔들림 없는 평생 사업을 제안합니다." }
-];
+import "./Interior.scss";
+import React, { useMemo } from "react";
 
 export default function Interior() {
-  return (
-    <section id="strength" className="interior">
-      <div className="container">
-        <div className="header">
-          <p className="sub">Success Strategy</p>
-          <h2>THE <span className="point">B.E.S.T</span> CHOICE.</h2>
-        </div>
+  const cardsPart3 = useMemo(
+    () => [
+      { id: 1, title: "천안두정점", img: "/store_1.jpg" },
+      { id: 2, title: "브랜드 공간", img: "/store_2.png" },
+      { id: 3, title: "무인 운영 공간", img: "/store_3.png" },
+      { id: 4, title: "브랜드 무드", img: "/store_4.png" },
+      { id: 5, title: "리프레소 스토어", img: "/store-2.jpg" },
+    ],
+    [],
+  );
 
-        <div className="grid">
-          {bestValues.map((item, idx) => (
-            <div 
-              key={item.alpha} 
-              className={`card ${idx % 2 === 0 ? 'light' : 'dark'}`}
-              style={{ animationDelay: `${idx * 0.1}s` }}
-            >
-              <div className="bgAlpha">{item.alpha}</div>
-              <div className="content">
-                <div className="badge">{idx === 1 ? 'ZERO LABOR' : item.keyword}</div>
-                <h3 className="title">
-                  <span className="point">{item.alpha}</span>
-                  {idx === 0 && <>udget<br/>최저비용</>}
-                  {idx === 1 && <>conomic<br/>인건비 0원</>}
-                  {idx === 2 && <>mart<br/>상권분석</>}
-                  {idx === 3 && <>enacious<br/>안정적 롱런</>}
-                </h3>
-                <div className="hoverContent">
-                  <div className="line" />
-                  <p>{idx === 1 ? '인력 리스크 없는 100% 무인 운영. 하루 30분 관리로 완성되는 비즈니스 자유.' : item.desc}</p>
+  return (
+    <section className="interior">
+      <div className="container">
+        <div className="comp_bg">
+          <div className="comp_deco deco_1"></div>
+          <div className="comp_deco deco_2"></div>
+
+          <div className="comp_content_box">
+            <div className="comp_title">
+              리프레소의 공간 무드는
+              <span className="comp_point"> COZY </span>
+              입니다.
+            </div>
+
+            {/* 풀 너비 슬라이더 */}
+            <div className="comp_swipe_box">
+              <div className="slider-wrapper">
+                <div className="slider-track">
+                  {[1, 2].map((setIndex) => (
+                    <div key={setIndex} className="slider-set">
+                      {cardsPart3.map((card, idx) => (
+                        <div key={`${card.id}-${idx}`} className="slider-card">
+                          <div className="card-inner">
+                            <img
+                              src={card.img}
+                              alt={card.title}
+                              loading={setIndex === 1 && idx < 4 ? "eager" : "lazy"}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          ))}
+
+            <div className="comp_bottom_box">
+              <div className="comp_bottom_text">인테리어 자유도 UP!</div>
+              <div className="comp_bottom_text">내 카페는 내 스타일로 디자인한다.</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

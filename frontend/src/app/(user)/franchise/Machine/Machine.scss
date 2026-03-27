@@ -1,0 +1,100 @@
+@use "../../../mixin" as *;
+.machine {
+  background-color: var(--leepresso-bg);
+  padding: 0 0 200px 0;
+  color: var(--leepresso-deep);
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    .machine_bg {
+      .ma_title_box {
+        padding-bottom: 50px;
+        font-family: var(--font-pretendard);
+        .ma_title {
+          color: var(--leepresso-point);
+          font-size: 40px;
+          font-weight: 700;
+          .ma_point {
+            padding-left: 10px;
+            font-size: 60px;
+            color: var(--leepresso-deep);
+            font-weight: 900;
+            position: relative;
+            &::after {
+              content: "";
+              position: absolute;
+              width: 100%;
+              height: 60px;
+              @include bg-cover("/underline_3.png");
+              bottom: -15px;
+              right: -60px;
+            }
+          }
+        }
+      }
+      .ma_contents_bg {
+        @include bg("/background_3.png");
+        background-repeat: repeat;
+        width: 100%;
+        height: 500px;
+        .ma_contents_box {
+          width: 50%;
+          margin: 0 auto;
+
+          @include bg-cover("/background_2.png");
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.315);
+        }
+        .ma_content_row {
+          height: 300px;
+          .ma_row_box {
+            display: inline-block;
+            vertical-align: top;
+
+            &.right {
+              width: 40%;
+              height: 100%;
+              .row_image {
+                @include bg("/sv1_black_2.png");
+                height: 100%;
+                width: 100%;
+                background-position: top left;
+              }
+            }
+            &.left {
+              width: 60%;
+              text-align: left;
+              .row_text_box {
+                padding: 30px 30px 0 20px;
+                .row_title {
+                  font-size: 25px;
+                  font-weight: 700;
+                  padding-bottom: 10px;
+                }
+                .row_text {
+                  font-size: 17px;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+          &.bottom {
+            .ma_row_box {
+              &.right {
+                .row_image {
+                  background-position: bottom right;
+                }
+              }
+              &.left {
+                text-align: right;
+                .row_text_box {
+                  padding: 30px 20px 0 30px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
