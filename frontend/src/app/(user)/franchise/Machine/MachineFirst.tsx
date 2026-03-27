@@ -13,7 +13,7 @@ export default function MachineFirst() {
           </div>
           <div className="ma_contents_bg">
             <div className="ma_contents_box">
-              <div className="ma_content_row">
+              <div className="ma_content_row top">
                 <div className="ma_row_box right">
                   <div className="row_image"></div>
                 </div>

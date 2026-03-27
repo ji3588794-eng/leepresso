@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Keyword.scss";
 
 export default function Keyword() {
   const [activeRow, setActiveRow] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const rowData = [
     {
@@ -35,6 +36,25 @@ export default function Keyword() {
     },
   ];
 
+  // ✅ 자동 순환
+  useEffect(() => {
+    startAutoSlide();
+    return () => stopAutoSlide();
+  }, []);
+
+  const startAutoSlide = () => {
+    stopAutoSlide(); // 중복 방지
+    intervalRef.current = setInterval(() => {
+      setActiveRow((prev) => (prev + 1) % rowData.length);
+    }, 2000); // 3초마다 변경
+  };
+
+  const stopAutoSlide = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  };
+
   return (
     <section id="strength" className="keyword">
       <div className="container">
@@ -42,12 +62,19 @@ export default function Keyword() {
           <div className="int_title">리프레소를 완성하는</div>
           <div className="int_title_bottom">핵심 키워드</div>
         </div>
-        <div className="int_content_box">
+
+        <div
+          className="int_content_box"
+          onMouseLeave={startAutoSlide} // 마우스 나가면 다시 자동 시작
+        >
           {rowData.map((item, i) => (
             <div
               key={i}
               className={`int_content_row ${activeRow === i ? "active" : ""}`}
-              onMouseEnter={() => setActiveRow(i)}
+              onMouseEnter={() => {
+                stopAutoSlide(); // 자동 멈춤
+                setActiveRow(i); // 해당 row 활성화
+              }}
             >
               <div className={`int_row_image row${item.no}`}></div>
               <div className="int_row_text_box">
@@ -60,9 +87,10 @@ export default function Keyword() {
             </div>
           ))}
         </div>
+
         <div className="int_bottom_box">
           <div className="int_bottom_deco deco_1"></div>
-          <div className={`int_bottom_text active_${rowData[activeRow]?.no}`}>{rowData[activeRow]?.text}</div>a{" "}
+          <div className={`int_bottom_text active_${rowData[activeRow]?.no}`}>{rowData[activeRow]?.text}</div>
           <div className="int_bottom_deco deco_2"></div>
         </div>
       </div>

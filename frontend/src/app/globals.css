@@ -54,6 +54,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "JejuMyeongjo";
+  src: url("/fonts/JejuMyeongjo.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* 2. 변수 설정 */
 :root {
@@ -71,6 +78,7 @@
   --font-pretendard: "Pretendard", sans-serif;
   --font-uiyeon: "Uiyeon", cursive;
   --font-pen: "NanumPen", cursive;
+  --font-jeju: "JejuMyeongjo", sans-serif;
 }
 
 html.dark {
