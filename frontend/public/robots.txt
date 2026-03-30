@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api
 
-Sitemap: https://www.leepresso.com/sitemap.xml
+Sitemap: https://leepresso.com/sitemap.xml
