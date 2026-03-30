@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './stores.module.scss';
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import type { StoreItem } from './page';
 import { Edit2, Trash2, Phone, MapPin, Clock } from 'lucide-react';
 
@@ -30,8 +30,9 @@ export default function StoreCard({ item, onEdit, onRefresh }: StoreCardProps) {
   return (
     <div className={`${styles.storeCard} ${Number(item.is_active) === 1 ? '' : styles.disabled}`}>
       <div className={styles.thumb}>
-        {item.thumbnail_full_url ? (
-          <img src={item.thumbnail_full_url} alt={item.store_name} />
+        {/* ⭐ 수정: thumbnail_url이 있으면 getImageUrl로 출력 */}
+        {item.thumbnail_url ? (
+          <img src={getImageUrl(item.thumbnail_url)} alt={item.store_name} />
         ) : (
           <div className={styles.noImage}>No Image</div>
         )}

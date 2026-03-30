@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import QuickMenu from "../components/common/QuickMenu";
 
 type MenuItem = {
@@ -22,8 +22,6 @@ export default function MenuPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [activeType, setActiveType] = useState('signature');
   const [isSticky, setIsSticky] = useState(false);
-
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
   useEffect(() => {
     const fetchAllMenus = async () => {
@@ -106,22 +104,6 @@ export default function MenuPage() {
     []
   );
 
-  const getImgSrc = (url: string | null | undefined) => {
-    if (!url) {
-      return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    }
-
-    if (url.startsWith('http')) return url;
-
-    const cleanPath = url.startsWith('/') ? url : `/${url}`;
-
-    if (cleanPath.startsWith('/uploads/')) {
-      return `${API_BASE_URL}${cleanPath}`;
-    }
-
-    return `${API_BASE_URL}/uploads${cleanPath}`;
-  };
-
   return (
     <div className="min-h-screen bg-[#F5EFE8] font-suit text-[#2F241F] selection:bg-[#8D6E52] selection:text-white">
       <QuickMenu />
@@ -167,7 +149,7 @@ export default function MenuPage() {
         </div>
       </section>
 
-      {/* 서브탭 네비게이션 - 중앙 정렬 및 디자인 수정 */}
+      {/* 서브탭 네비게이션 */}
       <nav className="sticky top-0 z-30 bg-[#F5EFE8]/95 backdrop-blur-md border-b border-[#2F241F]/10">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10">
           <div className="h-[76px] flex items-center justify-center gap-6 md:gap-16">
@@ -178,14 +160,6 @@ export default function MenuPage() {
                 className="group relative flex items-center gap-3 h-full px-2 transition-all duration-300"
                 aria-label={`${s.name} 섹션으로 이동`}
               >
-                {/* <span
-                  className={`text-[10px] font-bold tracking-[0.2em] transition-colors ${
-                    activeType === s.id ? 'text-[#4A3427]' : 'text-[#2F241F]/30 group-hover:text-[#2F241F]/60'
-                  }`}
-                >
-                  {s.num}
-                </span> */}
-
                 <span
                   className={`text-[15px] md:text-[17px] font-black tracking-[-0.02em] transition-all ${
                     activeType === s.id
@@ -196,7 +170,6 @@ export default function MenuPage() {
                   {s.name}
                 </span>
 
-                {/* 하단 활성화 보더 (딥초코 컬러) */}
                 <motion.div
                   className={`absolute bottom-[-1px] left-0 right-0 h-[3px] bg-[#4A3427] transition-all duration-300 ${
                     activeType === s.id ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-30 group-hover:scale-x-75'
@@ -334,7 +307,7 @@ export default function MenuPage() {
                         <div className="absolute inset-0 flex items-center justify-center p-5 md:p-6">
                           <div className="relative w-full h-full transition-transform duration-700 group-hover:scale-[1.05]">
                             <Image
-                              src={getImgSrc(item.thumbnail_url)}
+                              src={getImageUrl(item.thumbnail_url)}
                               alt={item.name}
                               fill
                               className="object-contain drop-shadow-[0_16px_26px_rgba(0,0,0,0.12)]"

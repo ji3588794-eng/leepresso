@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Lock, Calendar, Eye, Download, FileText, User, Mail, Phone, List, Home, MessageCircle } from "lucide-react";
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 
 export default function PostDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -17,15 +17,6 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
   const [inputPass, setInputPass] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [passError, setPassError] = useState(false);
-
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
-  const getResourceSrc = (url: any) => {
-    if (!url || typeof url !== 'string' || url.trim() === '') return null;
-    const cleanPath = url.startsWith('/') ? url : `/${url}`;
-    const hasUploads = url.includes('/uploads/');
-    return hasUploads ? `${API_BASE_URL}${cleanPath}` : `${API_BASE_URL}/uploads${cleanPath}`;
-  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -72,7 +63,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
     <div className="bg-[#F9F5F0] min-h-screen font-suit text-[#3E3232]">
       <BrandHeader />
       
-      {/* HERO SECTION - 제목/날짜 다 빼고 카테고리만 있는 평범한 스타일 */}
+      {/* HERO SECTION */}
       <section className="relative w-full bg-[#3E3232] pt-32 md:pt-48 pb-16 md:pb-20 px-6 lg:px-20 overflow-hidden text-[#F9F5F0]">
         <div className="max-w-[1400px] mx-auto relative z-10">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
@@ -88,7 +79,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
         </div>
       </section>
 
-      {/* CONTENT SECTION - 모든 게시글 정보가 이 아래로 들어옴 */}
+      {/* CONTENT SECTION */}
       <main className="max-w-[1100px] mx-auto px-6 py-12 md:py-24">
         <div className="flex justify-start mb-8">
            <button 
@@ -102,7 +93,6 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
 
         <AnimatePresence mode="wait">
           {!isUnlocked && String(post.is_private) === '1' ? (
-            /* 비밀글 잠금 화면 */
             <motion.div 
               key="lock"
               initial={{ opacity: 0, scale: 0.98 }}
@@ -129,14 +119,12 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
               </button>
             </motion.div>
           ) : (
-            /* 일반 게시글 상세 레이아웃 */
             <motion.div 
               key="content"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white shadow-sm border border-[#3E3232]/5"
             >
-              {/* 제목 및 메타정보 섹션 */}
               <header className="px-6 md:px-12 py-10 md:py-16 border-b border-[#3E3232]/5">
                 <h2 className="text-2xl md:text-4xl font-bold leading-tight break-keep mb-10">
                   {post.title}
@@ -164,12 +152,11 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 </div>
               </header>
 
-              {/* 본문 내용 */}
               <div className="px-6 md:px-12 py-12 md:py-20">
                 {post.thumbnail_url && (
                   <div className="mb-12 text-center">
                     <img 
-                      src={getResourceSrc(post.thumbnail_url) || ""} 
+                      src={getImageUrl(post.thumbnail_url)} 
                       alt="첨부 이미지" 
                       className="max-w-full h-auto mx-auto"
                     />
@@ -179,17 +166,13 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                   {post.content}
                 </div>
 
-                {/* 💡 관리자 답변이 존재할 경우에만 렌더링되는 답변 박스 */}
                 {post.answer && (
                   <div className="mt-16 bg-[#F9F5F0]/80 border border-[#8D7B68]/20 p-8 md:p-12 relative overflow-hidden">
-                    {/* 좌측 포인트 컬러 라인 */}
                     <div className="absolute top-0 left-0 w-1 h-full bg-[#8D7B68]" />
-                    
                     <div className="flex items-center gap-3 text-[11px] font-black tracking-[0.2em] text-[#8D7B68] uppercase mb-6">
                       <MessageCircle size={16} /> 
                       <span>관리자 답변</span>
                     </div>
-                    
                     <div className="text-[15px] md:text-[16px] leading-[1.8] text-[#3E3232]/90 whitespace-pre-wrap break-all font-medium">
                       {post.answer}
                     </div>
@@ -197,14 +180,13 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 )}
               </div>
 
-              {/* 첨부파일 섹션 */}
               {post.file_url && (
                 <div className="px-6 md:px-12 py-8 bg-[#F9F5F0]/50 border-t border-[#3E3232]/5">
                   <div className="flex items-center gap-3 text-[10px] font-black tracking-widest opacity-30 mb-4">
                     <FileText size={14} /> ATTACHED ASSETS
                   </div>
                   <a 
-                    href={getResourceSrc(post.file_url) || "#"} 
+                    href={getImageUrl(post.file_url)} 
                     download 
                     className="inline-flex items-center gap-4 px-6 py-4 bg-white border border-[#3E3232]/10 hover:border-[#8D7B68] transition-all group"
                   >
@@ -214,7 +196,6 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 </div>
               )}
 
-              {/* 하단 목록 버튼 */}
               <footer className="px-6 md:px-12 py-10 border-t border-[#3E3232]/5 flex justify-center">
                 <button 
                   onClick={handleBack}

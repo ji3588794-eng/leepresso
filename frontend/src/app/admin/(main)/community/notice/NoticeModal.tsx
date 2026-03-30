@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './notice.module.scss';
 import { NoticeData } from './page';
 import { X, UploadCloud, FileText, Loader2, Bold, Italic, List as ListIcon, Heading2, Image as ImageIcon } from 'lucide-react';
@@ -65,17 +65,19 @@ export default function NoticeModal({ data, onClose, onSuccess }: { data: Notice
     imgFormData.append('image', selectedFile);
 
     try {
-      // 기존 백엔드에 있는 upload API 호출
-      const res = await api.post('/upload', imgFormData, {
+      // ✅ 서버 호출 (백엔드 adminRouter.post('/upload', ...))
+      const res = await api.post('/admin/upload', imgFormData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
-      // 서버에서 돌려준 파일명으로 이미지 URL 생성 
-      // (서버 주소나 프록시 설정에 따라 앞부분 도메인이 필요할 수 있습니다)
-      const imageUrl = `${process.env.NEXT_PUBLIC_API_URL || ''}/uploads/${res.data.filename}`;
-      
-      // 에디터 본문에 이미지 삽입
-      execCommand('insertImage', imageUrl);
+      if (res.data.success) {
+        // 🚨 수정: 수동으로 '/uploads/'를 붙이지 않고 백엔드에서 준 전체 경로(res.data.path)를 그대로 사용합니다.
+        // Cloudinary 주소가 그대로 본문에 삽입됩니다.
+        const imageUrl = res.data.path;
+        
+        // 에디터 본문에 이미지 삽입
+        execCommand('insertImage', imageUrl);
+      }
     } catch (err) {
       console.error(err);
       alert('본문 이미지 업로드에 실패했습니다.');

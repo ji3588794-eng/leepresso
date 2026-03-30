@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 import { ChevronDown } from 'lucide-react';
-import api from '@/lib/api';
-
-const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
+import api, { getImageUrl } from '@/app/lib/api';
 
 const MENU_ITEMS = [
   { name: '대시보드', path: '/admin/dashboard' },
@@ -45,11 +43,11 @@ export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
   
-  // 💡 로고 및 사이트명 상태 관리
+  // 로고 및 사이트명 상태 관리
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [siteName, setSiteName] = useState<string>(''); 
 
-  // 💡 마운트 시 설정(settings)을 불러와 로고와 사이트명 세팅
+  // 마운트 시 설정(settings)을 불러와 로고와 사이트명 세팅
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -57,9 +55,9 @@ export default function Sidebar() {
         if (res.data.success) {
           const { site_logo, site_name } = res.data.data;
           
-          // 로고가 있으면 URL 세팅
+          // ✅ 수정: getImageUrl을 사용하여 Cloudinary/로컬 경로 자동 판별
           if (site_logo) {
-            setLogoUrl(`${PUBLIC_BASE_URL}/uploads/${site_logo}`);
+            setLogoUrl(getImageUrl(site_logo));
           }
           
           // site_name 세팅 (없으면 기본값 'ADMIN')
@@ -78,7 +76,7 @@ export default function Sidebar() {
 
   return (
     <aside className={styles.sidebar}>
-      {/* 💡 로고 영역: 로고 이미지 우선, 없을 시 siteName 텍스트 출력 */}
+      {/* 로고 영역: 로고 이미지 우선, 없을 시 siteName 텍스트 출력 */}
       <div
         className={styles.logo}
         onClick={() => router.push('/admin/dashboard')}

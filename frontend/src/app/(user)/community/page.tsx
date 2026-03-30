@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Pin, PenLine, Home, Inbox, Calendar, ChevronLeft, ChevronRight } from "lucide-react"; 
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api'; // ✅ 지뢰 제거된 통합 함수
 import QuickMenu from "../components/common/QuickMenu";
 
 interface Post {
@@ -26,15 +26,6 @@ const CATEGORIES = [
 ];
 
 const ITEMS_PER_PAGE = 10;
-
-// 환경변수 NEXT_PUBLIC_API_URL을 사용하는 이미지 경로 변환 함수
-const getImageUrl = (url?: string) => {
-  if (!url) return '';
-  if (url.startsWith('http')) return url;
-  
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  return `${baseUrl}${url}`;
-};
 
 export default function CommunityPage() {
   const router = useRouter();

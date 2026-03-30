@@ -20,7 +20,7 @@ type VisitorRow = {
 };
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const VisitorsPage = () => {
   const [data, setData] = useState<VisitorRow[]>([]);

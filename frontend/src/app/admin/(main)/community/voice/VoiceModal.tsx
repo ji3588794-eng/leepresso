@@ -1,11 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import api from '@/lib/api';
+import api from '@/app/lib/api'; // getImageUrl은 여기서 안 쓰면 빼도 됩니다.
 import styles from './voice.module.scss';
 import { VoiceData } from './page';
 
-export default function VoiceModal({ data, onClose, onSuccess }: { data: VoiceData | null, onClose: () => void, onSuccess: () => void }) {
+interface ModalProps {
+  data: VoiceData | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function VoiceModal({ data, onClose, onSuccess }: ModalProps) {
   const [formData, setFormData] = useState({
     category: 'community',
     type: 'voc',
@@ -52,7 +58,6 @@ export default function VoiceModal({ data, onClose, onSuccess }: { data: VoiceDa
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
-        {/* 💡 작성하신 SCSS 클래스(.modalBody, .infoItem 등)를 적용하여 구조화 */}
         <div className={styles.modalBody}>
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
@@ -80,7 +85,10 @@ export default function VoiceModal({ data, onClose, onSuccess }: { data: VoiceDa
 
           <div className={styles.contentArea}>
             <label>문의내용</label>
-            <div className={styles.userText}>{data?.content}</div>
+            <div className={styles.userText}>
+              {/* 🚨 빌드 에러 원인이었던 thumbnail_url 참조 제거 완료 */}
+              {data?.content}
+            </div>
           </div>
 
           <div className={styles.answerArea}>
@@ -89,6 +97,7 @@ export default function VoiceModal({ data, onClose, onSuccess }: { data: VoiceDa
               value={formData.answer} 
               onChange={e => setFormData({...formData, answer: e.target.value})}
               placeholder="고객에게 남길 답변을 입력하세요. (답변을 저장하면 자동으로 '답변완료' 처리됩니다)"
+              rows={6}
             />
           </div>
         </div>

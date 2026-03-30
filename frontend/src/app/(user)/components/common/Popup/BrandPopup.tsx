@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import api from "@/lib/api"; 
+import api, { getImageUrl } from "@/app/lib/api"; 
 import styles from "./Popup.module.scss";
-
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001")
-  .replace(/\/api\/admin|\/admin|\/api/g, "")
-  .replace(/\/$/, "");
 
 export default function BrandPopup() {
   const [popups, setPopups] = useState<any[]>([]);
@@ -16,7 +12,6 @@ export default function BrandPopup() {
     const fetchPopups = async () => {
       try {
         const response = await api.get('/user/popups');
-        // 💡 백엔드 응답 구조(data.data)에 맞춰 접근
         const rawData = response.data?.data || response.data;
 
         if (Array.isArray(rawData)) {
@@ -24,16 +19,13 @@ export default function BrandPopup() {
             .map((item: any) => {
               const id = item.idx || item.id;
               
-              // 이미지 경로 처리
-              let imgUrl = item.image_url;
-              if (imgUrl && !imgUrl.startsWith('http')) {
-                const cleanPath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
-                imgUrl = `${API_BASE}/uploads${cleanPath}`.replace(/\/uploads\/uploads/g, '/uploads');
-              }
+              // 🚨 핵심 수정: 복잡한 로직 다 버리고 api.ts의 getImageUrl에 위임합니다.
+              // item.image_url이 'https://...'면 그대로, 아니면 예전 방식을 알아서 처리합니다.
+              const imgUrl = getImageUrl(item.image_url);
 
               return {
                 id,
-                title: item.title || "NOTICE", // 💡 데이터에 title이 있는지 확인
+                title: item.title || "NOTICE",
                 imgUrl,
                 linkUrl: item.link_url || "#",
               };
@@ -41,7 +33,8 @@ export default function BrandPopup() {
             .filter((item: any) => {
               const expiry = localStorage.getItem(`hide_popup_${item.id}`);
               return !(expiry && new Date().getTime() < parseInt(expiry));
-            });
+            })
+            .slice(0, 4); 
           setPopups(filtered);
         }
       } catch (error) {
@@ -63,11 +56,6 @@ export default function BrandPopup() {
     <aside className={styles.popupWrapper}>
       {popups.map((popup) => (
         <article key={popup.id} className={styles.popupCard}>
-          {/* 💡 타이틀 바 디자인 */}
-          <div className={styles.titleBar}>
-            <span>{popup.title}</span>
-          </div>
-
           <Link href={popup.linkUrl} target="_blank" className={styles.imageArea}>
             <img src={popup.imgUrl} alt={popup.title} loading="lazy" />
           </Link>
