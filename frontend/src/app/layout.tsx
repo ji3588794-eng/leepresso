@@ -78,7 +78,17 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
 
-  // 7. 기타 언어 및 형식 정보
+  // 7. 사이트 소유권 인증 (구글 서치콘솔 등)
+  verification: {
+    // 💡 여기에 발급받은 코드를 넣으시면 됩니다.
+    google: "UID2R0MPFk0L-ub0jkyLBTG_k6blaXLOiAWBZROnaIY",
+    // 필요 시 네이버 서치어드바이저 등도 여기에 추가 가능
+    // other: {
+    //   "naver-site-verification": ["네이버코드"],
+    // },
+  },
+
+  // 8. 기타 언어 및 형식 정보
   category: "business",
 };
 

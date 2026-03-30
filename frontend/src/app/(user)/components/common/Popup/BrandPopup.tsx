@@ -16,15 +16,12 @@ export default function BrandPopup() {
     const fetchPopups = async () => {
       try {
         const response = await api.get('/user/popups');
-        // 💡 백엔드 응답 구조(data.data)에 맞춰 접근
         const rawData = response.data?.data || response.data;
 
         if (Array.isArray(rawData)) {
           const filtered = rawData
             .map((item: any) => {
               const id = item.idx || item.id;
-              
-              // 이미지 경로 처리
               let imgUrl = item.image_url;
               if (imgUrl && !imgUrl.startsWith('http')) {
                 const cleanPath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
@@ -33,7 +30,7 @@ export default function BrandPopup() {
 
               return {
                 id,
-                title: item.title || "NOTICE", // 💡 데이터에 title이 있는지 확인
+                title: item.title || "NOTICE",
                 imgUrl,
                 linkUrl: item.link_url || "#",
               };
@@ -41,7 +38,8 @@ export default function BrandPopup() {
             .filter((item: any) => {
               const expiry = localStorage.getItem(`hide_popup_${item.id}`);
               return !(expiry && new Date().getTime() < parseInt(expiry));
-            });
+            })
+            .slice(0, 4); // 최대 4개 제한
           setPopups(filtered);
         }
       } catch (error) {
@@ -63,11 +61,6 @@ export default function BrandPopup() {
     <aside className={styles.popupWrapper}>
       {popups.map((popup) => (
         <article key={popup.id} className={styles.popupCard}>
-          {/* 💡 타이틀 바 디자인 */}
-          <div className={styles.titleBar}>
-            <span>{popup.title}</span>
-          </div>
-
           <Link href={popup.linkUrl} target="_blank" className={styles.imageArea}>
             <img src={popup.imgUrl} alt={popup.title} loading="lazy" />
           </Link>
