@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import api, { getImageUrl } from '@/app/lib/api';
 import styles from './event.module.scss';
 import EventModal from './EventModal';
-import { Search } from 'lucide-react'; // 💡 검색 아이콘 추가
+import { Search } from 'lucide-react';
 
 export interface EventData {
   idx: number;
@@ -18,14 +18,9 @@ export interface EventData {
   created_at: string;
 }
 
-const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
-
-// 💡 날짜 포맷 변환 함수 (YYYY-MM-DD HH:mm:ss)
 const formatDate = (dateString?: string) => {
   if (!dateString) return '';
   const date = new Date(dateString);
-  
-  // 날짜 파싱이 불가능한 예외 상황이면 원본 텍스트 그대로 반환
   if (isNaN(date.getTime())) return dateString; 
 
   const yyyy = date.getFullYear();
@@ -70,10 +65,8 @@ export default function EventPage() {
 
   return (
     <div className={styles.container}>
-      {/* 💡 헤더 영역: 검색창 통합 및 디자인 적용 */}
       <header className={styles.header}>
         <h2>이벤트 관리</h2>
-        
         <div className={styles.headerControls}>
           <div className={styles.searchWrapper}>
             <Search size={16} color="#94a3b8" />
@@ -85,7 +78,6 @@ export default function EventPage() {
               className={styles.searchInput}
             />
           </div>
-
           <button className={styles.addBtn} onClick={() => { setSelectedEvent(null); setIsModalOpen(true); }}>
             + 새 이벤트 등록
           </button>
@@ -97,8 +89,9 @@ export default function EventPage() {
           filteredEvents.map((event) => (
             <div key={event.idx} className={`${styles.card} ${event.is_notice === 1 ? styles.pinned : ''}`}>
               <div className={styles.thumb}>
+                {/* 🚨 수동 PUBLIC_BASE_URL 제거 -> getImageUrl로 통일 */}
                 {event.thumbnail_url ? (
-                  <img src={`${PUBLIC_BASE_URL}${event.thumbnail_url}`} alt={event.title} />
+                  <img src={getImageUrl(event.thumbnail_url)} alt={event.title} />
                 ) : (
                   <div className={styles.noImage}>No Image</div>
                 )}
@@ -106,7 +99,6 @@ export default function EventPage() {
               </div>
               <div className={styles.info}>
                 <h4>{event.title}</h4>
-                {/* 💡 날짜 포맷 함수 적용 */}
                 <p className={styles.date}>작성일: {formatDate(event.created_at)}</p>
               </div>
               <div className={styles.btnGroup}>
@@ -116,10 +108,7 @@ export default function EventPage() {
             </div>
           ))
         ) : (
-          /* 💡 검색 결과가 없을 때의 UI */
-          <div className={styles.empty}>
-            검색된 이벤트가 없습니다.
-          </div>
+          <div className={styles.empty}>검색된 이벤트가 없습니다.</div>
         )}
       </div>
 

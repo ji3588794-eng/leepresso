@@ -71,7 +71,8 @@ export default function NoticeModal({ data, onClose, onSuccess }: { data: Notice
       });
       
       if (res.data.success) {
-        // 🚨 수정: 수동으로 경로 결합하지 않고 Cloudinary 전체 경로(res.data.path)를 그대로 삽입
+        // 🚨 수정: 수동으로 '/uploads/'를 붙이지 않고 백엔드에서 준 전체 경로(res.data.path)를 그대로 사용합니다.
+        // Cloudinary 주소가 그대로 본문에 삽입됩니다.
         const imageUrl = res.data.path;
         
         // 에디터 본문에 이미지 삽입
@@ -186,6 +187,7 @@ export default function NoticeModal({ data, onClose, onSuccess }: { data: Notice
                 <button type="button" onClick={() => execCommand('insertUnorderedList')}><ListIcon size={16}/></button>
                 <button type="button" onClick={() => execCommand('formatBlock', 'h2')}><Heading2 size={16}/></button>
                 
+                {/* 본문 사진 삽입 버튼 */}
                 <span className={styles.divider} style={{ width: '1px', height: '16px', background: '#ddd', margin: '0 8px' }} />
                 <input type="file" accept="image/*" ref={editorImageInputRef} onChange={handleEditorImageUpload} style={{ display: 'none' }} />
                 <button type="button" onClick={() => editorImageInputRef.current?.click()} title="사진 삽입">

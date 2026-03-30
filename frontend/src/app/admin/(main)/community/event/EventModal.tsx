@@ -43,13 +43,14 @@ export default function EventModal({ data, onClose, onSuccess }: ModalProps) {
     fd.append('image', file);
     
     try {
-      // ✅ 서버 호출
+      // ✅ 서버 호출 (백엔드 adminRouter.post('/upload', ...))
       const res = await api.post('/admin/upload', fd, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
       if (res.data.success) {
-        // 🚨 수정: '/uploads/'를 붙이지 않고 서버가 준 전체 경로(res.data.path)를 그대로 사용합니다.
+        // 🚨 수정: '/uploads/'를 수동으로 붙이지 않고 서버가 준 전체 경로(res.data.path)를 그대로 사용합니다.
+        // 이제 DB에는 "https://res.cloudinary.com/..." 주소가 깨끗하게 박힙니다.
         setFormData(prev => ({ ...prev, thumbnail_url: res.data.path }));
       }
     } catch (err) { 
@@ -90,6 +91,7 @@ export default function EventModal({ data, onClose, onSuccess }: ModalProps) {
             <div className={styles.uploadBox} onClick={() => fileRef.current?.click()}>
               {formData.thumbnail_url ? (
                 // ✅ 수정: getImageUrl을 사용하여 프리뷰 주소를 생성합니다.
+                // 이미 https:// 주소라면 api.ts에서 판단하여 그대로 내보냅니다.
                 <img src={getImageUrl(formData.thumbnail_url)} alt="썸네일 프리뷰" />
               ) : (
                 <div className={styles.placeholder}><span>+</span><p>이미지 업로드</p></div>
