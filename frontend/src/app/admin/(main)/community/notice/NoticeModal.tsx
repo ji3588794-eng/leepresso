@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './notice.module.scss';
 import { NoticeData } from './page';
 import { X, UploadCloud, FileText, Loader2, Bold, Italic, List as ListIcon, Heading2, Image as ImageIcon } from 'lucide-react';

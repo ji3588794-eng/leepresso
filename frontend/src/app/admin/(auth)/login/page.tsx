@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './login.module.scss';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 
 export default function AdminLoginPage() {
   const [formData, setFormData] = useState({

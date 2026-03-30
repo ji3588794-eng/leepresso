@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './popup.module.scss';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import { PopupData } from './page';
 
 // 💡 베이스 URL (끝에 슬래시 제외)

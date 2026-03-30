@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './event.module.scss';
 import EventModal from './EventModal';
 import { Search } from 'lucide-react'; // 💡 검색 아이콘 추가

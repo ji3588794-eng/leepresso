@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './menu.module.scss';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import { Edit2, Trash2 } from 'lucide-react';
 
 interface MenuCardProps {

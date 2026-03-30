@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ShieldCheck, Loader2, Mail, Phone, User, Lock } from "lucide-react";
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 
 export default function CommunityWritePage() {
   const router = useRouter();

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './Header.module.scss';
 import { Clock, ExternalLink, LogOut, User } from 'lucide-react'; 
 

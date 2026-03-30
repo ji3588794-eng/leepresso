@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from './menu.module.scss';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 const UPLOAD_BASE_URL = `${API_BASE_URL}/uploads/`;

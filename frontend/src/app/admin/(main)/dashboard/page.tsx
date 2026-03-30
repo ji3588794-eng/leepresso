@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './dashboard.module.scss';
 
 type DashboardCounts = {

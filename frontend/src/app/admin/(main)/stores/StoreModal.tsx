@@ -3,7 +3,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './stores.module.scss';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import type { StoreItem } from './page';
 
 interface StoreModalProps {

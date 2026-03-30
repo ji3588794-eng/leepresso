@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './stores.module.scss';
 import StoreCard from './StoreCard';
 import StoreModal from './StoreModal';

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
 import { useRouter } from "next/navigation";
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import QuickMenu from "../components/common/QuickMenu";
 
 interface Store {

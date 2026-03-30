@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 import { ChevronDown } from 'lucide-react';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 
 const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
 

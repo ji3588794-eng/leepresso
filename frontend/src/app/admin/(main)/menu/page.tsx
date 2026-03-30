@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import styles from './menu.module.scss';
 import MenuCard from './MenuCard';
 import MenuModal from './MenuModal';

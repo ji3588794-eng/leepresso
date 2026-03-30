@@ -9,6 +9,7 @@ const multer = require('multer');
 
 const SECRET_KEY = process.env.JWT_SECRET;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const getBaseUrl = (req) => `${req.protocol}://${req.get('host')}`;
 
 /* ---------------------------------------------------------
    [인증 로직 무력화] 모든 요청 프리패스
@@ -119,15 +120,16 @@ router.post('/upload', upload.single('image'), (req, res) => {
 /* ---------------------------------------------------------
     팝업 관리 API (popups) - 수정본
 --------------------------------------------------------- */
+// 팝업 목록 조회 (이미지 주소 처리 보정)
 router.get('/popups', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-b95y.onrender.com').replace(/\/$/, '');
+    const baseUrl = getBaseUrl(req); // 자동 감지
     const [rows] = await pool.query(
       `SELECT idx, title, image_url, link_url, priority, is_active, 
         DATE_FORMAT(start_date, '%Y-%m-%d %H:%i:%s') as start_date, 
         DATE_FORMAT(end_date, '%Y-%m-%d %H:%i:%s') as end_date, 
         created_at,
-        IF(image_url IS NOT NULL AND image_url != '', CONCAT(?, image_url), '') AS image_full_url 
+        IF(image_url IS NOT NULL AND image_url != '', CONCAT(?, '/uploads/', image_url), '') AS image_full_url 
       FROM popups ORDER BY priority DESC, idx DESC`, 
       [baseUrl]
     );
@@ -190,7 +192,7 @@ router.patch('/popups/:idx/active', async (req, res) => {
 --------------------------------------------------------- */
 router.get('/menu', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-b95y.onrender.com').replace(/\/$/, '');
+    const baseUrl = getBaseUrl(req); // 자동 감지
     const [rows] = await pool.query(
       `SELECT idx, type, name, eng_name, description, price,
         IF(thumbnail_url IS NOT NULL AND thumbnail_url != "", CONCAT(?, "/uploads/", thumbnail_url), "") AS thumbnail_url,
@@ -256,10 +258,10 @@ router.delete('/menu/:idx', async (req, res) => {
 --------------------------------------------------------- */
 router.get('/stores', async (req, res) => {
   try {
-    const baseUrl = (process.env.BACKEND_URL || 'https://leepresso-project-b95y.onrender.com').replace(/\/$/, '');
+    const baseUrl = getBaseUrl(req); // 자동 감지
     const [rows] = await pool.query(
       `SELECT idx, store_name, address, phone, hours, lat, lng, thumbnail_url, 
-      IF(thumbnail_url IS NOT NULL AND thumbnail_url != '', CONCAT(?, thumbnail_url), '') AS thumbnail_full_url, 
+      IF(thumbnail_url IS NOT NULL AND thumbnail_url != '', CONCAT(?, '/uploads/', thumbnail_url), '') AS thumbnail_full_url, 
       is_active, created_at FROM store_list ORDER BY idx ASC`, 
       [baseUrl]
     );

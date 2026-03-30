@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Pin, PenLine, Home, Inbox, Calendar, ChevronLeft, ChevronRight } from "lucide-react"; 
 import BrandHeader from "@/app/(user)/components/layout/brand/BrandHeader";
 import BrandFooter from "@/app/(user)/components/layout/brand/BrandFooter";
-import api from '@/lib/api';
+import api from '@/app/lib/api';
 import QuickMenu from "../components/common/QuickMenu";
 
 interface Post {
