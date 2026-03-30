@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 
-// --- [신규] Cloudinary 및 Storage 설정 (추가) ---
+// --- [신규] Cloudinary 및 Storage 설정 ---
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
@@ -106,6 +106,7 @@ router.get('/me', (req, res) => {
   res.json({ success: true, user: req.user || { role: 'admin' } });
 });
 
+// ⭐ 수정 포인트: 프론트에서 filename 대신 path를 쓰도록 명확히 반환
 router.post('/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ 
@@ -115,13 +116,13 @@ router.post('/upload', upload.single('image'), (req, res) => {
   }
   res.json({ 
     success: true, 
-    filename: req.file.filename,
-    path: req.file.path // Cloudinary 전체 URL 반환
+    filename: req.file.path, // 프론트가 filename을 써도 Cloudinary URL이 가도록 수정
+    path: req.file.path 
   });
 });
 
 /* ---------------------------------------------------------
-   팝업 관리 API (popups) - 기존 로직 100% 유지
+   팝업 관리 API (popups)
 --------------------------------------------------------- */
 router.get('/popups', async (req, res) => {
   try {
@@ -185,7 +186,7 @@ router.patch('/popups/:idx/active', async (req, res) => {
 });
 
 /* ---------------------------------------------------------
-   카페 메뉴 관리 API (cafe_menu) - 기존 로직 유지
+   카페 메뉴 관리 API (cafe_menu)
 --------------------------------------------------------- */
 router.get('/menu', async (req, res) => {
   try {
@@ -233,7 +234,7 @@ router.delete('/menu/:idx', async (req, res) => {
 });
 
 /* ---------------------------------------------------------
-   매장관리 API (store_list) - 기존 로직 유지
+   매장관리 API (store_list)
 --------------------------------------------------------- */
 router.get('/stores', async (req, res) => {
   try {
@@ -277,11 +278,11 @@ router.delete('/stores/:idx', async (req, res) => {
   try {
     await pool.query('DELETE FROM store_list WHERE idx = ?', [req.params.idx]);
     res.json({ success: true });
-  } catch (error) { res.status(500).json({ error: error.message }); }
+  } catch (error) { res.status(500).json({ success: false, message: error.message }); }
 });
 
 /* ---------------------------------------------------------
-   게시판 통합 관리 (Notice, Event, VOC) - 로직 100% 유지
+   게시판 통합 관리 (Notice, Event, VOC)
 --------------------------------------------------------- */
 router.get('/board/:type', async (req, res) => {
   const { type } = req.params;
@@ -302,7 +303,7 @@ router.post('/board', upload.single('file'), async (req, res) => {
     let fileName = null, fileUrl = null, fileSize = null, fileMime = null;
     if (req.file) {
       fileName = req.file.originalname;
-      fileUrl = req.file.path;
+      fileUrl = req.file.path; // Cloudinary 전체 URL
       fileSize = req.file.size;
       fileMime = req.file.mimetype;
     }
@@ -415,7 +416,7 @@ router.post('/register', async (req, res) => {
 });
 
 /* ---------------------------------------------------------
-   시스템 통계 및 인프라 관리 API (admin.js)
+   시스템 통계 및 인프라 관리 API
 --------------------------------------------------------- */
 router.get('/analytics/visitors', async (req, res) => {
   try {
