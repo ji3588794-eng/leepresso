@@ -5,10 +5,6 @@ import Link from "next/link";
 import api, { getImageUrl } from "@/app/lib/api"; 
 import styles from "./Popup.module.scss";
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001")
-  .replace(/\/api\/admin|\/admin|\/api/g, "")
-  .replace(/\/$/, "");
-
 export default function BrandPopup() {
   const [popups, setPopups] = useState<any[]>([]);
 
@@ -22,11 +18,10 @@ export default function BrandPopup() {
           const filtered = rawData
             .map((item: any) => {
               const id = item.idx || item.id;
-              let imgUrl = item.image_url;
-              if (imgUrl && !imgUrl.startsWith('http')) {
-                const cleanPath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
-                imgUrl = `${API_BASE}/uploads${cleanPath}`.replace(/\/uploads\/uploads/g, '/uploads');
-              }
+              
+              // 🚨 핵심 수정: 복잡한 로직 다 버리고 api.ts의 getImageUrl에 위임합니다.
+              // item.image_url이 'https://...'면 그대로, 아니면 예전 방식을 알아서 처리합니다.
+              const imgUrl = getImageUrl(item.image_url);
 
               return {
                 id,
@@ -39,7 +34,7 @@ export default function BrandPopup() {
               const expiry = localStorage.getItem(`hide_popup_${item.id}`);
               return !(expiry && new Date().getTime() < parseInt(expiry));
             })
-            .slice(0, 4); // 최대 4개 제한
+            .slice(0, 4); 
           setPopups(filtered);
         }
       } catch (error) {

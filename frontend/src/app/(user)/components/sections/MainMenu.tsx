@@ -22,8 +22,6 @@ export default function MainMenu() {
   const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
   const categoryMap = {
     'COFFEE': 'coffee',
     'NON-COFFEE': 'beverage',
@@ -111,7 +109,7 @@ export default function MainMenu() {
       transition: {
         x: {
           repeat: Infinity,
-          duration: 60, // 모바일에서 너무 느리지 않게 속도 최적화
+          duration: 60, 
           ease: "linear"
         }
       }
@@ -120,16 +118,6 @@ export default function MainMenu() {
       x: direction > 0 ? "0%" : "-50%",
       transition: { duration: 0 }
     })
-  };
-
-  const getImgSrc = (url?: string | null) => {
-    if (!url || typeof url !== 'string' || url.trim() === '') {
-      return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    }
-    if (url.startsWith('http')) return url;
-    const cleanPath = url.startsWith('/') ? url : `/${url}`;
-    if (cleanPath.startsWith('/uploads/')) return `${API_BASE_URL}${cleanPath}`;
-    return `${API_BASE_URL}/uploads${cleanPath}`;
   };
 
   const currentTitle =
@@ -141,7 +129,6 @@ export default function MainMenu() {
 
   return (
     <section id="concept" className="w-full bg-[#F9F5F0] lg:py-25 overflow-hidden border-b border-[#E8D5C4]">
-      {/* HEADER: 상단 여백 조절 */}
       <div className="max-w-[1500px] mx-auto px-6 lg:px-10 mb-6 lg:mb-4 text-left">
         <div className="space-y-1 lg:space-y-0.5">
           <span className="text-[#8D7B68] font-black tracking-[0.2em] text-[9px] lg:text-[11px]">PREMIUM SELECTION</span>
@@ -163,7 +150,6 @@ export default function MainMenu() {
       </div>
 
       <div className="w-full max-w-[1500px] mx-auto flex flex-col lg:flex-row items-start lg:min-h-[550px] px-6 lg:px-10 lg:pt-10 gap-4 lg:gap-6">
-        {/* TAB BUTTONS: 모바일 간격 및 하단 라인 최적화 */}
         <div className="w-full lg:w-[130px] flex lg:flex-col overflow-x-auto lg:overflow-x-visible no-scrollbar gap-6 sm:gap-8 lg:gap-12 border-b lg:border-b-0 lg:border-r border-[#E8D5C4] pb-4 lg:pb-0 lg:pt-16 h-auto lg:h-full flex-shrink-0 text-left">
           {['NON-COFFEE', 'COFFEE', 'SIGNATURE'].map((id) => (
             <button key={id} onClick={() => setActiveTab(id as any)} className="flex lg:flex-col items-start gap-1 flex-shrink-0 outline-none group relative cursor-pointer active:scale-95 transition-transform pb-2 lg:pb-0">
@@ -182,12 +168,12 @@ export default function MainMenu() {
           ))}
         </div>
 
-        {/* DISPLAY: 모바일에서 이미지 크기 및 간격 최적화 */}
         <div className="w-full lg:w-[500px] flex flex-col items-center justify-center flex-shrink-0 py-4 lg:py-0">
           <AnimatePresence mode="wait">
             <motion.div key={selectedMenu?.idx || activeTab} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="flex flex-col items-center w-full">
               <div className="relative w-[220px] sm:w-[260px] lg:w-[385px] h-[220px] sm:h-[300px] lg:h-[385px] mb-4 lg:mb-2">
-                <Image src={getImgSrc(selectedMenu?.thumbnail_url)} alt={selectedMenu?.name || ""} fill className="object-contain" priority unoptimized />
+                {/* ✅ getImageUrl 적용 */}
+                <Image src={getImageUrl(selectedMenu?.thumbnail_url)} alt={selectedMenu?.name || ""} fill className="object-contain" priority unoptimized />
               </div>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="px-3 py-0.5 md:px-4 md:py-1 border border-[#E8D5C4] rounded-full bg-white/30">
@@ -200,7 +186,6 @@ export default function MainMenu() {
           </AnimatePresence>
         </div>
 
-        {/* MARQUEE LIST: 모바일 리스트 높이 및 간격 최적화 */}
         <div className="w-full lg:flex-1 h-full flex flex-col relative overflow-hidden mt-4 lg:mt-0">
           <div className="w-full relative z-30 pr-0 lg:pr-4 border-b-[1.5px] border-[#3E3232] pb-3 lg:pb-4 flex justify-between items-end">
             <h1 className="text-xl lg:text-3xl font-[900] text-[#3E3232] tracking-tighter uppercase leading-none">{currentTitle}</h1>
@@ -214,24 +199,24 @@ export default function MainMenu() {
               <div className="text-[#3E3232]/35 font-bold text-center w-full py-10">등록된 메뉴가 없습니다.</div>
             ) : (
               <>
-                {/* Mobile Marquee */}
                 <div className="lg:hidden relative w-full overflow-hidden">
                   <motion.div variants={marqueeVariants} animate={isPlaying ? "animate" : "stop"} custom={1} className="flex gap-4 w-fit px-4">
                     {mobileRowData.map((item, i) => (
                       <div key={`mob-${i}`} onClick={() => setSelectedMenu(item)} className="w-20 aspect-square cursor-pointer flex-shrink-0 relative">
-                        <Image src={getImgSrc(item.thumbnail_url)} fill className="object-contain" alt={item.name} unoptimized />
+                        {/* ✅ getImageUrl 적용 */}
+                        <Image src={getImageUrl(item.thumbnail_url)} fill className="object-contain" alt={item.name} unoptimized />
                       </div>
                     ))}
                   </motion.div>
                 </div>
-                {/* Desktop Marquee */}
                 <div className="hidden lg:flex flex-col gap-2">
                   {rowData.map((row, idx) => (
                     <div key={`pc-r-${idx}`} className="relative w-full overflow-hidden">
                       <motion.div variants={marqueeVariants} animate={isPlaying ? "animate" : "stop"} custom={idx % 2 === 0 ? 1 : -1} className="flex gap-6 w-fit">
                         {row.map((item, i) => (
                           <div key={`pc-i-${idx}-${i}`} onClick={() => setSelectedMenu(item)} className="w-32 aspect-square cursor-pointer transition-transform hover:scale-110 flex-shrink-0 relative">
-                            <Image src={getImgSrc(item.thumbnail_url)} fill className="object-contain" alt={item.name} unoptimized />
+                            {/* ✅ getImageUrl 적용 */}
+                            <Image src={getImageUrl(item.thumbnail_url)} fill className="object-contain" alt={item.name} unoptimized />
                           </div>
                         ))}
                       </motion.div>
@@ -241,7 +226,6 @@ export default function MainMenu() {
               </>
             )}
           </div>
-          {/* Gradients */}
           <div className="absolute inset-y-0 left-0 w-8 lg:hidden bg-gradient-to-r from-[#F9F5F0] to-transparent z-20 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-12 lg:w-24 bg-gradient-to-l from-[#F9F5F0] via-[#F9F5F0]/80 to-transparent z-20 pointer-events-none" />
         </div>

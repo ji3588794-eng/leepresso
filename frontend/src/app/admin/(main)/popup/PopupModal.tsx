@@ -5,8 +5,6 @@ import styles from './popup.module.scss';
 import api, { getImageUrl } from '@/app/lib/api';
 import { PopupData } from './page';
 
-const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
-
 export default function PopupModal({ data, onClose, onSuccess }: { data: PopupData | null, onClose: () => void, onSuccess: () => void }) {
   const fileRef = useRef<HTMLInputElement>(null);
   
@@ -40,21 +38,14 @@ export default function PopupModal({ data, onClose, onSuccess }: { data: PopupDa
   }, [data]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 1. 파일이 있는지 먼저 확실히 체크
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 2. FormData 생성
     const fd = new FormData();
-    
-    /** * 💡 핵심 해결 포인트: 
-     * 백엔드 router.post('/upload', upload.single('image'), ...) 에서 
-     * 'image'라는 이름을 사용하므로, 반드시 'image'로 담아야 합니다.
-     */
+    // 백엔드 'image' 필드명과 일치시켜야 함
     fd.append('image', file); 
 
     try {
-      // 3. API 요청 (400 에러가 났던 지점)
       const res = await api.post('/admin/upload', fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -62,15 +53,14 @@ export default function PopupModal({ data, onClose, onSuccess }: { data: PopupDa
       });
       
       if (res.data.success) {
-        // 성공 시 백엔드에서 준 파일명을 반영
-        setFormData(prev => ({ ...prev, image_url: res.data.filename }));
+        // 🚨 수정: 수동으로 '/uploads/'를 붙이지 않고 백엔드에서 준 전체 경로(res.data.path)를 그대로 사용
+        setFormData(prev => ({ ...prev, image_url: res.data.path }));
       }
     } catch (err: any) { 
-      // 여기서 "업로드된 파일이 없습니다"가 뜬다면 서버 multer 설정과 키값이 안 맞는 것임
       console.error('❌ 업로드 실패 상세:', err.response?.data || err.message);
       alert(err.response?.data?.message || '업로드 중 오류 발생'); 
     } finally {
-      if (e.target) e.target.value = ''; // 초기화
+      if (e.target) e.target.value = ''; 
     }
   };
 
@@ -99,11 +89,10 @@ export default function PopupModal({ data, onClose, onSuccess }: { data: PopupDa
             <label>팝업 이미지</label>
             <div className={styles.uploadBox} onClick={() => fileRef.current?.click()}>
               {formData.image_url ? (
+                /* ✅ 수정: getImageUrl을 사용하여 Cloudinary/로컬 주소 자동 판별 */
                 <img 
-                  src={formData.image_url.startsWith('http') 
-                    ? formData.image_url 
-                    : `${PUBLIC_BASE_URL}/uploads/${formData.image_url}`} 
-                  alt="" 
+                  src={getImageUrl(formData.image_url)} 
+                  alt="팝업 이미지 미리보기" 
                 />
               ) : (
                 <div className={styles.placeholder}>+ 이미지 클릭 업로드</div>

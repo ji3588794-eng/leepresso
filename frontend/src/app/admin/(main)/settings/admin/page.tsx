@@ -1,11 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import api, { getImageUrl } from '@/app/lib/api';
 import styles from './admin.module.scss';
 import { Settings, ShieldAlert, Layout, Upload } from 'lucide-react';
-
-const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
 
 export default function AdminSettingsPage() {
   const [formData, setFormData] = useState({
@@ -39,7 +37,7 @@ export default function AdminSettingsPage() {
     fetchSettings();
   }, []);
 
-  // 2. 이미지 업로드 (서버에 파일만 올림)
+  // 2. 이미지 업로드 (Cloudinary 연동 대응)
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -53,8 +51,8 @@ export default function AdminSettingsPage() {
       });
       
       if (res.data.success) {
-        // 💡 중요: 업로드된 파일명을 상태에 저장 (아직 DB 저장 전)
-        setFormData(prev => ({ ...prev, site_logo: res.data.filename }));
+        // 🚨 수정: 수동으로 '/uploads/'를 붙이지 않고 백엔드에서 준 전체 경로(res.data.path)를 그대로 사용
+        setFormData(prev => ({ ...prev, site_logo: res.data.path }));
       }
     } catch (err) {
       alert('이미지 업로드 실패');
@@ -65,11 +63,9 @@ export default function AdminSettingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // 💡 여기서 formData를 통째로 보낼 때 site_logo 파일명이 포함되어야 함
       const res = await api.put('/admin/settings', formData);
       if (res.data.success) {
         alert('모든 설정이 DB에 저장되었습니다.');
-        // 저장 후 데이터가 날아가지 않도록 상태 유지 혹은 페이지 갱신
         window.location.reload(); 
       }
     } catch (err) {
@@ -106,7 +102,8 @@ export default function AdminSettingsPage() {
             <div className={styles.logoUploadArea}>
               {formData.site_logo ? (
                 <div className={styles.logoPreview}>
-                  <img src={`${PUBLIC_BASE_URL}/uploads/${formData.site_logo}`} alt="Logo" />
+                  {/* ✅ 수정: getImageUrl을 사용하여 Cloudinary/로컬 주소 자동 판별 */}
+                  <img src={getImageUrl(formData.site_logo)} alt="Logo Preview" />
                   <button type="button" onClick={() => setFormData({...formData, site_logo: ''})}>삭제</button>
                 </div>
               ) : (

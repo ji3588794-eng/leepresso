@@ -5,8 +5,6 @@ import api, { getImageUrl } from '@/app/lib/api';
 import styles from './event.module.scss';
 import { EventData } from './page';
 
-const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';
-
 interface ModalProps {
   data: EventData | null;
   onClose: () => void;
@@ -45,13 +43,14 @@ export default function EventModal({ data, onClose, onSuccess }: ModalProps) {
     fd.append('image', file);
     
     try {
-      // 💡 404 에러의 원인이었던 경로 수정! 반드시 '/admin/upload'로 호출해야 합니다.
+      // ✅ 서버 호출
       const res = await api.post('/admin/upload', fd, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
       if (res.data.success) {
-        setFormData(prev => ({ ...prev, thumbnail_url: `/uploads/${res.data.filename}` }));
+        // 🚨 수정: '/uploads/'를 붙이지 않고 서버가 준 전체 경로(res.data.path)를 그대로 사용합니다.
+        setFormData(prev => ({ ...prev, thumbnail_url: res.data.path }));
       }
     } catch (err) { 
       console.error(err);
@@ -64,7 +63,6 @@ export default function EventModal({ data, onClose, onSuccess }: ModalProps) {
     if (!formData.thumbnail_url) return alert('썸네일 이미지를 업로드해주세요.');
 
     try {
-      // 💡 썸네일 URL을 포함한 데이터를 깔끔하게 JSON으로 서버에 전송 (서버 로직과 완벽 호환)
       if (data) {
         await api.put(`/admin/board/${data.idx}`, formData);
       } else {
@@ -91,7 +89,8 @@ export default function EventModal({ data, onClose, onSuccess }: ModalProps) {
             <label>썸네일 이미지 (필수)</label>
             <div className={styles.uploadBox} onClick={() => fileRef.current?.click()}>
               {formData.thumbnail_url ? (
-                <img src={`${PUBLIC_BASE_URL}${formData.thumbnail_url}`} alt="썸네일 프리뷰" />
+                // ✅ 수정: getImageUrl을 사용하여 프리뷰 주소를 생성합니다.
+                <img src={getImageUrl(formData.thumbnail_url)} alt="썸네일 프리뷰" />
               ) : (
                 <div className={styles.placeholder}><span>+</span><p>이미지 업로드</p></div>
               )}

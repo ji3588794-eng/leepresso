@@ -40,19 +40,6 @@ export default function StorePage() {
   const activeOverlayRef = useRef<any>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
-  const getImgSrc = (url: any) => {
-    if (!url || typeof url !== 'string' || url.trim() === '') {
-      return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    }
-    if (url.startsWith('http')) return url;
-    const cleanPath = url.startsWith('/') ? url : `/${url}`;
-    return cleanPath.includes('/uploads/')
-      ? `${API_BASE_URL}${cleanPath}`
-      : `${API_BASE_URL}/uploads${cleanPath}`;
-  };
-
   // 1. 매장 데이터 페칭
   useEffect(() => {
     const fetchStores = async () => {
@@ -75,50 +62,47 @@ export default function StorePage() {
     fetchStores();
   }, []);
 
-  // 2. 지도 초기화 로직 (핵심 수정 부분)
-const initMap = useCallback(() => {
-  if (!mapRef.current || !window.kakao || !window.kakao.maps) return;
+  // 2. 지도 초기화 로직
+  const initMap = useCallback(() => {
+    if (!mapRef.current || !window.kakao || !window.kakao.maps) return;
 
-  window.kakao.maps.load(() => {
-    // 대한민국 중앙 쪽으로 시작
-    const koreaCenter = new window.kakao.maps.LatLng(36.35, 127.85);
+    window.kakao.maps.load(() => {
+      const koreaCenter = new window.kakao.maps.LatLng(36.35, 127.85);
 
-    const newMap = new window.kakao.maps.Map(mapRef.current, {
-      center: koreaCenter,
-      level: 13,
+      const newMap = new window.kakao.maps.Map(mapRef.current, {
+        center: koreaCenter,
+        level: 13,
+      });
+
+      newMap.setMinLevel(7);   
+      newMap.setMaxLevel(13);  
+
+      setMap(newMap);
+
+      const refreshMap = () => {
+        if (!mapRef.current) return;
+        newMap.relayout();
+        newMap.setCenter(koreaCenter);
+        setIsMapLoading(false);
+      };
+
+      requestAnimationFrame(() => {
+        setTimeout(refreshMap, 300);
+      });
+
+      setTimeout(refreshMap, 800);
+
+      window.addEventListener("resize", refreshMap);
+
+      window.kakao.maps.event.addListener(newMap, "click", () => {
+        if (activeOverlayRef.current) {
+          activeOverlayRef.current.setMap(null);
+          activeOverlayRef.current = null;
+        }
+      });
     });
+  }, []);
 
-    // 확대/축소 가능 범위 제한
-    newMap.setMinLevel(7);   // 너무 확대 방지
-    newMap.setMaxLevel(13);  // 너무 축소돼서 해외까지 보이는 것 방지
-
-    setMap(newMap);
-
-    const refreshMap = () => {
-      if (!mapRef.current) return;
-      newMap.relayout();
-      newMap.setCenter(koreaCenter);
-      setIsMapLoading(false);
-    };
-
-    requestAnimationFrame(() => {
-      setTimeout(refreshMap, 300);
-    });
-
-    setTimeout(refreshMap, 800);
-
-    window.addEventListener("resize", refreshMap);
-
-    window.kakao.maps.event.addListener(newMap, "click", () => {
-      if (activeOverlayRef.current) {
-        activeOverlayRef.current.setMap(null);
-        activeOverlayRef.current = null;
-      }
-    });
-  });
-}, []);
-
-  // 라이브러리 로드 대기 및 실행
   useEffect(() => {
     const checkKakao = setInterval(() => {
       if (window.kakao && window.kakao.maps) {
@@ -153,9 +137,10 @@ const initMap = useCallback(() => {
 
     content.onmousedown = (e) => e.stopPropagation();
 
+    // ✅ 오버레이 이미지에도 getImageUrl 적용
     content.innerHTML = `
       <div style="width: 100%; height: 140px; background: #eee; position: relative;">
-        <img src="${getImgSrc(store.thumbnail_url)}" style="width: 100%; height: 100%; object-fit: cover;" />
+        <img src="${getImageUrl(store.thumbnail_url)}" style="width: 100%; height: 100%; object-fit: cover;" />
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6));"></div>
         <p style="position: absolute; bottom: 12px; left: 16px; color: white; font-weight: 800; font-size: 17px; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
           ${store.store_name}
@@ -213,70 +198,64 @@ const initMap = useCallback(() => {
     }
   }, [map, closeActiveOverlay]);
 
-const updateMap = useCallback((data: Store[]) => {
-  if (!map || !window.kakao || !mapRef.current) return;
+  const updateMap = useCallback((data: Store[]) => {
+    if (!map || !window.kakao || !mapRef.current) return;
 
-  map.relayout();
+    map.relayout();
 
-  markersRef.current.forEach((marker) => marker.setMap(null));
-  markersRef.current = [];
-  closeActiveOverlay();
+    markersRef.current.forEach((marker) => marker.setMap(null));
+    markersRef.current = [];
+    closeActiveOverlay();
 
-  const defaultCenter = new window.kakao.maps.LatLng(36.35, 127.85);
+    const defaultCenter = new window.kakao.maps.LatLng(36.35, 127.85);
 
-  if (data.length === 0) {
-    map.setCenter(defaultCenter);
-    map.setLevel(13);
-    return;
-  }
+    if (data.length === 0) {
+      map.setCenter(defaultCenter);
+      map.setLevel(13);
+      return;
+    }
 
-  const bounds = new window.kakao.maps.LatLngBounds();
-  const imageSrc = "https://cdn-icons-png.flaticon.com/512/924/924514.png";
+    const bounds = new window.kakao.maps.LatLngBounds();
+    const imageSrc = "https://cdn-icons-png.flaticon.com/512/924/924514.png";
+    const imageSize = new window.kakao.maps.Size(30, 30);
+    const markerImage = new window.kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      { offset: new window.kakao.maps.Point(15, 30) }
+    );
 
-  // 마커 축소
-  const imageSize = new window.kakao.maps.Size(30, 30);
-  const markerImage = new window.kakao.maps.MarkerImage(
-    imageSrc,
-    imageSize,
-    { offset: new window.kakao.maps.Point(15, 30) }
-  );
+    data.forEach((store) => {
+      if (
+        typeof store.lat !== "number" ||
+        typeof store.lng !== "number" ||
+        Number.isNaN(store.lat) ||
+        Number.isNaN(store.lng)
+      ) return;
 
-  data.forEach((store) => {
-    if (
-      typeof store.lat !== "number" ||
-      typeof store.lng !== "number" ||
-      Number.isNaN(store.lat) ||
-      Number.isNaN(store.lng)
-    ) return;
+      const position = new window.kakao.maps.LatLng(store.lat, store.lng);
 
-    const position = new window.kakao.maps.LatLng(store.lat, store.lng);
+      const marker = new window.kakao.maps.Marker({
+        position,
+        map,
+        image: markerImage,
+      });
 
-    const marker = new window.kakao.maps.Marker({
-      position,
-      map,
-      image: markerImage,
+      window.kakao.maps.event.addListener(marker, "click", () => {
+        showStoreOverlay(store);
+      });
+
+      markersRef.current.push(marker);
+      bounds.extend(position);
     });
 
-    window.kakao.maps.event.addListener(marker, "click", () => {
-      showStoreOverlay(store);
-    });
-
-    markersRef.current.push(marker);
-    bounds.extend(position);
-  });
-
-  if (markersRef.current.length > 0) {
-    map.setBounds(bounds, 40, 40, 40, 40);
-
-    // bounds 적용 후 한 단계 더 확대
-    setTimeout(() => {
-      const currentLevel = map.getLevel();
-
-      // 너무 넓게 보이면 1~2단계 확대
-      map.setLevel(Math.max(7, currentLevel - 1));
-    }, 120);
-  }
-}, [map, showStoreOverlay, closeActiveOverlay]);
+    if (markersRef.current.length > 0) {
+      map.setBounds(bounds, 40, 40, 40, 40);
+      setTimeout(() => {
+        const currentLevel = map.getLevel();
+        map.setLevel(Math.max(7, currentLevel - 1));
+      }, 120);
+    }
+  }, [map, showStoreOverlay, closeActiveOverlay]);
 
   useEffect(() => {
     if (!map) return;
@@ -319,12 +298,6 @@ const updateMap = useCallback((data: Store[]) => {
               매장 <span className="text-[#8D7B68]">안내</span>
             </h1>
           </motion.div>
-
-          {/* <div className="max-w-sm border-l-2 border-[#8D7B68]/30 pl-6 pb-2 opacity-60">
-            <p className="text-[14px] font-medium leading-relaxed break-keep">
-              리프레소의 최상의 커피 경험을<br className="md:hidden" /> 가까운 곳에서 만나보세요.
-            </p>
-          </div> */}
         </div>
       </section>
 
@@ -374,7 +347,8 @@ const updateMap = useCallback((data: Store[]) => {
                       <div className="flex gap-4">
                         <div className="relative w-24 h-24 md:w-28 md:h-28 shrink-0 rounded-lg overflow-hidden bg-[#F2F2F2]">
                           <Image
-                            src={getImgSrc(store.thumbnail_url)}
+                            // ✅ 리스트 이미지에도 getImageUrl 적용
+                            src={getImageUrl(store.thumbnail_url)}
                             alt={store.store_name}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
