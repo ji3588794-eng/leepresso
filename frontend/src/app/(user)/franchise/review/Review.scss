@@ -1,11 +1,11 @@
 .review {
   position: relative;
-  padding: 100px 0;
+  padding: 200px 0;
   background-color: #f9f5f0; // 리프레소 베이스 컬러 사용
   overflow: hidden;
 
   // 뒷배경 이미지 레이어 (전체 리뷰 이미지)
-// 뒷배경 이미지 레이어
+  // 뒷배경 이미지 레이어
   .bg-image-wrapper {
     position: absolute;
     inset: 0;
@@ -21,14 +21,14 @@
     .overlay {
       position: absolute;
       inset: 0;
-      
+
       // 1. 전체적으로 연한 흰색 씌우기 (글라스 느낌)
-      background-color: rgba(255, 255, 255, 0.7); 
-      
+      background-color: rgba(255, 255, 255, 0.7);
+
       // 2. 뒤에 깔린 이미지를 전체적으로 흐리게 뭉개기
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px); // 사파리 대응
-      
+
       // 서클이나 그라데이션 없이 전체 면적에 동일하게 적용
     }
   }
@@ -43,15 +43,17 @@
 
   .header {
     text-align: center;
-    padding-bottom:20px;
+    padding-bottom: 20px;
 
     h2 {
-      font-size: 34px;
+      font-size: 40px;
       font-weight: 700;
       color: #3e3232;
       margin-bottom: 10px;
 
-      span { color: #8d7b68; } // 포인트 컬러
+      span {
+        color: #8d7b68;
+      } // 포인트 컬러
     }
 
     .descText {
@@ -68,13 +70,13 @@
     gap: 30px;
     // 상단에 얇은 구분선을 넣어 가랜드 줄처럼 표현
     border-top: 1px dashed rgba(141, 123, 104, 0.8);
-    padding-top: 40px;
+    padding-top: 100px;
 
     .postit-item {
       flex: 1;
       max-width: 350px;
       transition: all 0.3s ease;
-      filter: drop-shadow(5px 8px 12px rgba(0,0,0,0.1));
+      filter: drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.1));
 
       img {
         width: 100%;
@@ -84,15 +86,23 @@
       }
 
       // 자연스러운 각도와 높낮이 조절
-      &:nth-child(1) { transform: rotate(-3deg); }
-      &:nth-child(2) { transform: rotate(2deg) translateY(15px); }
-      &:nth-child(3) { transform: rotate(-1.5deg) translateY(-5px); }
-      &:nth-child(4) { transform: rotate(3deg) translateY(10px); }
+      &:nth-child(1) {
+        transform: rotate(-3deg);
+      }
+      &:nth-child(2) {
+        transform: rotate(2deg) translateY(15px);
+      }
+      &:nth-child(3) {
+        transform: rotate(-1.5deg) translateY(-5px);
+      }
+      &:nth-child(4) {
+        transform: rotate(3deg) translateY(10px);
+      }
 
       &:hover {
         transform: scale(1.1) rotate(0deg) !important;
         z-index: 20;
-        filter: drop-shadow(10px 15px 25px rgba(0,0,0,0.15));
+        filter: drop-shadow(10px 15px 25px rgba(0, 0, 0, 0.15));
       }
     }
   }
@@ -107,7 +117,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 30px;
       border-top: none; // 모바일에서는 줄 제외
-      
+
       .postit-item {
         max-width: 100%;
         transform: none !important; // 모바일은 정갈하게
@@ -118,7 +128,9 @@
 
 @media (max-width: 480px) {
   .review {
-    .header h2 { font-size: 28px; }
+    .header h2 {
+      font-size: 28px;
+    }
     .postit-row {
       grid-template-columns: 1fr;
       padding: 0 40px;

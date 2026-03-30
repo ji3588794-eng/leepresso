@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import "./Keyword.scss";
 
-export default function Keyword() {
+const Keyword = () => {
   const [activeRow, setActiveRow] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef(null);
 
   const rowData = [
     {
@@ -11,7 +11,7 @@ export default function Keyword() {
       point: "B",
       title: "udget",
       sub: "최저비용",
-      text: "예비 창업주를 생각한 최적의 예산 설계. 불필요한 거품을 걷어내고 실질적 수익 구간을 앞당깁니다. ",
+      text: "예비 창업주를 생각한 최적의 예산 설계. 불필요한 거품을 걷어내고 실질적 수익 구간을 앞당깁니다.",
     },
     {
       no: 2,
@@ -36,47 +36,53 @@ export default function Keyword() {
     },
   ];
 
-  // ✅ 자동 순환
   useEffect(() => {
     startAutoSlide();
-    return () => stopAutoSlide();
+
+    return () => {
+      stopAutoSlide();
+    };
   }, []);
 
   const startAutoSlide = () => {
-    stopAutoSlide(); // 중복 방지
+    stopAutoSlide();
+
     intervalRef.current = setInterval(() => {
       setActiveRow((prev) => (prev + 1) % rowData.length);
-    }, 2000); // 3초마다 변경
+    }, 2000);
   };
 
   const stopAutoSlide = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
   };
 
   return (
-    <section id="strength" className="keyword">
+    <section id="keyword" className="keyword">
       <div className="container">
         <div className="int_title_box">
           <div className="int_title">리프레소를 완성하는</div>
           <div className="int_title_bottom">핵심 키워드</div>
         </div>
 
-        <div
-          className="int_content_box"
-          onMouseLeave={startAutoSlide} // 마우스 나가면 다시 자동 시작
-        >
+        <div className="int_content_box" onMouseLeave={startAutoSlide}>
           {rowData.map((item, i) => (
             <div
               key={i}
               className={`int_content_row ${activeRow === i ? "active" : ""}`}
               onMouseEnter={() => {
-                stopAutoSlide(); // 자동 멈춤
-                setActiveRow(i); // 해당 row 활성화
+                stopAutoSlide();
+                setActiveRow(i);
+              }}
+              onClick={() => {
+                stopAutoSlide();
+                setActiveRow(i);
               }}
             >
               <div className={`int_row_image row${item.no}`}></div>
+
               <div className="int_row_text_box">
                 <div className="int_row_title">
                   <span className="int_title_point">{item.point}</span>
@@ -96,4 +102,6 @@ export default function Keyword() {
       </div>
     </section>
   );
-}
+};
+
+export default Keyword;

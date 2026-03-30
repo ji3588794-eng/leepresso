@@ -1,6 +1,6 @@
 import "./Graph.scss";
 
-export default function Graph() {
+const Graph = () => {
   return (
     <section className="graph">
       <div className="container">
@@ -15,4 +15,6 @@ export default function Graph() {
       </div>
     </section>
   );
-}
+};
+
+export default Graph;

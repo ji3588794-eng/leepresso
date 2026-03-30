@@ -81,17 +81,17 @@ export default function FranchisePage() {
 
       <MachineFourth />
 
-      {/* 5. 창업 실행 프로세스 */}
-      <Process />
+      {/* 8. 리뷰섹션 */}
+      <Review />
 
       {/* 6. 가맹 비용 안내 */}
       <Price />
 
+      {/* 5. 창업 실행 프로세스 */}
+      <Process />
+
       {/* 7. 가맹 상담 신청 및 하단 고정 바 */}
       <Contact />
-
-      {/* 8. 리뷰섹션 */}
-      <Review />
     </div>
   );
 }
