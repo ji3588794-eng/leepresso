@@ -1,0 +1,72 @@
+@use "../../../mixin" as *;
+
+.franchise_menu {
+  background-color: var(--leepresso-bg);
+  padding: 100px 0;
+  color: var(--leepresso-deep);
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    .menu_bg {
+      width: 100%;
+      height: 850px;
+      padding: 70px 0;
+      @include bg-gradient-image(var(--leepresso-bg), var(--leepresso-bg), "/background_coffee.png");
+      .menu_title_box {
+        .menu_title {
+          font-size: 50px;
+          .menu_point {
+            background-color: #c46a2d;
+            margin: 0 10px;
+            color: #fff;
+            font-weight: 700;
+          }
+        }
+        .menu_sub_text {
+          padding: 20px 0;
+          font-size: 20px;
+        }
+        .menu_deco_text {
+          @include bg("/signature.png");
+          width: 100%;
+          height: 40px;
+        }
+      }
+
+      .menu_bottom_text {
+        font-size: 30px;
+        font-weight: 600;
+        .menu_bottom_point {
+          font-weight: 900;
+          color: #c46a2d;
+        }
+      }
+      .menu_swipe_box {
+        position: relative;
+        width: 100%;
+        height: 450px; // 이미지 높이에 맞게 조절
+
+        .fade_slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+          text-align: center;
+          z-index: 0;
+
+          img {
+            width: 450px;
+            margin: 0 auto;
+            display: block;
+          }
+        }
+
+        .fade_slide.active {
+          opacity: 1;
+          z-index: 2;
+        }
+      }
+    }
+  }
+}

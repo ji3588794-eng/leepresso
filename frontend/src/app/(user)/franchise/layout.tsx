@@ -9,9 +9,7 @@ export default function FranchiseLayout({ children }: { children: React.ReactNod
       <FranchiseHeader />
 
       {/* 실제 페이지 콘텐츠 (Hero, Price, Contact 등) */}
-      <main className="min-h-screen">
-        {children}
-      </main>
+      <main className="min-h-screen">{children}</main>
 
       {/* 퀵메뉴 */}
       <FranchiseQuickBar />

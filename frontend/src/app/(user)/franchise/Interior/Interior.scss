@@ -1,56 +1,150 @@
+@use "../../../mixin" as *;
+
 .interior {
-  background-color: #fff;
-  padding: 80px 0;
+  background-color: var(--leepresso-bg);
+  color: var(--leepresso-deep);
 
-  .container { max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
 
-  .header {
-    text-align: center; margin-bottom: 64px;
-    .sub { font-size: 11px; font-weight: 1000; color: #8D7B68; }
-    h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 1000; .point { color: #8D7B68; } }
-  }
+    .comp_bg {
+      position: relative;
+      width: 100%;
+      padding: 100px 0;
 
-  .grid {
-    display: flex; height: 700px; width: 100%; flex-direction: column;
-    @media (min-width: 1024px) { flex-direction: row; }
-  }
+      // ⭐ deco는 content랑 분리된 레이어
+      .comp_deco {
+        position: absolute;
+        width: 500px;
+        height: 38vw;
+        z-index: 20; // ⭐ 최상단
 
-  .card {
-    position: relative; flex: 1; overflow: hidden; transition: all 0.8s ease;
-    
-    @media (min-width: 1024px) {
-      &:not(:first-child) { margin-left: -4%; }
-      &:first-child { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); z-index: 1; }
-      &:nth-child(2), &:nth-child(3) { clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%); z-index: 2; }
-      &:last-child { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); z-index: 3; }
+        pointer-events: none; // 클릭 방해 방지 (선택)
+
+        &.deco_1 {
+          @include bg-cover("/comp_deco_1.png");
+          top: -300px;
+          right: -120px;
+        }
+
+        &.deco_2 {
+          @include bg-cover("/comp_deco_2.png");
+          bottom: -150px; // ⭐ 더 세게 빼줌
+          left: -200px;
+        }
+      }
+
+      .comp_content_box {
+        position: relative;
+        z-index: 2;
+
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: inset 0 8px 32px rgba(0, 0, 0, 0.1);
+
+        width: 90%;
+        margin: 0 auto;
+        padding: 50px;
+
+        .comp_title {
+          font-size: 50px;
+          font-weight: 700;
+          padding-bottom: 50px;
+
+          .comp_point {
+            background-color: var(--leepresso-point-red);
+            margin: 0 10px;
+            color: var(--white);
+          }
+        }
+
+        .comp_bottom_box {
+          padding-top: 50px;
+
+          .comp_bottom_text {
+            font-size: 30px;
+            font-weight: 600;
+          }
+        }
+
+        .comp_swipe_box {
+          width: 100vw;
+          margin-left: calc(-50vw + 50%);
+
+          .slider-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            overflow: hidden; // 👉 여기 있어도 이제 영향 없음
+
+            .slider-track {
+              display: flex;
+              width: max-content;
+              animation: infinite-slider 20s linear infinite;
+
+              &:hover {
+                animation-play-state: paused;
+              }
+
+              .slider-set {
+                display: flex;
+                gap: 0.75rem;
+                padding-right: 0.75rem;
+
+                @media (min-width: 640px) {
+                  gap: 1rem;
+                  padding-right: 1rem;
+                }
+
+                @media (min-width: 1024px) {
+                  gap: 1.25rem;
+                  padding-right: 1.25rem;
+                }
+
+                .slider-card {
+                  flex-shrink: 0;
+
+                  .card-inner {
+                    position: relative;
+                    overflow: hidden;
+                    background-color: #e0dcd3;
+
+                    height: 250px;
+                    width: 350px;
+
+                    @media (min-width: 640px) {
+                      height: 300px;
+                      width: 420px;
+                    }
+                    @media (min-width: 768px) {
+                      height: 350px;
+                      width: 480px;
+                    }
+                    @media (min-width: 1024px) {
+                      height: 400px;
+                      width: 550px;
+                    }
+
+                    img {
+                      position: absolute;
+                      inset: 0;
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
-
-    &.light { background: #F9F5F0; .bgAlpha, .title { color: #3E3232; } }
-    &.dark { background: #3E3232; .bgAlpha, .title { color: #fff; } }
-
-    &:hover {
-      .bgAlpha { transform: scale(1.1); }
-      .title { transform: translateY(-16px); }
-      .hoverContent { opacity: 1; transform: translateY(0); }
-    }
-  }
-
-  .bgAlpha {
-    position: absolute; inset: 0; font-size: 380px; font-weight: 1000; opacity: 0.04;
-    display: flex; align-items: center; justify-content: center; transition: 0.7s;
-  }
-
-  .content {
-    position: relative; height: 100%; padding: 40px; text-align: center;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-  }
-
-  .badge { padding: 4px 12px; font-size: 10px; background: #8D7B68; color: #fff; margin-bottom: 24px; }
-  .title { font-size: 48px; font-weight: 1000; transition: 0.5s; .point { color: #8D7B68; } }
-
-  .hoverContent {
-    position: absolute; bottom: 80px; width: 100%; opacity: 0; transform: translateY(40px); transition: 0.5s;
-    .line { width: 40px; height: 4px; background: #8D7B68; margin: 0 auto 20px; }
-    p { font-size: 14px; padding: 0 32px; font-weight: 700; }
   }
 }

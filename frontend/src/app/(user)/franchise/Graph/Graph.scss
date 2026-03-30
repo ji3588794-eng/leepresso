@@ -1,0 +1,38 @@
+@use "../../../mixin" as *;
+
+.graph {
+  background: linear-gradient(to bottom, var(--white) 50%, var(--leepresso-bg) 100%);
+  padding: 200px 0;
+  color: var(--leepresso-deep);
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    .graph_bg {
+      @include bg-gradient-image(var(--white), var(--leepresso-bg), "/graph_bg.png");
+      height: 40vw;
+      width: 100%;
+      position: relative;
+      z-index: 30;
+      .graph_text_box {
+        text-align: left;
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 5%;
+        .graph_title {
+          font-size: 30px;
+          font-weight: 700;
+          .equip_title_point {
+            font-size: 70px;
+            font-family: var(--font-pen);
+            font-weight: 100;
+          }
+        }
+        .graph_sub_text {
+          font-size: 20px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
