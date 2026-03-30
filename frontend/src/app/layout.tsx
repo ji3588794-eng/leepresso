@@ -21,7 +21,6 @@ export const viewport: Viewport = {
 
 // 💡 검색엔진 최적화(SEO) 상세 설정
 export const metadata: Metadata = {
-  // 1. 기본 텍스트 정보
   title: {
     default: SITE_INFO.title,
     template: `%s | ${SITE_INFO.title}`,
@@ -29,7 +28,6 @@ export const metadata: Metadata = {
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
 
-  // 2. 검색엔진 로봇 제어
   robots: {
     index: true,
     follow: true,
@@ -40,12 +38,10 @@ export const metadata: Metadata = {
     },
   },
 
-  // 3. 중복 주소 방지 (Canonical URL)
   alternates: {
     canonical: SITE_INFO.url,
   },
 
-  // 4. 소셜 공유 메타데이터 (카톡, 페이스북 등)
   openGraph: {
     title: SITE_INFO.title,
     description: SITE_INFO.description,
@@ -63,7 +59,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  // 5. 트위터(X) 공유 카드
   twitter: {
     card: "summary_large_image",
     title: SITE_INFO.title,
@@ -71,32 +66,52 @@ export const metadata: Metadata = {
     images: [SITE_INFO.ogImage],
   },
 
-  // 6. 파비콘 및 사과 아이콘 (public 폴더 기준)
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 
-  // 7. 사이트 소유권 인증 (구글 서치콘솔 등)
   verification: {
-    // 💡 여기에 발급받은 코드를 넣으시면 됩니다.
     google: "UID2R0MPFk0L-ub0jkyLBTG_k6blaXLOiAWBZROnaIY",
-    // 필요 시 네이버 서치어드바이저 등도 여기에 추가 가능
-    // other: {
-    //   "naver-site-verification": ["네이버코드"],
-    // },
   },
 
-  // 8. 기타 언어 및 형식 정보
   category: "business",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // 💡 구글 서브메뉴(Sitelinks) 노출을 위한 구조화 데이터
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "리프레소(LEEPRESSO)",
+    "url": SITE_INFO.url,
+    "logo": "https://leepresso.com/images/common/logo.png", // 💡 원래 있던 로고 경로입니다.
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "1522-0290", // 💡 리프레소 공식 대표번호입니다.
+      "contactType": "customer service"
+    },
+    "hasPart": [
+      { "@type": "WebPage", "name": "브랜드 스토리", "url": `${SITE_INFO.url}/brand` },
+      { "@type": "WebPage", "name": "메뉴 소개", "url": `${SITE_INFO.url}/menu` },
+      { "@type": "WebPage", "name": "창업 안내", "url": `${SITE_INFO.url}/franchise` },
+      { "@type": "WebPage", "name": "매장 찾기", "url": `${SITE_INFO.url}/store` },
+      { "@type": "WebPage", "name": "창업 문의", "url": `${SITE_INFO.url}/contact` }
+    ]
+  };
+
   return (
     <html lang="ko" suppressHydrationWarning>
-      <head></head>
-      <body className="antialiased">{children}</body>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="antialiased">
+        {children}
+      </body>
     </html>
   );
 }
