@@ -44,10 +44,9 @@ export default function Contact() {
     <>
       <section id="contact" className="contact">
         <div className="container">
-          <div className="header">
-            <p className="sub">Franchise Contact</p>
-            <h3>가맹 상담 신청</h3>
-            <div className="line" />
+          <div className="header contact">
+            <h2>가맹 상담 신청</h2>
+            <div className="infoRow"></div>
           </div>
 
           <div className="grid">

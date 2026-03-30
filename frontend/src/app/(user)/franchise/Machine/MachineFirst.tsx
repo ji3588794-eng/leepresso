@@ -2,7 +2,7 @@ import "./Machine.scss";
 
 export default function MachineFirst() {
   return (
-    <section className="machine">
+    <section id="machine" className="machine">
       <div className="container">
         <div className="machine_bg">
           <div className="ma_title_box">

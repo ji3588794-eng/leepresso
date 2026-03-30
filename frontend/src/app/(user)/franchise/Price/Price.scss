@@ -1,30 +1,150 @@
+@use "../../../mixin" as *;
+
 .price {
-  background: #F9F5F0; padding: 80px 24px; color: #3E3232;
-  .container { max-width: 1152px; margin: 0 auto; }
-  
+  padding: 200px 24px;
+  color: #3e3232;
+
+  .container {
+    max-width: 1152px;
+    margin: 0 auto;
+  }
+
   .header {
-    text-align: center; margin-bottom: 40px;
-    h2 { font-size: 32px; font-weight: 900; }
-    .sub { font-size: 15px; font-weight: 700; color: #8D7B68; margin-top: 10px; }
-    .infoRow { margin-top: 32px; border-bottom: 1px solid #3E3232; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 11px; opacity: 0.6; }
+    margin-bottom: 40px;
+
+    h2 {
+      font-size: 50px;
+      font-weight: 900;
+    }
+
+    .infoRow {
+      margin-top: 32px;
+      padding-bottom: 8px;
+      color: #999999;
+      border-bottom: 1px solid #a9443d;
+
+      display: flex;
+      justify-content: space-between;
+
+      font-size: 13px;
+    }
   }
 
   .tableWrapper {
-    overflow: hidden; border: 1px solid #E8D5C4; background: #fff;
-    .table { width: 100%; border-collapse: collapse; }
-    thead { background: #3E3232; color: #fff; th { padding: 16px; font-size: 14px; font-weight: 900; } }
-    tbody td { padding: 20px; border-bottom: 1px solid #E8D5C4; border-right: 1px solid #E8D5C4; text-align: center; }
-    .even { background: rgba(249, 245, 240, 0.5); }
-    .name { font-size: 13px; font-weight: 700; }
-    .costCol { .old { display: block; font-size: 11px; text-decoration: line-through; opacity: 0.3; } .cost { font-size: 16px; font-weight: 900; } }
-    .desc { text-align: left; font-size: 15px; padding-left: 24px; }
-    .badge { font-weight: 900; color: #8D7B68; font-size: 12px; }
+    overflow: hidden;
+    border: 1px solid #e8d5c4;
+    background: #fff;
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #3e3232;
+      color: #fff;
+
+      th {
+        padding: 16px;
+        font-size: 14px;
+        font-weight: 900;
+      }
+    }
+
+    tbody {
+      td {
+        padding: 20px;
+        text-align: center;
+
+        border-bottom: 1px solid #e8d5c4;
+        border-right: 1px solid #e8d5c4;
+      }
+    }
+
+    .even {
+      background: rgba(249, 245, 240, 0.5);
+    }
+
+    .name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .costCol {
+      .old {
+        display: block;
+        font-size: 11px;
+        text-decoration: line-through;
+        opacity: 0.3;
+      }
+
+      .cost {
+        font-size: 16px;
+        font-weight: 900;
+      }
+    }
+
+    .desc {
+      text-align: left;
+      font-size: 15px;
+      padding-left: 24px;
+    }
+
+    .badge {
+      font-size: 12px;
+      font-weight: 900;
+      color: #8d7b68;
+    }
   }
 
   .totalBox {
-    margin-top: 16px; background: #8D7B68; padding: 24px 40px; color: #fff; display: flex; justify-content: space-between; align-items: center;
-    @media (max-width: 768px) { flex-direction: column; gap: 10px; }
-    h3 { font-size: 20px; font-weight: 900; span { font-size: 14px; opacity: 0.8; } }
-    .totalPrice { font-size: 40px; font-weight: 1000; }
+    margin-top: 16px;
+    padding: 25px 40px;
+
+    color: var(--leepresso-deep);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 32px;
+      font-weight: 900;
+
+      span {
+        font-size: 16px;
+      }
+    }
+
+    .totalPrice {
+      font-size: 50px;
+      font-weight: 1000;
+      color: var(--leepresso-point-red);
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 120%;
+        height: 120%;
+        bottom: -30px;
+        left: 0px;
+        @include bg-cover("/underline_3.png");
+      }
+    }
+
+    @media (max-width: 850px) {
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (max-width: 550px) {
+      .totalPrice {
+        &::after {
+          @include bg("/star_1.png");
+          width: 100px;
+          bottom: 40px;
+          left: -50px;
+        }
+      }
+    }
   }
 }
