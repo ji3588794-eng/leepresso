@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from './stores.module.scss';
 import api, { getImageUrl } from '@/app/lib/api';
 import type { StoreItem } from './page';
@@ -15,7 +15,7 @@ export default function StoreModal({ data, onClose, onSuccess }: StoreModalProps
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
 
-  // 1. 폼 상태 관리 (Cloudinary는 전체 URL을 저장하므로 thumbnail_url만 관리)
+  // 1. 폼 상태 관리 (Cloudinary 전체 URL 사용)
   const [formData, setFormData] = useState({
     store_name: data?.store_name || '',
     address: data?.address || '',
@@ -24,15 +24,32 @@ export default function StoreModal({ data, onClose, onSuccess }: StoreModalProps
     lat: data?.lat !== null && data?.lat !== undefined ? String(data.lat) : '',
     lng: data?.lng !== null && data?.lng !== undefined ? String(data.lng) : '',
     is_active: data ? Number(data.is_active) : 1,
-    thumbnail_url: data?.thumbnail_url || '', // DB에 저장된 전체 URL 사용
+    thumbnail_url: data?.thumbnail_url || '', 
   });
 
-  // 초기 미리보기 설정 (이미 데이터가 있으면 getImageUrl로 Cloudinary 주소 판별)
+  // 초기 미리보기 설정
   const [previewUrl, setPreviewUrl] = useState(
     data?.thumbnail_url ? getImageUrl(data.thumbnail_url) : ''
   );
 
-  // 2. 이미지 업로드 핸들러 (Cloudinary 연동 핵심)
+  // 데이터 변경 감지 (수정 모드 전환 시)
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        store_name: data.store_name || '',
+        address: data.address || '',
+        phone: data.phone || '',
+        hours: data.hours || '',
+        lat: data.lat !== null && data.lat !== undefined ? String(data.lat) : '',
+        lng: data.lng !== null && data.lng !== undefined ? String(data.lng) : '',
+        is_active: Number(data.is_active),
+        thumbnail_url: data.thumbnail_url || '',
+      });
+      setPreviewUrl(data.thumbnail_url ? getImageUrl(data.thumbnail_url) : '');
+    }
+  }, [data]);
+
+  // 2. 이미지 업로드 핸들러
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -47,13 +64,9 @@ export default function StoreModal({ data, onClose, onSuccess }: StoreModalProps
       });
 
       if (res.data.success) {
-        // ⭐ Cloudinary에서 준 전체 주소 (https://...)
+        // ⭐ 핵심: res.data.path(Cloudinary URL)를 그대로 사용
         const newImageUrl = res.data.path;
-
-        // DB 저장용 상태 업데이트
         setFormData((prev) => ({ ...prev, thumbnail_url: newImageUrl }));
-        
-        // 미리보기 즉시 업데이트
         setPreviewUrl(newImageUrl);
       }
     } catch (err) {

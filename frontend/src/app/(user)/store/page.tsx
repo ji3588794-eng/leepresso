@@ -137,7 +137,7 @@ export default function StorePage() {
 
     content.onmousedown = (e) => e.stopPropagation();
 
-    // ✅ 오버레이 이미지에도 getImageUrl 적용
+    // ⭐ 오버레이 이미지에도 getImageUrl 적용
     content.innerHTML = `
       <div style="width: 100%; height: 140px; background: #eee; position: relative;">
         <img src="${getImageUrl(store.thumbnail_url)}" style="width: 100%; height: 100%; object-fit: cover;" />
@@ -347,7 +347,7 @@ export default function StorePage() {
                       <div className="flex gap-4">
                         <div className="relative w-24 h-24 md:w-28 md:h-28 shrink-0 rounded-lg overflow-hidden bg-[#F2F2F2]">
                           <Image
-                            // ✅ 리스트 이미지에도 getImageUrl 적용
+                            // ⭐ 리스트 이미지에도 getImageUrl 적용
                             src={getImageUrl(store.thumbnail_url)}
                             alt={store.store_name}
                             fill
