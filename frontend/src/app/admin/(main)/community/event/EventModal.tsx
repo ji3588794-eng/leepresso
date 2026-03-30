@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './event.module.scss';
 import { EventData } from './page';
 

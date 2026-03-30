@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import api from "@/app/lib/api"; 
+import api, { getImageUrl } from "@/app/lib/api"; 
 import styles from "./Popup.module.scss";
 
 const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001")

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Play, Pause } from "lucide-react";
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 
 interface MenuItem {
   id?: string | number;

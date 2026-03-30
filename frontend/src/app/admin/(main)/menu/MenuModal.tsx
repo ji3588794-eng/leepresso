@@ -2,21 +2,13 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from './menu.module.scss';
-import api from '@/app/lib/api';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const UPLOAD_BASE_URL = `${API_BASE_URL}/uploads/`;
+import api, { getImageUrl } from '@/app/lib/api';
 
 export default function MenuModal({ data, onClose, onSuccess }: any) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  
-  // 헬퍼 함수: URL에서 파일명만 추출
-  const getFileNameOnly = (url: string) => {
-    if (!url) return '';
-    return url.replace(UPLOAD_BASE_URL, '');
-  };
 
+  // 1. 초기 상태 설정
   const [formData, setFormData] = useState({
     type: data?.type || 'coffee',
     name: data?.name || '',
@@ -24,11 +16,13 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
     description: data?.description || '',
     price: data?.price || 0,
     is_active: data ? Number(data.is_active) : 1,
-    thumbnail_url: getFileNameOnly(data?.thumbnail_url || ''),
+    thumbnail_url: data?.thumbnail_url || '', 
   });
 
-  const [previewUrl, setPreviewUrl] = useState(data?.thumbnail_url || '');
+  // 초기 미리보기 설정: 이미 데이터가 있으면 getImageUrl을 통해 가져옵니다.
+  const [previewUrl, setPreviewUrl] = useState(data?.thumbnail_url ? getImageUrl(data.thumbnail_url) : '');
 
+  // 2. 이미지 업로드 핸들러
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -43,10 +37,16 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
       });
 
       if (res.data.success) {
-        // 백엔드에서 받은 파일명만 저장 (예: "171065000.jpg")
-        setFormData(prev => ({ ...prev, thumbnail_url: res.data.filename }));
-        // 미리보기는 전체 경로로 표시
-        setPreviewUrl(UPLOAD_BASE_URL + res.data.filename);
+        // ⭐ Cloudinary에서 준 전체 URL (https://res.cloudinary.com/...)
+        const newImageUrl = res.data.path; 
+        
+        // DB 저장용 상태 업데이트
+        setFormData(prev => ({ ...prev, thumbnail_url: newImageUrl }));
+        
+        // 미리보기 즉시 업데이트 (전체 경로이므로 그대로 사용)
+        setPreviewUrl(newImageUrl);
+        
+        console.log("업로드 성공 시 URL:", newImageUrl);
       }
     } catch (err) {
       console.error(err);
@@ -58,20 +58,15 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // 데이터 전송 전 정제 (가격 숫자형 변환 등)
     const payload = {
       ...formData,
       price: Number(formData.price),
-      // category: 'menu' 가 백엔드 INSERT문에 하드코딩 되어있으므로 POST 시 포함
     };
 
     try {
       if (data) {
-        // 수정 모드
         await api.put(`/admin/menu/${data.idx}`, payload);
       } else {
-        // 등록 모드
         await api.post('/admin/menu', payload);
       }
       onSuccess();
@@ -90,9 +85,17 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
           <div className={styles.inputRow}>
             <label>썸네일 이미지</label>
             <div className={styles.thumbUpload}>
-              {previewUrl ? (
+              {/* previewUrl이 있을 때만 이미지를 보여줌 */}
+              {previewUrl && previewUrl !== '' ? (
                 <div className={styles.previewBox}>
-                  <img src={previewUrl} alt="미리보기" />
+                  <img 
+                    src={previewUrl} 
+                    alt="미리보기" 
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 대체 이미지 처리 (옵션)
+                      (e.target as HTMLImageElement).src = '/images/no-image.png';
+                    }}
+                  />
                   <button 
                     type="button" 
                     className={styles.removeBtn} 
@@ -106,7 +109,7 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
                 </div>
               ) : (
                 <div className={styles.uploadPlaceholder} onClick={() => fileInputRef.current?.click()}>
-                  <span>+ 이미지 업로드</span>
+                  <span>{loading ? '업로드 중...' : '+ 이미지 업로드'}</span>
                 </div>
               )}
               <input 
@@ -119,6 +122,7 @@ export default function MenuModal({ data, onClose, onSuccess }: any) {
             </div>
           </div>
 
+          {/* ... 나머지 입력 폼 부분은 동일 ... */}
           <div className={styles.inputRow}>
             <label>메뉴 타입</label>
             <select value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>

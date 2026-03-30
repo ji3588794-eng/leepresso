@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from './popup.module.scss';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import { PopupData } from './page';
 
 const PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/admin|\/admin|\/api/g, '') || 'http://localhost:3001';

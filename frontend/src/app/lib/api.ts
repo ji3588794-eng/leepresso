@@ -26,3 +26,11 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export const getImageUrl = (url: string | null | undefined) => {
+  if (!url) return '/images/no-image.png'; // 이미지 없을 때 기본값
+  // 이미 http로 시작하면 Cloudinary 주소이므로 그대로 반환
+  if (url.startsWith('http')) return url;
+  // 아니면 기존 방식대로 백엔드 uploads 폴더 참조 (하이브리드 대응)
+  return `${process.env.NEXT_PUBLIC_API_URL}/uploads/${url}`;
+};

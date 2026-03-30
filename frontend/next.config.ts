@@ -6,8 +6,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com', // ✨ Cloudinary 도메인 추가
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'leepresso-project.onrender.com',
-        port: '',
         pathname: '/**',
       },
       {
@@ -29,4 +33,4 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

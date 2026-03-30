@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './inquiry.module.scss';
 import { Trash2, X, User, Phone, MapPin, Store, Mail, Monitor, HelpCircle, Calendar } from 'lucide-react';
 

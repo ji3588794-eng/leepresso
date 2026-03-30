@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './voice.module.scss';
 import VoiceModal from './VoiceModal';
 import { Search } from 'lucide-react';

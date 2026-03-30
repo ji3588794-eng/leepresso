@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './voice.module.scss';
 import { VoiceData } from './page';
 

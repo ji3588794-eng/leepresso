@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './admin.module.scss';
 import { Settings, ShieldAlert, Layout, Upload } from 'lucide-react';
 

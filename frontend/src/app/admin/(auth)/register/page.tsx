@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './register.module.scss';
-import api from '@/app/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 
 export default function AdminRegisterPage() {
   const router = useRouter();
