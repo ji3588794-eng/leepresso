@@ -15,7 +15,7 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({
   origin: [
     'https://leepresso.com',
-    'https://leepresso.com',
+    'https://www.leepresso.com',
     'https://leepresso-project.vercel.app',
     'http://localhost:3000'
   ],
