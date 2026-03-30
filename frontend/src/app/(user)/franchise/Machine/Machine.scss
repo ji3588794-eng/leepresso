@@ -37,7 +37,7 @@
         @include bg("/background_3.png");
         background-repeat: repeat;
         width: 100%;
-        height: 500px;
+        height: 600px;
         .ma_contents_box {
           width: 50%;
           margin: 0 auto;
@@ -65,16 +65,38 @@
               width: 60%;
               text-align: left;
               .row_text_box {
-                padding: 30px 30px 0 20px;
+                padding: 30px;
                 .row_title {
                   font-size: 25px;
                   font-weight: 700;
-                  padding-bottom: 10px;
+                  padding-bottom: 20px;
                 }
                 .row_text {
                   font-size: 17px;
                   padding-bottom: 10px;
+                  position: relative;
+                  font-weight: 500;
+                  &::after {
+                    content: "";
+                    position: absolute;
+                    width: 2px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 40px;
+                    border-left: 2px solid var(--leepresso-point);
+                  }
+                  span {
+                    color: var(--leepresso-point-red);
+                    font-weight: 700;
+                  }
                 }
+              }
+            }
+          }
+          &.top {
+            .row_text {
+              &::after {
+                left: -15px;
               }
             }
           }
@@ -88,12 +110,284 @@
               &.left {
                 text-align: right;
                 .row_text_box {
-                  padding: 30px 20px 0 30px;
+                  padding: 30px;
+                  .row_text {
+                    &::after {
+                      right: -15px;
+                    }
+                  }
                 }
               }
             }
           }
         }
+      }
+    }
+  }
+
+  // ------------------------------------
+  &.second {
+    .m_container {
+      height: 500px;
+      position: relative;
+    }
+    .machine_back {
+      background-color: rgba(255, 178, 102, 0.38);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      // background-color: #ffb266;
+    }
+    .m_top_section {
+      width: 90%;
+      height: 300px;
+      margin: 0 auto;
+      .m_image_box {
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+        vertical-align: middle;
+        padding: 20px;
+
+        .image_baristar {
+          position: absolute;
+          @include bg("/baristar_2.png");
+          width: 300px;
+          height: 100%;
+          top: -140px;
+        }
+        .image_machine {
+          position: absolute;
+          @include bg("/machine_sv_1.png");
+          width: 450px;
+          height: 100%;
+          top: -200px;
+          left: 370px;
+        }
+      }
+      .m_text_box {
+        display: inline-block;
+        width: 50%;
+        vertical-align: middle;
+        text-align: left;
+        font-family: var(--font-pretendard);
+        .m_sub_text {
+          font-size: 20px;
+          font-weight: 700;
+        }
+        .m_main_text {
+          font-size: 50px;
+          font-weight: 700;
+          word-spacing: 10px;
+          span {
+            font-family: var(--font-pen);
+            font-size: 70px;
+          }
+          p {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+
+            &::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              bottom: 15px;
+
+              width: 100%;
+              height: 30px;
+
+              @include bg("/under_line_2.png");
+
+              z-index: -1;
+            }
+          }
+        }
+      }
+    }
+    .m_bottom_container {
+      width: 90%;
+      margin: 0 auto;
+      text-align: center;
+      .m_contents_box {
+        .m_row_box {
+          display: inline-block;
+          width: calc((100% - 50px) / 2);
+          margin-right: 50px;
+          margin-bottom: 50px;
+          background-color: #fff;
+          border: 1px solid var(--leepresso-deep);
+          font-size: 15px;
+          font-weight: 700;
+          padding: 20px;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.315);
+          .m_row_cate {
+            text-align: left;
+          }
+          .m_row_title {
+            font-size: 25px;
+            font-weight: 900;
+            padding: 15px 0 25px;
+          }
+          .m_row_text {
+            padding-bottom: 25px;
+            font-size: 20px;
+            z-index: 5;
+          }
+          &.active {
+            background-color: #ffb266;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+            &::after {
+              content: "";
+              position: absolute;
+              @include bg("/check_1.png");
+              width: 200px;
+              height: 200px;
+              left: 40px;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              z-index: -1;
+            }
+          }
+        }
+        :nth-child(2n) {
+          margin-right: 0 !important;
+        }
+      }
+    }
+  }
+  // ------------------------------------
+  &.third {
+    font-family: var(--font-pretendard) !important;
+    padding-bottom: 150px;
+    .container {
+      .m_third_contents_box {
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.315);
+        text-align: left;
+        .third_img_box {
+          @include bg-cover("/machine_sv_1_2.png");
+          width: 40%;
+          display: inline-block;
+          height: 800px;
+          vertical-align: middle;
+        }
+        .third_text_box {
+          display: inline-block;
+          vertical-align: middle;
+          padding: 20px 50px;
+          width: 60%;
+
+          .text_top_box {
+            padding-bottom: 25px;
+            font-weight: 700;
+
+            .third_text_point {
+              color: var(--leepresso-point-red);
+              font-size: 15px;
+              padding-bottom: 25px;
+            }
+            .third_text_title {
+              font-size: 50px;
+              padding-bottom: 25px;
+              font-weight: 500;
+              font-family: var(--font-jeju) !important;
+            }
+            .third_text_sub {
+              font-size: 20px;
+              font-weight: 500;
+              padding-bottom: 30px;
+            }
+          }
+          .text_row_box {
+            .text_row {
+              border-top: 1px solid #e8d5c4;
+              border-bottom: 1px solid #e8d5c4;
+              padding: 30px;
+              min-height: 100px;
+              width: 100%;
+              .row_title {
+                display: inline-block;
+                width: 300px;
+                font-size: 20px;
+                font-weight: 700;
+                vertical-align: middle;
+                text-align: center;
+              }
+              .row_text {
+                display: inline-block;
+                width: calc(100% - 300px);
+                font-size: 15px;
+                font-weight: 500;
+                vertical-align: middle;
+                width: 50%;
+              }
+            }
+          }
+        }
+        .leepresso_mark_box {
+          text-align: right;
+          padding: 20px 0 0;
+          .leepresso_mark {
+            display: inline-block;
+            @include bg("/leepresso_2.png");
+            width: 200px;
+            height: 50px;
+          }
+        }
+      }
+    }
+  }
+  // -------------------------------------
+  &.fourth {
+    .container {
+      &:nth-child(2) {
+        padding-top: 200px;
+      }
+      .m_fourth_contents_box {
+        .m_fourth_row {
+          width: 100%;
+          font-family: var(--font-pretendard);
+          .memo_back {
+            width: calc((100% - 40px) / 4);
+            display: inline-block;
+            margin-right: 10px;
+            @include bg("/memo_1.png");
+            height: 400px;
+            vertical-align: middle;
+            padding: 80px 0;
+            &.brown {
+              @include bg("/memo_2.png");
+              .memo_text_box {
+                border-top: 1px solid #8d7b68;
+              }
+            }
+            .memo_title {
+              font-size: 25px;
+              font-weight: 700;
+              padding-bottom: 20px;
+            }
+            .memo_text_box {
+              width: 50%;
+              margin: 0 auto;
+              border-top: 1px solid #e8d5c4;
+              .memo_text {
+                padding-top: 20px;
+                font-size: 17px;
+                font-weight: 500;
+                span {
+                  font-weight: 900;
+                }
+              }
+            }
+          }
+        }
+      }
+      .machine_graph_image {
+        @include bg("/graph_image_2.png");
+        width: 100%;
+        height: 57vw;
       }
     }
   }

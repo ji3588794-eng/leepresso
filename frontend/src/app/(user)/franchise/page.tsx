@@ -11,6 +11,9 @@ import Contact from "./Contact/Contact";
 import Review from "./review/review";
 import FranchiseMenu from "./FranchiseMenu/FranchiseMenu";
 import MachineFirst from "./Machine/MachineFirst";
+import MachineSecond from "./Machine/MachineSecond";
+import MachineThird from "./Machine/MachineThird";
+import MachineFourth from "./Machine/MachineFourth";
 
 export default function FranchisePage() {
   // 스크롤 로직(Hash 처리)은 페이지 전체에 영향을 주므로 여기에 남겨둡니다.
@@ -71,6 +74,12 @@ export default function FranchisePage() {
 
       {/* 머신 */}
       <MachineFirst />
+
+      <MachineSecond />
+
+      <MachineThird />
+
+      <MachineFourth />
 
       {/* 5. 창업 실행 프로세스 */}
       <Process />
