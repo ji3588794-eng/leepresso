@@ -1,11 +1,10 @@
 .review {
   position: relative;
-  padding: 200px 0;
-  background-color: #f9f5f0; // 리프레소 베이스 컬러 사용
+  padding: 100px 0; // [수정] 텍스트 간격 축소를 위해 전체 패딩 감소
+  background-color: #f9f5f0; 
   overflow: hidden;
+  font-family: 'Suit', sans-serif; // 리프레소 지정 폰트 사용
 
-  // 뒷배경 이미지 레이어 (전체 리뷰 이미지)
-  // 뒷배경 이미지 레이어
   .bg-image-wrapper {
     position: absolute;
     inset: 0;
@@ -15,112 +14,202 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      // 이미지 자체 선명도를 조절하고 싶으면 여기서 opacity 조정
+      opacity: 0.3; // [수정] 배경 투명도 감소로 앞면 사진 집중도 향상
     }
 
     .overlay {
       position: absolute;
       inset: 0;
-
-      // 1. 전체적으로 연한 흰색 씌우기 (글라스 느낌)
-      background-color: rgba(255, 255, 255, 0.7);
-
-      // 2. 뒤에 깔린 이미지를 전체적으로 흐리게 뭉개기
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px); // 사파리 대응
-
-      // 서클이나 그라데이션 없이 전체 면적에 동일하게 적용
+      background: linear-gradient(
+        to bottom,
+        #f9f5f0 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        #f9f5f0 100%
+      );
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
     }
   }
 
   .container {
     position: relative;
     z-index: 10;
-    max-width: 1500px;
+    max-width: 1500px; // [수정] 사진 확대를 위해 컨테이너 넓힘
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
   }
 
   .header {
     text-align: center;
-    padding-bottom: 20px;
+    margin-bottom: 50px; // [수정] 하단 마진 대폭 감소 (사진에 집중)
+
+    .sub-title {
+      display: block;
+      font-size: 13px; // [수정] 폰트 크기 감소
+      font-weight: 800;
+      color: #8d7b68;
+      letter-spacing: 0.25em; // 자간은 유지
+      margin-bottom: 10px; // [수정] 간격 축소
+      text-transform: uppercase;
+    }
 
     h2 {
-      font-size: 40px;
-      font-weight: 700;
+      font-size: 42px; // [수정] 폰트 크기 미세 감소 (부드러움 강조)
+      font-weight: 900;
       color: #3e3232;
-      margin-bottom: 10px;
+      line-height: 1.25; // [수정] 행간 축소
+      margin-bottom: 15px; // [수정] 간격 축소
 
       span {
         color: #8d7b68;
-      } // 포인트 컬러
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 0;
+          width: 100%;
+          height: 10px;
+          background-color: rgba(141, 123, 104, 0.12);
+          z-index: -1;
+        }
+      }
     }
 
-    .descText {
-      font-size: 16px;
-      color: #777;
+    .desc {
+      font-size: 16px; // [수정] 폰트 크기 감소
+      line-height: 1.6; // 행간 축소
+      color: #7a6e66;
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto; // 중앙 정렬
     }
   }
 
-  // 포스트잇 가로 배치 및 가랜드 느낌
+  .postit-board {
+    position: relative;
+    padding-top: 30px;
+
+    // 가랜드 줄 디테일
+    .hang-line {
+      position: absolute;
+      top: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(141, 123, 104, 0.3), transparent);
+      z-index: 5;
+    }
+  }
+
   .postit-row {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 30px;
-    // 상단에 얇은 구분선을 넣어 가랜드 줄처럼 표현
-    border-top: 1px dashed rgba(141, 123, 104, 0.8);
-    padding-top: 100px;
+    gap: 50px; // [수정] 사진 간격 확대
 
     .postit-item {
+      position: relative;
       flex: 1;
-      max-width: 350px;
-      transition: all 0.3s ease;
-      filter: drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.1));
-
-      img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 2px;
+      max-width: 350px; // [수정] 개별 사진 최대 크기 대폭 확대
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      
+      // 상단 마스킹 테이프 효과 디테일 강화
+      .tape {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-1.5deg);
+        width: 100px; // [수정] 크기 확대
+        height: 30px; // [수정] 크기 확대
+        background-color: rgba(232, 213, 196, 0.7); // [수정] 농도 증가
+        backdrop-filter: blur(2px);
+        z-index: 12;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.03);
       }
 
-      // 자연스러운 각도와 높낮이 조절
-      &:nth-child(1) {
-        transform: rotate(-3deg);
+      // [수정] 폴라로이드 느낌의 흰색 프레임 추가
+      .img-frame {
+        background: #fff;
+        padding: 12px; // [수정] 흰색 테두리 두께 조절
+        border-radius: 4px; // 미세 라운드
+        box-shadow: 10px 15px 35px rgba(0, 0, 0, 0.1); // 그림자 깊이 조절
+        
+        img {
+          width: 100%;
+          height: auto;
+          border-radius: 2px;
+          display: block;
+        }
       }
-      &:nth-child(2) {
-        transform: rotate(2deg) translateY(15px);
-      }
-      &:nth-child(3) {
-        transform: rotate(-1.5deg) translateY(-5px);
-      }
-      &:nth-child(4) {
-        transform: rotate(3deg) translateY(10px);
-      }
+
+      // 불규칙한 배치 (와닿는 감성)
+      &:nth-child(1) { transform: rotate(-3deg) translateY(8px); }
+      &:nth-child(2) { transform: rotate(2deg) translateY(-8px); }
+      &:nth-child(3) { transform: rotate(-1.5deg) translateY(15px); }
+      &:nth-child(4) { transform: rotate(4deg) translateY(0px); }
 
       &:hover {
-        transform: scale(1.1) rotate(0deg) !important;
-        z-index: 20;
-        filter: drop-shadow(10px 15px 25px rgba(0, 0, 0, 0.15));
+        transform: scale(1.1) rotate(0deg) translateY(-15px) !important;
+        z-index: 50;
+        
+        .img-frame {
+          box-shadow: 20px 30px 60px rgba(62, 50, 50, 0.18); // 그림자 더 깊게
+        }
+        
+        .tape {
+          background-color: rgba(141, 123, 104, 0.9); // 농도 증가
+        }
       }
+    }
+  }
+
+  .bottom-info {
+    text-align: center;
+    margin-top: 80px; // [수정] 간격 축소
+    font-size: 14px; // [수정] 폰트 크기 감소
+    color: #9d9186;
+    
+    b {
+      color: #3e3232;
+      font-weight: 700;
     }
   }
 }
 
 // 반응형 대응
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .review {
-    padding: 70px 0;
+    padding: 100px 0;
+    .header {
+      margin-bottom: 40px;
+      h2 { font-size: 36px; }
+      .desc { font-size: 15px; }
+    }
+    .container { padding: 0 20px; }
+    .postit-row {
+      gap: 20px;
+      .postit-item { max-width: 250px; }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .review {
+    .header {
+      h2 { font-size: 32px; }
+    }
+    .postit-board .hang-line { display: none; }
     .postit-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-      border-top: none; // 모바일에서는 줄 제외
+      gap: 20px;
+      padding-top: 20px; // 줄 없어지니 패딩 감소
 
       .postit-item {
         max-width: 100%;
-        transform: none !important; // 모바일은 정갈하게
+        transform: none !important;
+        .img-frame { padding: 8px; }
+        .tape { width: 70px; height: 20px; top: -12px; }
       }
     }
   }
@@ -128,12 +217,7 @@
 
 @media (max-width: 480px) {
   .review {
-    .header h2 {
-      font-size: 28px;
-    }
-    .postit-row {
-      grid-template-columns: 1fr;
-      padding: 0 40px;
-    }
+    .header h2 { font-size: 28px; }
+    .postit-row { grid-template-columns: 1fr; padding: 0 20px; }
   }
 }

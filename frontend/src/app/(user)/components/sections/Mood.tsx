@@ -186,6 +186,7 @@ export default function Mood() {
             `,
           }}
         />
+    
       </section>
     </section>
   );

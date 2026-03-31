@@ -1,7 +1,7 @@
 @use "../../../mixin" as *;
 
 .franchise_menu {
-  background-color: var(--leepresso-bg);
+ @include bg-gradient-color(var(--leepresso-bg), var(--white));
   padding: 100px 0;
   color: var(--leepresso-deep);
   .container {
@@ -12,7 +12,7 @@
       width: 100%;
       height: 850px;
       padding: 70px 0;
-      @include bg-gradient-image(var(--leepresso-bg), var(--leepresso-bg), "/background_coffee.png");
+      @include bg-gradient-image(var(--leepresso-bg), var(--white), "/background_coffee.png");
       .menu_title_box {
         .menu_title {
           font-size: 50px;

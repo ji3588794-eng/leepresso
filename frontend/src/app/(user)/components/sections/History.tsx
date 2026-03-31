@@ -79,6 +79,7 @@ export default function History() {
       id="history"
       className="relative overflow-hidden border-b border-[#3E3232]/10 bg-[#F9F5F0] font-suit"
     >
+      
       {/* 배경 장식 (워터마크) */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center select-none">
         <h2 className="text-[18vw] font-black uppercase italic tracking-tighter text-[#3E3232]/[0.04] sm:text-[15vw] lg:text-[11vw]">

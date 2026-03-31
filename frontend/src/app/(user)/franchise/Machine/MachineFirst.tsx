@@ -1,3 +1,4 @@
+import React from "react";
 import "./Machine.scss";
 
 export default function MachineFirst() {
@@ -5,51 +6,76 @@ export default function MachineFirst() {
     <section id="machine" className="machine">
       <div className="container">
         <div className="machine_bg">
+          {/* 상단 타이틀 */}
           <div className="ma_title_box">
             <div className="ma_title">
               리프레소의 특별한
-              <span className="ma_point">MACHINE</span>
+              <span className="ma_point">
+                MACHINE
+              </span>
             </div>
           </div>
+
+          {/* 컨텐츠 통합 영역 */}
           <div className="ma_contents_bg">
             <div className="ma_contents_box">
-              <div className="ma_content_row top">
-                <div className="ma_row_box right">
-                  <div className="row_image"></div>
-                </div>
-                <div className="ma_row_box left">
-                  <div className="row_text_box">
-                    <div className="row_title">당신의 콘셉트에 맞춘 3가지 창업 방식</div>
-                    <div className="row_text">
-                      처음이라 부담된다면 무인부터, 자신이 생기면 유인으로. 운영 방식을 바꿀 수 있는 카페는 흔치
-                      않습니다.
+              
+              {/* 좌측: 자갈 배경 + 가독성 강화 텍스트 (60%) */}
+              <div className="ma_info_side">
+                <div className="info_inner">
+                  <div className="info_section">
+                    <div className="row_title">
+                      공간의 제약을 넘어선
+                      <br />
+                      3가지 커스텀 창업
                     </div>
-                    <div className="row_text">
-                      “사람과 기술이 함께 만든 새로운 카페 방식” 리프레소는 <span>‘유인, 무인, 유무인’</span> 3가지
-                      운영이 가능한 혁식형 하이브리드 카페 브랜드입니다.
+                    <div className="row_text_group">
+                      <div className="row_text">
+                        입지 조건과 라이프스타일에 따라 운영 방식을 자유롭게 설계하세요.
+                        <br />
+                        무인으로 시작해 유인으로, 혹은 상황에 따른 유동적 전환이 가능합니다.
+                      </div>
+                      <div className="row_text highlight_box">
+                        “기술과 사람이 공존하는 하이브리드 솔루션”
+                        <br />
+                        리프레소는 <span>‘유인, 무인, 유무인’</span>을 넘나드는 혁신적인 카페 문화를 제안합니다.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="info_section">
+                    <div className="row_title">
+                      무인의 편리함에
+                      <br />
+                      완벽한 맛을 담다
+                    </div>
+                    <div className="row_text_group">
+                      <div className="row_text">
+                        기존 무인 카페의 한계였던 <span>맛의 편차와 청결 관리</span> 문제를 완벽히 해결했습니다.
+                      </div>
+                      <div className="row_text">
+                        자동 세정 시스템과 실시간 모니터링을 통해, 최소한의 인력만으로도
+                        <br />
+                        언제나 갓 내린 듯한 최상의 커피 맛과 쾌적한 환경을 유지합니다.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="ma_content_row bottom">
-                <div className="ma_row_box left">
-                  <div className="row_text_box">
-                    <div className="row_title">무인으로 해도 맛이 살아있다</div>
-                    <div className="row_text">
-                      무인카페 확산 이후 가장 큰 문제는 <span>맛의 관리와 청결 유지</span>에 있습니다. 리프레소는 무인
-                      운영에서도 자동 세정, 실시간 상태 모니터링, 간편 소모품 교체 등 다른 브랜드보다 훨씬 적은 인력으로
-                      깨끗하고 안정적인 운영이 가능합니다.
-                    </div>
-                  </div>
-                </div>
-                <div className="ma_row_box right">
-                  <div className="row_image"></div>
+
+              {/* 우측: 이미지 2단 세로 배치 (40%) */}
+              <div className="ma_visual_side">
+                <div className="image_stack">
+                  <div className="row_image img_01"></div>
+                  <div className="row_image img_02"></div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </div>
+      <div className="leepresso_line"></div>
     </section>
   );
 }
