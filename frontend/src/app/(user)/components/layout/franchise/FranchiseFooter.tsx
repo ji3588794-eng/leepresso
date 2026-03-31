@@ -1,151 +1,132 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Phone, Mail } from "lucide-react";
 
 export default function FranchiseFooter() {
   const [openModal, setOpenModal] = useState<"terms" | "privacy" | null>(null);
 
   useEffect(() => {
     if (!openModal) return;
-
     document.body.style.overflow = "hidden";
     const esc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpenModal(null);
     };
     window.addEventListener("keydown", esc);
-
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", esc);
     };
   }, [openModal]);
 
+  const modalTitle = openModal === "terms" ? "이용약관" : "개인정보처리방침";
+
   return (
     <>
-      <footer className="bg-gray-50 dark:bg-[#0f0f0f] py-16 border-t border-gray-200 dark:border-white/5">
-        <div className="max-w-[1500px] mx-auto px-6 text-center">
-          <h2 className="text-xl font-black text-leepresso-deep dark:text-white mb-6 uppercase">
-            LEEPRESSO Franchise Center
-          </h2>
-
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500 dark:text-gray-400 mb-8 font-medium">
-            <p>상호: (주)리프레소</p>
-            <p>사업자번호: 254-88-03655</p>
-            <p>대표자: 이정원</p>
-            <p>주소: 충남 천안시 서북구 차암동 13 룩소르비즈타워 B107호</p>
+      {/* 최상단에 border-top 추가 (리프레소 베이스 컬러 사용) */}
+      <footer className="w-full border-t border-[#E8D5C4] bg-[#F9F5F0] pt-15 pb-30 font-suit dark:border-[#3E3232] dark:bg-[#0D0C0B]">
+        <div className="mx-auto max-w-[1200px] px-6 lg:px-0">
+          
+         {/* 상단: 컨택트 정보 */}
+          <div className="mb-10 flex flex-col items-center justify-center gap-12 border-b border-[#EEE5DE] pb-10 md:flex-row md:gap-20 dark:border-[#241E1A]">
+            <div className="text-center md:text-left">
+              <span className="block text-[12px] font-black uppercase tracking-[0.4em] text-[#A69689] mb-2.5">전화문의</span>
+              <a href="tel:1522-0290" className="flex items-center gap-3 text-[22px] font-black tracking-tight text-[#3E3232] transition-colors hover:text-[#8D7B68] dark:text-[#EAE3D9]">
+                <Phone size={20} strokeWidth={2.5} />
+                1522-0290
+              </a>
+            </div>
+            
+            <div className="text-center md:text-left">
+              <span className="block text-[12px] font-black uppercase tracking-[0.4em] text-[#A69689] mb-2.5">이메일문의</span>
+              <a href="mailto:leepresso24@naver.com" className="flex items-center gap-3 text-[22px] font-black tracking-tight text-[#3E3232] transition-colors hover:text-[#8D7B68] dark:text-[#EAE3D9]">
+                <Mail size={20} strokeWidth={2.5} />
+                leepresso24@naver.com
+              </a>
+            </div>
           </div>
 
-          {/* 버튼 영역 수정 */}
-          <div className="flex justify-center gap-6 mb-8 text-xs font-bold text-gray-400">
-            <button
-              onClick={() => setOpenModal("terms")}
-              className="hover:text-leepresso-point"
-            >
-              이용약관
-            </button>
+          {/* 하단: 푸터 정보 */}
+          <div className="flex flex-col items-center justify-between gap-10 lg:flex-row lg:items-end">
+            <div className="text-center lg:text-left">
+              <h2 className="mb-6 text-[11px] font-black uppercase tracking-[0.5em] text-[#3E3232] dark:text-white">
+                LEEPRESSO FRANCHISE
+              </h2>
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[12px] font-medium text-[#888] lg:justify-start">
+                <p>상호명: (주)리프레소</p>
+                <p>사업자번호: 254-88-03655</p>
+                <p>대표자: 이정원</p>
+                <p className="w-full lg:w-auto">주소: 충남 천안시 서북구 차암동 13 룩소르비즈타워 B107호</p>
+              </div>
+            </div>
 
-            <button
-              onClick={() => setOpenModal("privacy")}
-              className="hover:text-leepresso-point text-leepresso-deep dark:text-white"
-            >
-              개인정보처리방침
-            </button>
-
-            <a href="#contact" className="hover:text-leepresso-point">
-              가맹문의
-            </a>
+            <div className="flex flex-col items-center gap-6 lg:items-end">
+              {/* 약관 링크 */}
+              <div className="flex gap-8 text-[12px] font-bold">
+                <button
+                  type="button"
+                  onClick={() => setOpenModal("terms")}
+                  className="text-[#888] transition-colors hover:text-[#3E3232] dark:hover:text-white"
+                >
+                  이용약관
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpenModal("privacy")}
+                  className="relative text-[#3E3232] dark:text-white after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:bg-[#3E3232] dark:after:bg-white"
+                >
+                  개인정보처리방침
+                </button>
+              </div>
+              <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-[#CCC]">
+                © 2026 LEEPRESSO. ALL RIGHTS RESERVED.
+              </p>
+            </div>
           </div>
-
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest opacity-50">
-            © 2026 LEEPRESSO STARTUP. All rights reserved.
-          </p>
         </div>
       </footer>
 
       {/* ================= MODAL ================= */}
       {openModal && (
-        <div className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center px-4">
-          <div className="relative w-full max-w-2xl max-h-[80vh] overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-[#241E1A]/90 backdrop-blur-md" onClick={() => setOpenModal(null)} />
 
-            {/* 닫기 버튼 */}
-            <button
-              onClick={() => setOpenModal(null)}
-              className="absolute top-4 right-4"
-            >
-              <X />
-            </button>
+          <div className="relative w-full max-w-2xl bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#F4EEE7] px-8 py-6">
+              <h3 className="text-lg font-black tracking-tighter text-[#3E3232]">{modalTitle}</h3>
+              <button onClick={() => setOpenModal(null)} className="transition-opacity text-[#3E3232] hover:opacity-50">
+                <X size={24} />
+              </button>
+            </div>
 
-            {/* 내용 */}
-            <div className="overflow-y-auto pr-2 max-h-[70vh] text-[13px] leading-6 text-gray-700">
-
-              {openModal === "terms" && (
-                <>
-                  <h2 className="text-xl font-black mb-4">이용약관</h2>
-
-                  <p className="mb-3">
-                    본 사이트는 주식회사 리프레소가 운영하는 무인카페 프랜차이즈 상담 서비스입니다.
-                  </p>
-
-                  <p className="mb-3">
-                    본 서비스는 회원가입 없이 이용 가능하며, 가맹 상담 신청 및 정보 제공을 목적으로 합니다.
-                  </p>
-
-                  <p className="mb-3">
-                    이용자는 상담 신청 시 정확한 정보를 입력해야 하며, 허위 정보 입력으로 발생하는 문제에 대한 책임은 이용자에게 있습니다.
-                  </p>
-
-                  <p className="mb-3">
-                    본 사이트는 별도의 결제 기능이 없으며, 모든 상담은 무료로 진행됩니다.
-                  </p>
-
-                  <p>
-                    회사는 서비스 운영을 위해 필요한 범위 내에서 내용을 변경할 수 있습니다.
-                  </p>
-                </>
+            <div className="max-h-[60vh] overflow-y-auto p-8 font-suit text-[13px] leading-7 text-[#666]">
+              {openModal === "terms" ? (
+                <div className="space-y-6">
+                  <p>본 사이트는 (주)리프레소에서 제공하는 무인카페 프랜차이즈 상담 서비스입니다. 이용자는 별도의 가입 없이 정보를 열람하고 상담을 신청할 수 있습니다.</p>
+                  <p className="font-bold text-[#3E3232]">상담 신청 시 수집된 정보는 정확한 창업 안내를 위해서만 사용됩니다.</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="border-l-2 border-[#3E3232] bg-[#FBF9F7] p-6">
+                    <p className="mb-1 font-bold text-[#3E3232]">개인정보 수집 및 이용 동의</p>
+                    <p>리프레소는 예비 창업주의 소중한 정보를 안전하게 관리합니다.</p>
+                  </div>
+                  <ul className="space-y-3">
+                    <li><b className="text-[#3E3232]">수집항목:</b> 성함, 연락처, 지역, 문의내용</li>
+                    <li><b className="text-[#3E3232]">수집목적:</b> 가맹 창업 상담 및 관련 정보 제공</li>
+                    <li><b className="text-[#3E3232]">보유기간:</b> <span className="font-bold text-[#A69689] underline underline-offset-4">상담 신청 후 1년 (목적 달성 시 즉시 파기)</span></li>
+                  </ul>
+                </div>
               )}
+            </div>
 
-              {openModal === "privacy" && (
-                <>
-                  <h2 className="text-xl font-black mb-4">개인정보처리방침</h2>
-
-                  <p className="mb-3">
-                    주식회사 리프레소는 가맹 상담 서비스를 위해 최소한의 개인정보를 수집합니다.
-                  </p>
-
-                  <p className="mb-3">
-                    <b>수집 항목</b><br />
-                    연락처(필수), 성함, 이메일, 창업희망지역, 점포보유여부, 문의경로, 문의내용
-                  </p>
-
-                  <p className="mb-3">
-                    <b>수집 목적</b><br />
-                    가맹 상담 접수 및 상담 진행, 문의 응대
-                  </p>
-
-                  <p className="mb-3">
-                    <b>보유 기간</b><br />
-                    상담 완료 후 1년 보관 후 파기
-                  </p>
-
-                  <p className="mb-3">
-                    <b>제3자 제공</b><br />
-                    없음 (모든 데이터는 리프레소 내부에서 관리)
-                  </p>
-
-                  <p className="mb-3">
-                    <b>외부 위탁</b><br />
-                    카카오톡 채널, 향후 SMS/이메일 발송 시스템
-                  </p>
-
-                  <p>
-                    <b>개인정보 보호책임자</b><br />
-                    유기홍 (개발팀)<br />
-                    이메일: horus97alas@gmail.com
-                  </p>
-                </>
-              )}
-
+            <div className="bg-[#FBF9F7] px-8 py-5">
+              <button
+                onClick={() => setOpenModal(null)}
+                className="w-full bg-[#3E3232] py-4 text-[14px] font-black text-white transition-colors hover:bg-[#241E1A]"
+              >
+                닫기
+              </button>
             </div>
           </div>
         </div>

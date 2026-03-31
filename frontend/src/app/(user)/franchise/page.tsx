@@ -62,6 +62,7 @@ export default function FranchisePage() {
 
       {/* 핵심 키워드 */}
       <Keyword />
+      <MachineSecond />
 
       {/* 그래프 */}
       <Graph />
@@ -74,8 +75,6 @@ export default function FranchisePage() {
 
       {/* 머신 */}
       <MachineFirst />
-
-      <MachineSecond />
 
       <MachineThird />
 

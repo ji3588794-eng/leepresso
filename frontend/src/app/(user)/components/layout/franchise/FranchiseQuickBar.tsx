@@ -1,6 +1,7 @@
 // src/components/layout/franchise/FranchiseQuickBar.tsx
 'use client';
 import { useState, useEffect } from 'react';
+import QuickMenu from '../../common/QuickMenu';
 
 export default function FranchiseQuickBar() {
   const [isDark, setIsDark] = useState(false);
@@ -16,7 +17,7 @@ export default function FranchiseQuickBar() {
 
   return (
     <div className="fixed bottom-10 right-10 z-[110] flex flex-col gap-3">
-      <button 
+      {/* <button 
         onClick={toggleDark}
         className="w-14 h-14 rounded-full bg-white dark:bg-[#333] shadow-2xl flex items-center justify-center border border-gray-100 dark:border-white/10 text-xl"
       >
@@ -24,7 +25,8 @@ export default function FranchiseQuickBar() {
       </button>
       <button className="w-14 h-14 rounded-full bg-leepresso-point text-white shadow-2xl flex items-center justify-center font-bold text-xs">
         CALL
-      </button>
+      </button>*/}
+      {/* <QuickMenu /> */}
     </div>
   );
 }

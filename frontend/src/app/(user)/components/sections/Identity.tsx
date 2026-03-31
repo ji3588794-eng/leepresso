@@ -201,15 +201,15 @@ export default function Identity() {
             </div>
           </div>
         </div>
+        <div className="flex justify-center bg-[#F9F5F0]">
+          <img 
+            src="/check_line.png" 
+            alt="Decoration Line" 
+            className="w-full max-w-[100%] opacity-80 object-contain" 
+          />
+        </div>
       </section>
       
-      <div className="flex justify-center bg-[#F9F5F0]">
-        <img 
-          src="/check_line.png" 
-          alt="Decoration Line" 
-          className="w-full max-w-[100%] opacity-80 object-contain" 
-        />
-      </div>
     </>
   );
 }
