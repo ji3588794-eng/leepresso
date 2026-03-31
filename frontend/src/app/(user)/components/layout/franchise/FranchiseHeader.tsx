@@ -7,10 +7,10 @@ import Image from "next/image";
 
 const FRANCHISE_MENU = [
   { name: "리프레소 무인카페", id: "leepresso" },
-  { name: "브랜드 경쟁력", id: "value" },
+  { name: "브랜드 경쟁력", id: "keyword" },
+  { name: "커피머신", id: "machine" },
   { name: "창업 비용", id: "price" },
   { name: "창업 절차", id: "process-info" },
-  { name: "창업 설명회 일정", id: "schedule" },
   { name: "창업 문의", id: "contact" },
 ];
 

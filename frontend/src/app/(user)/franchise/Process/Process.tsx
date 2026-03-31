@@ -1,4 +1,4 @@
-import './Process.scss';
+import "./Process.scss";
 
 const processItems = [
   { step: "01", title: "가맹후보점 상권분석", desc: "데이터 기반 입지 분석 및 유동 인구 조사" },
@@ -10,7 +10,12 @@ const processItems = [
 ];
 
 const documents = [
-  "가맹후보점포 임대차계약서", "자판기영업자 과정 수료증", "보건증 (건강진단결과서)", "영업신고증", "사업자등록증", "본인 명의 신분증"
+  "가맹후보점포 임대차계약서",
+  "자판기영업자 과정 수료증",
+  "보건증 (건강진단결과서)",
+  "영업신고증",
+  "사업자등록증",
+  "본인 명의 신분증",
 ];
 
 export default function Process() {
@@ -18,11 +23,12 @@ export default function Process() {
     <section id="process-info" className="process">
       <div className="container">
         <div className="header">
-          <div className="title">
-            <p className="sub">Open Process</p>
-            <h2>OPEN<br /><span>PROCESS</span></h2>
+          <h2>창업 과정</h2>
+          <div className="infoRow">
+            <span>
+              복잡하고 막연한 창업이 아니라, 리프레소의 체계적인 출점 프로세스를 따라가며 명확하게 준비할 수 있습니다.
+            </span>
           </div>
-          <p className="descText">복잡하고 막연한 창업이 아니라, 리프레소의 체계적인 출점 프로세스를 따라가며 명확하게 준비할 수 있습니다.</p>
         </div>
 
         <div className="stepGrid">
@@ -43,12 +49,19 @@ export default function Process() {
             <div className="docInfo">
               <p className="sub">Required Documents</p>
               <h3>필수 구비 서류</h3>
-              <p className="desc">계약 및 오픈 준비를 위해<br />기본적으로 필요한 서류입니다.</p>
+              <p className="desc">
+                계약 및 오픈 준비를 위해
+                <br />
+                기본적으로 필요한 서류입니다.
+              </p>
             </div>
             <div className="docList">
               {documents.map((doc, idx) => (
                 <div key={doc} className="docItem">
-                  <span><span className="point">{idx + 1}</span>{doc}</span>
+                  <span>
+                    <span className="point">{idx + 1}</span>
+                    {doc}
+                  </span>
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 5l7 7-7 7" />
                   </svg>

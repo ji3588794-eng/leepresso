@@ -3,7 +3,8 @@ import type { Metadata, Viewport } from "next";
 
 // 💡 하드코딩된 사이트 정보 설정
 const SITE_INFO = {
-  title: "리프레소(LEEPRESSO) | 본질에 집중한 프리미엄 무인카페",
+  // 💡 제목을 40자 이내로 줄여 네이버 경고 해결 및 가독성 확보
+  title: "리프레소 | 본질에 집중한 프리미엄 무인카페 창업",
   description:
     "20년 노하우의 무인카페 창업 파트너 리프레소. 최저 비용, 인건비 0원, 압도적 상권 분석으로 안정적인 수익을 제안합니다.",
   keywords: "리프레소, 무인카페, 무인카페창업, 카페창업, 커피프랜차이즈, 소자본창업, 무인매장관리",
@@ -21,15 +22,15 @@ export const viewport: Viewport = {
 
 // 💡 검색엔진 최적화(SEO) 상세 설정
 export const metadata: Metadata = {
-  // 1. 기본 텍스트 정보
+  // 💡 metadataBase 추가: sitemap 및 OG 이미지의 절대 경로를 보장합니다.
+  metadataBase: new URL(SITE_INFO.url),
   title: {
     default: SITE_INFO.title,
-    template: `%s | ${SITE_INFO.title}`,
+    template: `%s | 리프레소`,
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
 
-  // 2. 검색엔진 로봇 제어
   robots: {
     index: true,
     follow: true,
@@ -40,12 +41,10 @@ export const metadata: Metadata = {
     },
   },
 
-  // 3. 중복 주소 방지 (Canonical URL)
   alternates: {
-    canonical: SITE_INFO.url,
+    canonical: "/", // 중복 주소 방지
   },
 
-  // 4. 소셜 공유 메타데이터 (카톡, 페이스북 등)
   openGraph: {
     title: SITE_INFO.title,
     description: SITE_INFO.description,
@@ -63,7 +62,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  // 5. 트위터(X) 공유 카드
   twitter: {
     card: "summary_large_image",
     title: SITE_INFO.title,
@@ -71,32 +69,56 @@ export const metadata: Metadata = {
     images: [SITE_INFO.ogImage],
   },
 
-  // 6. 파비콘 및 사과 아이콘 (public 폴더 기준)
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 
-  // 7. 사이트 소유권 인증 (구글 서치콘솔 등)
   verification: {
-    // 💡 여기에 발급받은 코드를 넣으시면 됩니다.
     google: "UID2R0MPFk0L-ub0jkyLBTG_k6blaXLOiAWBZROnaIY",
-    // 필요 시 네이버 서치어드바이저 등도 여기에 추가 가능
+    // 💡 네이버 서치어드바이저용 (필요시 아래 주석 해제 후 코드 삽입)
     // other: {
-    //   "naver-site-verification": ["네이버코드"],
+    //   "naver-site-verification": "여기에_네이버_인증코드_입력",
     // },
   },
 
-  // 8. 기타 언어 및 형식 정보
   category: "business",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // 💡 구글 서브메뉴(Sitelinks) 노출을 위한 구조화 데이터
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "리프레소(LEEPRESSO)",
+    "url": SITE_INFO.url,
+    "logo": "https://leepresso.com/images/common/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "1522-0290",
+      "contactType": "customer service"
+    },
+    "hasPart": [
+      { "@type": "WebPage", "name": "브랜드 스토리", "url": `${SITE_INFO.url}/brand` },
+      { "@type": "WebPage", "name": "메뉴 소개", "url": `${SITE_INFO.url}/menu` },
+      { "@type": "WebPage", "name": "창업 안내", "url": `${SITE_INFO.url}/franchise` },
+      { "@type": "WebPage", "name": "매장 찾기", "url": `${SITE_INFO.url}/store` },
+      { "@type": "WebPage", "name": "창업 문의", "url": `${SITE_INFO.url}/contact` }
+    ]
+  };
+
   return (
     <html lang="ko" suppressHydrationWarning>
-      <head></head>
-      <body className="antialiased">{children}</body>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="antialiased">
+        {children}
+      </body>
     </html>
   );
 }

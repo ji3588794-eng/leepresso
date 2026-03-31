@@ -7,10 +7,10 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
-//const PORT = process.env.PORT || 3001;
+// Render는 자동으로 PORT 변수를 주입하므로 그대로 사용하면 됩니다.
+const PORT = process.env.PORT || 3001; 
 
-// 미들웨어
+// 미들웨어 설정
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({
   origin: [
@@ -20,10 +20,10 @@ app.use(cors({
     'http://localhost:3000'
   ],
   credentials: true,
-  // 💡 여기에 'PATCH'를 추가했습니다.
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,6 @@ app.use('/api/admin', adminRouter);
 app.use('/api/user', userRouter);
 
 app.listen(PORT, '0.0.0.0', () => {
-  // 실서버에서는 localhost 주소가 의미 없으므로 포트 정보만 정확히 출력
-  console.log(`🚀 Aurum Backend is running on port: ${PORT}`);
-  console.log(`🌐 Server Mode: ${process.env.NODE_ENV || 'production'}`);
+  console.log(`🚀 Server is running on port: ${PORT}`);
+  console.log(`🌐 Mode: ${process.env.NODE_ENV}`);
 });

@@ -2,92 +2,141 @@
 
 .keyword {
   background-color: var(--white);
-  padding: 90px 0;
+  padding: clamp(56px, 7vw, 90px) 0;
   color: var(--leepresso-deep);
+  overflow: hidden;
+
   .container {
-    max-width: 1500px;
+    width: min(100%, 1500px);
     margin: 0 auto;
+    padding: 0 clamp(16px, 3vw, 32px);
     color: var(--leepresso-deep);
     text-align: center;
+
     .int_title_box {
       display: inline-block;
-      font-size: 40px;
       text-align: center;
-      padding-bottom: 50px;
+      padding-bottom: clamp(32px, 4vw, 50px);
+
       .int_title {
+        font-size: clamp(24px, 3vw, 40px);
         font-weight: 600;
+        line-height: 1.2;
       }
+
       .int_title_bottom {
+        font-size: clamp(28px, 3.4vw, 40px);
         font-weight: 900;
         position: relative;
         display: inline-block;
+        line-height: 1.2;
         z-index: 1;
+        margin-top: 4px;
 
         &::after {
           content: "";
           position: absolute;
           left: 0;
-          bottom: 10px;
-
+          bottom: clamp(2px, 0.7vw, 10px);
           width: 100%;
-          height: 30px;
-
+          height: clamp(14px, 2vw, 30px);
           @include bg("/under_line.png");
-
           z-index: -1;
         }
       }
     }
+
     .int_content_box {
-      padding-bottom: 80px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(16px, 1.8vw, 28px);
+      padding-bottom: clamp(40px, 6vw, 80px);
+
       .int_content_row {
-        display: inline-block;
-        width: calc(100% / 4);
-        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        min-height: clamp(220px, 24vw, 360px);
+        padding: clamp(14px, 1.6vw, 24px);
+        border-radius: 24px;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          background-color 0.25s ease;
+
+        &:hover {
+          transform: translateY(-4px);
+        }
 
         .int_row_image {
           @include bg("/mark_budget.png");
           width: 100%;
-          height: 10vw;
-          // margin-bottom: ;
+          max-width: 260px;
+          aspect-ratio: 1 / 1;
+          height: auto;
+          margin: 0 auto clamp(10px, 1.5vw, 18px);
+
           &.row2 {
             @include bg("/mark_economic.png");
           }
+
           &.row3 {
             @include bg("/mark_smart.png");
           }
+
           &.row4 {
             @include bg("/mark_tena.png");
           }
         }
+
         .int_row_text_box {
           .int_row_title {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+            flex-wrap: wrap;
+            line-height: 1.1;
+
             .int_title_point {
-              font-size: 40px;
+              font-size: clamp(28px, 3vw, 40px);
               color: var(--leepresso-point-red);
               font-weight: 900;
             }
+
             .int_title {
-              font-size: 35px;
+              font-size: clamp(24px, 2.6vw, 35px);
               font-weight: 900;
+              word-break: keep-all;
             }
           }
+
           .int_row_sub {
-            font-size: 20px;
+            margin-top: 8px;
+            font-size: clamp(16px, 1.6vw, 20px);
             font-weight: 600;
+            line-height: 1.4;
+            word-break: keep-all;
           }
         }
+
         &.active {
           .int_row_image {
             &.row1 {
               @include bg("/mark_budget_active.png");
             }
+
             &.row2 {
               @include bg("/mark_economic_active.png");
             }
+
             &.row3 {
               @include bg("/mark_smart_active.png");
             }
+
             &.row4 {
               @include bg("/mark_tena_active.png");
             }
@@ -95,6 +144,7 @@
         }
       }
     }
+
     .int_bottom_box {
       width: 100%;
       height: 140px;
@@ -137,11 +187,11 @@
           @include bg("/check_1.png");
           height: 70px;
         }
-        &.active_1::before {
-          @include bg-cover("/underline_4.png");
-          width: 260px;
-          left: 50%;
-        }
+        // &.active_1::before {
+        //   @include bg-cover("/underline_4.png");
+        //   width: 260px;
+        //   left: 50%;
+        // }
         &.active_1::after {
           @include bg-cover("/check_1.png");
           top: -70px;
@@ -168,12 +218,121 @@
           top: 10px;
           right: 20px;
         }
-
         &.active_4::after {
           @include bg("/star_1.png");
           left: 90%;
           top: -70px;
           width: 100px;
+        }
+      }
+    }
+  }
+}
+
+/* =========================
+   1280 이하
+========================= */
+@media (max-width: 1279px) {
+  .keyword {
+    .container {
+      .int_content_box {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .int_bottom_box {
+        .int_bottom_text {
+          width: 100%;
+
+          &.active_2::before {
+            display: none;
+          }
+
+          &.active_3::before {
+            @include bg-cover("/check_1.png");
+            top: -70px;
+            width: 100px;
+            left: 50%;
+            height: 70px;
+            transform: translateX(220%);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* =========================
+   767 이하
+========================= */
+@media (max-width: 767px) {
+  .keyword {
+    .container {
+      .int_title_box {
+        width: 100%;
+      }
+
+      .int_bottom_box {
+        padding: 24px 12px;
+
+        .int_bottom_deco {
+          width: 64px;
+          height: 18px;
+          opacity: 0.8;
+
+          &.deco_1 {
+            top: 0;
+            left: 0;
+          }
+
+          &.deco_2 {
+            bottom: 0;
+            right: 0;
+          }
+        }
+
+        .int_bottom_text {
+          font-size: 17px;
+          width: 100%;
+          padding: 22px 18px 20px;
+          &.active_1::after {
+            left: 80%;
+            transform: translateX(0%);
+          }
+          &.active_3::before {
+            left: 80%;
+            transform: translateX(0%);
+          }
+          &.active_2::after {
+            left: 80%;
+          }
+          &.active_4::after {
+            left: 80%;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* =========================
+   480 이하
+========================= */
+@media (max-width: 480px) {
+  .keyword {
+    padding: 56px 0;
+
+    .container {
+      padding: 0 14px;
+
+      .int_title_box {
+        padding-bottom: 28px;
+      }
+
+      .int_bottom_box {
+        padding: 22px 10px 18px;
+
+        .int_bottom_text {
+          font-size: 14px;
         }
       }
     }

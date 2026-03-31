@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import api from '@/lib/api';
+import api, { getImageUrl } from '@/app/lib/api';
 import styles from './popup.module.scss';
 import PopupCard from './PopupCard';
 import PopupModal from './PopupModal';

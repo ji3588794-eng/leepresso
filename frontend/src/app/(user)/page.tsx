@@ -49,7 +49,7 @@ export default function GatePage() {
             </span>
             
             <h2 className="text-4xl md:text-5xl font-serif text-white mb-8 tracking-tight font-medium drop-shadow-[0_4px_16px_rgba(0,0,0,0.35)]">
-              브랜드 소개
+              브랜드 소개.
             </h2>
 
             <p className="text-white/90 text-[13px] leading-relaxed text-center font-normal tracking-wide break-keep drop-shadow-md">
