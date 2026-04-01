@@ -70,10 +70,19 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+@mixin bg-gradient-color($bg-color, $bg-color-2) {
+  background:
+    linear-gradient(
+      to bottom,
+      #{$bg-color} 50%,
+      #{$bg-color-2} 100%
+    );
+ 
+}
 .leepresso_line {
   @include bg("/leepresso_line.png");
   width: 100%;
-  height: 30px;
+  height: 40px;
   background-repeat: repeat;
   animation: flow 10s linear infinite;
   &.mt150 {

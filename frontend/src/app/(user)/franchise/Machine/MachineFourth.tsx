@@ -1,93 +1,117 @@
+"use client";
 import "./Machine.scss";
 
-export default function MachineFourth() {
+const features = [
+  {
+    title: "다양한 메뉴 구성",
+    color: "base",
+    contents: [
+      "원두·파우더·액상 조합으로 메뉴를 폭넓게 구성",
+      "계절과 트렌드에 맞춘 시즌 메뉴 확장 가능",
+      "시그니처 음료와 비음료 메뉴까지 자유롭게 운영",
+    ],
+  },
+  {
+    title: "운영 효율성",
+    color: "brown",
+    contents: [
+      "원격 제어 기능 탑재",
+      "세척, 메뉴 설정, 자재 현황 등을 스마트폰·PC에서 관리",
+      "인건비와 관리 시간을 줄여 운영 부담 최소화",
+    ],
+  },
+  {
+    title: "하이엔드 커피머신",
+    color: "base",
+    contents: [
+      "스웨이드 블랙 컬러의 프리미엄 디자인",
+      "플랫버 그라인더, 로터리 베인펌프, 듀얼 보일러 시스템 적용",
+      "정교한 추출로 일관된 커피 퀄리티 제공",
+    ],
+  },
+  {
+    title: "단골 고객 확보",
+    color: "brown",
+    contents: [
+      "멤버십, 포인트, 쿠폰 등 다양한 고객 관리 기능 제공",
+      "재방문을 유도해 단골 고객 확보에 효과적",
+      "지속적인 고객 유치와 매출 안정화에 도움",
+    ],
+  },
+  {
+    title: "커스터마이징",
+    color: "base",
+    contents: [
+      "매장 콘셉트와 분위기에 맞춘 자유로운 구성",
+      "브랜드 성격에 맞게 메뉴와 운영 방향 조정 가능",
+      "내 카페만의 차별화된 스타일 구현",
+    ],
+  },
+  {
+    title: "결제수단 다양화",
+    color: "brown",
+    contents: [
+      "신용카드, 삼성페이, 카카오페이, 네이버페이, 애플페이 지원",
+      "QR결제, RF카드, 선불카드 등 다양한 결제 방식 제공",
+      "고객이 편하게 이용할 수 있는 결제 환경 구축",
+    ],
+  },
+];
+
+const MachineFourth = () => {
   return (
     <div className="machine fourth">
-      <div className="container">
-        <div className="m_fourth_contents_box">
-          <div className="m_fourth_row">
-            <div className="memo_back">
-              <div className="memo_title">다양한 메뉴 구성</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  원두 2종 + 파우더 6종 + 액상 3종 조합
-                  <br />
-                  계절, 트렌드에 맞춘 무한 메뉴 구성
-                </div>
-                <div className="memo_text">
-                  직접 만드는 메뉴 전략
-                  <br />
-                  차별화된 <span>시그니처 메뉴</span> 구성
-                </div>
-              </div>
+      <div className="machine_back">
+        <div className="m_container">
+          <div className="m_top_section">
+            <div className="m_image_box">
+              <div className="image_baristar"></div>
+              <div className="image_machine"></div>
             </div>
-            <div className="memo_back brown">
-              <div className="memo_title">운영 효율성</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  <span>원격 제어 기능</span> 탑재!
-                </div>
-                <div className="memo_text">세척, 메뉴 설정 등 스마트폰이나 PC에서 처리</div>
-                <div className="memo_text">
-                  인건비와 관리 시간을 줄여 <span>운영 부담 최소화</span>
-                </div>
-              </div>
-            </div>
-            <div className="memo_back">
-              <div className="memo_title">하이엔드 커피머신</div>
-              <div className="memo_text_box">
-                <div className="memo_text">스웨이드 블랙 색상</div>
-                <div className="memo_text">블랫버 그라인더 고성능 로터리 베인펌프 듀얼 보일러 시스템 프리인퓨전</div>
-              </div>
-            </div>
-            <div className="memo_back brown">
-              <div className="memo_title">단골 고객 확보</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  멤버십, 포인트, 쿠폰 등 다양한 고객 관리 기능 탑재 <span>재방문률 UP! 지속적인 고객 유치</span>
-                </div>
-              </div>
-            </div>
-            <div className="memo_back brown">
-              <div className="memo_title">실시간 운영 관리 시스템</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  <span>모바일 알림 관리 기능</span>으로 원두 및 자재 현황 즉시 확인
-                </div>
-                <div className="memo_text">
-                  <span>데이터 분석</span>을 통해 메뉴 선호도를 반영한 효율적인 운영 가능
-                </div>
-              </div>
-            </div>
-            <div className="memo_back">
-              <div className="memo_title">커스터마이징</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  내 카페는 내 스타일대로! 매장 인테리어 자유도 UP! <span>꿈꾸던 카페 그대로 커스터마이징 가능</span>
-                </div>
-              </div>
-            </div>
-            <div className="memo_back brown">
-              <div className="memo_title">결제수단 다양화</div>
-              <div className="memo_text_box">
-                <div className="memo_text">
-                  <span>신용카드, 삼성페이, 카카오페이, 네이버페이, 애플페이, QR결제, RF카드(사원증), 선불카드 등</span>
-                </div>
-                <div className="memo_text">다양하고 편리한 이용 환경을 제공</div>
-              </div>
-            </div>
-            <div className="memo_back">
-              <div className="memo_title">무제한 메뉴</div>
-              <div className="memo_text_box">
-                <div className="memo_text">음료가 아니더라도 원하는 메뉴, 원하는 만큼 추가 가능</div>
+
+            <div className="m_text_box">
+              <div className="m_sub_text">물 한방울까지 조절하는 정교한 커피머신</div>
+              <div className="m_main_text">
+                <span className="point">
+                  속도는 <em>UP,</em>
+                </span>
+                <strong className="title_line">
+                  맛은 그대로<span className="exclamation">!</span>
+                </strong>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container">
+
+      <div className="container feature_section">
+        <div className="m_fourth_contents_box">
+          <div className="m_fourth_grid six">
+            {features.map((item, idx) => (
+              <div key={idx} className={`memo_back ${item.color}`}>
+                <div className="memo_inner">
+                  <h3 className="memo_title">{item.title}</h3>
+
+                  <div className="memo_text_box">
+                    {item.contents.map((content, i) => (
+                      <div key={i} className="memo_text">
+                        <span className="dot"></span>
+                        <span className="txt">{content}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="container graph_section">
         <div className="machine_graph_image"></div>
       </div>
     </div>
   );
-}
+};
+
+export default MachineFourth;

@@ -1,176 +1,228 @@
 .process {
   background: #f9f5f0;
-  padding: 80px 24px;
+  padding: 100px 0;
   color: #3e3232;
+  font-family: 'Suit', sans-serif;
 
   .container {
-    max-width: 1152px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
   .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 40px;
+    gap: 40px;
 
-    h2 {
-      font-size: 50px;
-      font-weight: 900;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .titleWrapper {
+      .sub {
+        font-size: 14px;
+        font-weight: 800;
+        color: #8d7b68;
+        letter-spacing: 0.3em;
+        display: block;
+        margin-bottom: 15px;
+      }
+      h2 {
+        font-size: 56px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
     }
 
     .infoRow {
-      margin-top: 32px;
-      padding-bottom: 8px;
-      color: #999999;
-      border-bottom: 1px solid #a9443d;
-
-      font-size: 13px;
-      text-align: right;
+      max-width: 480px;
+      border-left: 3px solid #a9443d;
+      padding-left: 25px;
+      p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #666;
+        strong { color: #3e3232; }
+      }
     }
   }
 
   .stepGrid {
     display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
 
-    border-top: 1px solid rgba(62, 50, 50, 0.1);
-    border-left: 1px solid rgba(62, 50, 50, 0.1);
-
-    @media (min-width: 768px) {
+    @media (min-width: 1024px) {
       grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (min-width: 1280px) {
-      grid-template-columns: repeat(3, 1fr);
+      // 높이를 일정하게 맞추기 위한 설정
+      grid-auto-rows: 1fr; 
     }
   }
 
   .stepCard {
     background: #fff;
-    padding: 40px;
-
-    border-right: 1px solid rgba(62, 50, 50, 0.1);
-    border-bottom: 1px solid rgba(62, 50, 50, 0.1);
-
-    transition: 0.3s;
+    border: 1px solid #eee5de;
+    transition: all 0.4s ease;
+    cursor: default;
+    display: flex; // 카드 자체가 flex가 되어 내부 cardInner가 꽉 차게 함
 
     &:hover {
-      background: #f9f5f0;
+      background: #3e3232;
+      border-color: #3e3232;
+      transform: translateX(8px);
 
-      .num {
-        color: rgba(141, 123, 104, 0.4);
+      .leftSide {
+        .iconBox { background: #8d7b68; color: #fff; }
+        .stepInfo {
+          .num { color: #e8d5c4; }
+          h3 { color: #fff; }
+        }
+      }
+      .rightSide {
+        p { color: rgba(255, 255, 255, 0.5); }
+        .arrowIcon { color: #e8d5c4; opacity: 1; transform: translateX(5px); }
       }
     }
 
-    .top {
+    .cardInner {
+      width: 100%;
+      padding: 35px 45px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 30px;
     }
 
-    .num {
-      font-size: 36px;
-      font-weight: 900;
-      font-style: italic;
-      color: rgba(141, 123, 104, 0.2);
+    .leftSide {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-shrink: 0; // 왼쪽 정보 영역 크기 고정
+
+      .iconBox {
+        width: 48px;
+        height: 48px;
+        background: #f9f5f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8d7b68;
+        transition: 0.3s;
+      }
+
+      .stepInfo {
+        .num {
+          font-size: 11px;
+          font-weight: 800;
+          color: #a9443d;
+          display: block;
+          margin-bottom: 4px;
+        }
+        h3 {
+          font-size: 20px;
+          font-weight: 900;
+          transition: 0.3s;
+          white-space: nowrap; // 제목 줄바꿈 방지
+        }
+      }
     }
 
-    .line {
-      width: 48px;
-      height: 1px;
-      background: rgba(141, 123, 104, 0.3);
-    }
+    .rightSide {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      text-align: right;
+      flex: 1; // 남은 공간 차지
+      justify-content: flex-end;
 
-    h3 {
-      margin-top: 32px;
-      font-size: 20px;
-      font-weight: 900;
-    }
+      p {
+        font-size: 14px;
+        color: #888;
+        max-width: 220px;
+        line-height: 1.5;
+        transition: 0.3s;
+        word-break: keep-all; // 단어 단위 줄바꿈
+      }
 
-    p {
-      margin-top: 16px;
-      font-size: 14px;
-      opacity: 0.6;
+      .arrowIcon {
+        color: #3e3232;
+        opacity: 0.05;
+        transition: all 0.3s;
+        flex-shrink: 0;
+      }
+
+      @media (max-width: 640px) {
+        p { display: none; } // 모바일에서 설명 생략
+      }
     }
   }
 
-  .docBox {
-    margin-top: 80px;
-    padding: 48px;
+  .docSection {
+    margin-top: 40px;
+  }
 
+  .docCard {
     background: #3e3232;
-    color: #fff;
+    padding: 50px;
+    //border-radius: 40px;
+    display: grid;
+    gap: 60px;
+    align-items: center;
 
-    .docGrid {
-      display: grid;
-      gap: 48px;
-
-      @media (min-width: 1024px) {
-        grid-template-columns: 0.6fr 1.4fr;
-      }
+    @media (min-width: 1024px) {
+      grid-template-columns: 0.7fr 1.3fr;
     }
 
     .docInfo {
-      .sub {
-        font-size: 10px;
-        font-weight: 900;
+      .iconTag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 20px;
         color: #8d7b68;
+        span { font-size: 12px; font-weight: 900; text-transform: uppercase; }
       }
-
       h3 {
-        margin-top: 16px;
-        font-size: 32px;
+        font-size: 38px;
         font-weight: 900;
+        color: #fff;
+        margin-bottom: 20px;
       }
-
       .desc {
-        margin-top: 24px;
-        font-size: 14px;
-        line-height: 1.75;
-        opacity: 0.5;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 1.8;
       }
     }
 
     .docList {
       display: grid;
-      gap: 8px;
-
-      @media (min-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      gap: 10px;
+      grid-template-columns: repeat(1, 1fr);
+      @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); }
     }
 
     .docItem {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 16px 24px;
-
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
       transition: 0.3s;
 
       &:hover {
+        background: rgba(255, 255, 255, 0.08);
         border-color: #8d7b68;
-        background: rgba(255, 255, 255, 0.1);
       }
 
-      span {
-        font-size: 14px;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.9);
-      }
-
-      .point {
-        margin-right: 12px;
-        font-weight: 900;
-        color: #8d7b68;
-      }
-
-      svg {
-        width: 16px;
-        height: 16px;
-        color: #8d7b68;
-        opacity: 0.4;
+      .docName {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        .idx { font-size: 13px; font-weight: 900; color: #8d7b68; }
+        .text { font-size: 14px; font-weight: 700; color: #fff; }
       }
     }
   }

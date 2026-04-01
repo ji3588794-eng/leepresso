@@ -24,8 +24,10 @@ export default function MachineThird() {
     <div className="machine third">
       <div className="container">
         <div className="m_third_contents_box">
+          {/* 이미지 박스 */}
           <div className="third_img_box"></div>
 
+          {/* 텍스트 콘텐츠 박스 */}
           <div className="third_text_box">
             <div className="text_top_box">
               <div className="third_text_point">
@@ -33,7 +35,9 @@ export default function MachineThird() {
                 COFFEE MACHINE
               </div>
               <div className="third_text_title">하이엔드 무인커피머신</div>
-              <div className="third_text_sub">탁월한 커피 경험을 위한 최상급 엔지니어링과 설계</div>
+              <div className="third_text_sub">
+                탁월한 커피 경험을 위한 최상급 엔지니어링과 설계
+              </div>
             </div>
 
             <div className="text_row_box">
@@ -44,13 +48,13 @@ export default function MachineThird() {
                 </div>
               ))}
             </div>
+
             <div className="leepresso_mark_box">
               <div className="leepresso_mark"></div>
             </div>
           </div>
         </div>
       </div>
-      <div className="leepresso_line mt150"></div>
     </div>
   );
 }

@@ -48,25 +48,7 @@ export default function MachineSecond() {
 
   return (
     <div className="machine second">
-      <div className="m_container">
-        <div className="machine_back">
-          <div className="m_top_section">
-            <div className="m_image_box">
-              <div className="image_baristar"></div>
-              <div className="image_machine"></div>
-            </div>
-            <div className="m_text_box">
-              <div className="m_sub_text">물 한방울까지 조절하는 정교한 커피머신</div>
-              <div className="m_main_text">
-                속도는 <span>UP,</span>{" "}
-                <p>
-                  맛은 그대로 <span>!</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <div className="m_bottom_container">
         <div className="m_contents_box">

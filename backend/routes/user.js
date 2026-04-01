@@ -58,7 +58,6 @@ router.get('/community', async (req, res) => {
 });
 
 // [POST] /api/user/franchise (이미지 컬럼명 반영 버전)
-// [POST] /api/user/franchise
 router.post('/franchise', async (req, res) => {
   const { 
     customer_name, 
