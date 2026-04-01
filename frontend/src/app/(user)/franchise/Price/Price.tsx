@@ -52,13 +52,13 @@ export default function Price() {
             <tbody>
               {priceRows.map((item, i) => (
                 <tr key={i} className={i % 2 === 1 ? "even" : ""}>
-                  <td className="name">{item.name}</td>
-                  <td className="costCol">
+                  <td className="name" data-label="구분">{item.name}</td>
+                  <td className="costCol" data-label="금액">
                     <span className="old">{item.old}</span>
                     <span className="cost">{item.cost}</span>
                   </td>
-                  <td className="desc">{item.desc}</td>
-                  <td className="badge">{item.badge}</td>
+                  <td className="desc" data-label="상세내용">{item.desc}</td>
+                  <td className="badge" data-label="비고">{item.badge}</td>
                 </tr>
               ))}
             </tbody>

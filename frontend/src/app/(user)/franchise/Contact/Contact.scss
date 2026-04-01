@@ -1,90 +1,117 @@
 .contact {
-  background: #f9f5f0; 
-  padding: 100px 0; 
-  color: #3e3232; 
+  background: #f9f5f0;
+  padding: 100px 0;
+  color: #3e3232;
   font-family: 'Suit', sans-serif;
 
   .container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
   }
 
   .header {
     margin-bottom: 50px;
     text-align: center;
-    
+
     .subTitle {
       display: block;
       font-size: 14px;
-      color: #8d7b68; 
+      color: #8d7b68;
       font-weight: 800;
       letter-spacing: 0.2em;
       text-transform: uppercase;
     }
-    
-    h2 { font-size: 42px; font-weight: 900; color: #3e3232; }
+
+    h2 {
+      font-size: 42px;
+      font-weight: 900;
+      color: #3e3232;
+      line-height: 1.2;
+      word-break: keep-all;
+    }
   }
 
   .grid {
     display: grid;
     gap: 30px;
     align-items: stretch;
-    @media (min-width: 1024px) { grid-template-columns: 380px 1fr; }
+    grid-template-columns: 1fr;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 380px minmax(0, 1fr);
+    }
   }
 
-  /* 좌측 창업 유도 카드 디자인 개편 */
   .infoCard.promotional {
     position: relative;
-    padding: 60px 45px; // 패딩 넓힘
-    border-radius: 40px; 
-    background: #3e3232; // 리프레소 딥 컬러
+    padding: 60px 45px;
+    border-radius: 40px;
+    background: #3e3232;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+    min-width: 0;
 
     .dreamBox {
       position: relative;
       z-index: 2;
-      .subTitle { font-size: 13px; font-weight: 800; letter-spacing: 0.2em; margin-bottom: 25px; display: block; }
-      
-      .mainTitle { 
-        font-size: 32px; // 크기 키움
-        font-weight: 900; 
-        line-height: 1.35; 
-        margin-bottom: 35px; 
-        letter-spacing: -0.01em; 
+
+      .subTitle {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        margin-bottom: 25px;
+        display: block;
       }
-      
-      .desc { 
-        font-size: 16px; // 크기 키움
-        line-height: 1.8; // 행간 넓힘
-        margin-bottom: 30px; 
-        font-weight: 400; 
+
+      .mainTitle {
+        font-size: 32px;
+        font-weight: 900;
+        line-height: 1.35;
+        margin-bottom: 35px;
         letter-spacing: -0.01em;
-        b { font-weight: 800; }
+        word-break: keep-all;
       }
-      
-      .subDesc { 
-        font-size: 14px; // 크기 키움
-        line-height: 1.6; 
-        font-weight: 300; 
-        opacity: 0.8; 
+
+      .desc {
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 30px;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+        word-break: keep-all;
+
+        b {
+          font-weight: 800;
+        }
+      }
+
+      .subDesc {
+        font-size: 14px;
+        line-height: 1.6;
+        font-weight: 300;
+        opacity: 0.8;
+        word-break: keep-all;
       }
     }
 
     .bgImage {
       position: absolute;
-      bottom: 2%; 
+      bottom: 2%;
       right: -2%;
       width: 65%;
       height: 35%;
-      background-image: url('/images/contact-bg-icon.png'); // 우리 이미지 아이콘 같은거 넣기
+      background-image: url('/images/contact-bg-icon.png');
       background-repeat: no-repeat;
       background-position: center bottom;
       background-size: contain;
-      opacity: 0.15; // 은은하게
+      opacity: 0.15;
       z-index: 1;
+      pointer-events: none;
     }
 
     .contactInfo {
@@ -93,67 +120,189 @@
       margin-top: 70px;
       padding-top: 35px;
       border-top: 1px solid rgba(232, 213, 196, 0.2);
-      
+
       .c_item {
-        display: flex; justify-content: space-between; margin-bottom: 14px; font-size: 15px;
-        span { opacity: 0.5; font-weight: 500; }
-        strong { color: #e8d5c4; font-weight: 700; }
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+        font-size: 15px;
+
+        span {
+          opacity: 0.5;
+          font-weight: 500;
+          flex-shrink: 0;
+        }
+
+        strong {
+          color: #e8d5c4;
+          font-weight: 700;
+          text-align: right;
+          word-break: break-word;
+        }
       }
     }
   }
 
   .formCard {
     padding: 45px;
-    border-radius: 40px; 
+    border-radius: 40px;
     background: #fff;
     border: 1px solid #e8d5c4;
     box-shadow: 0 20px 40px rgba(62, 50, 50, 0.05);
+    min-width: 0;
 
-    .inputGrid { display: grid; gap: 20px; grid-template-columns: repeat(2, 1fr); }
+    .inputGrid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
     .field {
-      display: flex; flex-direction: column; gap: 8px;
-      &.full { grid-column: 1 / -1; }
-      label { font-size: 13px; font-weight: 800; color: #3e3232; margin-left: 4px; }
-      input, select, textarea {
-        padding: 14px 18px; border-radius: 15px; border: 1.5px solid #f1e9e0;
-        background: #fdfcfb; font-size: 14px; outline: none; transition: 0.3s;
-        &:focus { border-color: #8d7b68; background: #fff; }
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+
+      &.full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 800;
+        color: #3e3232;
+        margin-left: 4px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-width: 0;
+        padding: 14px 18px;
+        border-radius: 15px;
+        border: 1.5px solid #f1e9e0;
+        background: #fdfcfb;
+        font-size: 14px;
+        outline: none;
+        transition: 0.3s;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: #8d7b68;
+          background: #fff;
+        }
+      }
+
+      textarea {
+        resize: vertical;
       }
     }
 
     .radioGroup {
-      display: flex; gap: 12px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
       .radioLabel {
-        flex: 1; height: 50px; border-radius: 15px; border: 1.5px solid #f1e9e0;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 14px; font-weight: 700; cursor: pointer; color: #8d7b68;
-        input { display: none; }
-        &:has(input:checked) { background: #3e3232; color: #fff; border-color: #3e3232; }
+        flex: 1 1 160px;
+        min-height: 50px;
+        border-radius: 15px;
+        border: 1.5px solid #f1e9e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        color: #8d7b68;
+        text-align: center;
+        padding: 0 12px;
+        box-sizing: border-box;
+
+        input {
+          display: none;
+        }
+
+        &:has(input:checked) {
+          background: #3e3232;
+          color: #fff;
+          border-color: #3e3232;
+        }
       }
     }
 
     .checkGrid {
-      display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
       .checkLabel {
-        padding: 10px 5px; border-radius: 12px; border: 1.5px solid #f1e9e0;
-        font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; color: #8d7b68;
-        input { display: none; }
-        &:has(input:checked) { background: #8d7b68; color: #fff; border-color: #8d7b68; }
+        padding: 10px 8px;
+        border-radius: 12px;
+        border: 1.5px solid #f1e9e0;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        color: #8d7b68;
+        min-width: 0;
+        box-sizing: border-box;
+
+        input {
+          display: none;
+        }
+
+        &:has(input:checked) {
+          background: #8d7b68;
+          color: #fff;
+          border-color: #8d7b68;
+        }
       }
     }
 
     .privacyBox {
-      margin-top: 25px; padding: 20px; background: #f9f5f0; border-radius: 20px;
-      .p_agree { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-      .p_text { font-size: 12px; color: #8d7b68; margin-top: 8px; padding-left: 28px; }
+      margin-top: 25px;
+      padding: 20px;
+      background: #f9f5f0;
+      border-radius: 20px;
+
+      .p_agree {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .p_text {
+        font-size: 12px;
+        color: #8d7b68;
+        margin-top: 8px;
+        padding-left: 28px;
+        line-height: 1.6;
+        word-break: keep-all;
+      }
     }
 
     .submitBtn {
-      width: 100%; margin-top: 30px; padding: 20px; border-radius: 20px;
-      background: #3e3232; color: #fff; font-size: 18px; font-weight: 900; 
-      border: none; cursor: pointer; transition: 0.3s;
-      &:hover { background: #241E1A; transform: translateY(-2px); }
+      width: 100%;
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 20px;
+      background: #3e3232;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        background: #241e1a;
+        transform: translateY(-2px);
+      }
     }
   }
 }
@@ -176,84 +325,448 @@
     align-items: center;
     padding: 0 24px;
     gap: 30px;
+    box-sizing: border-box;
   }
 
-  .phone { font-size: 24px; font-weight: 900; color: #e8d5c4; white-space: nowrap; }
+  .phone {
+    font-size: 24px;
+    font-weight: 900;
+    color: #e8d5c4;
+    white-space: nowrap;
+  }
 
   .inputArea {
     flex: 1;
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
     gap: 12px;
+    min-width: 0;
 
-    input, select {
-      width: 100%; height: 44px; 
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(232, 213, 196, 0.2); 
-      color: #fff; padding: 0 16px; font-size: 14px; border-radius: 8px; outline: none;
-      &:focus { border-color: #e8d5c4; background: rgba(255,255,255,0.12); }
-      &::placeholder { color: rgba(232, 213, 196, 0.5); }
-      option { background: #3e3232; color: #fff; }
+    input,
+    select {
+      width: 100%;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(232, 213, 196, 0.2);
+      color: #fff;
+      padding: 0 16px;
+      font-size: 14px;
+      border-radius: 8px;
+      outline: none;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: #e8d5c4;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      &::placeholder {
+        color: rgba(232, 213, 196, 0.5);
+      }
+
+      option {
+        background: #3e3232;
+        color: #fff;
+      }
     }
   }
 
   .btnArea {
-    display: flex; align-items: center; gap: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 
     .f_agree_wrapper {
-      display: flex; align-items: center; gap: 8px;
-      input { width: 15px; height: 15px; accent-color: #e8d5c4; cursor: pointer; }
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      input {
+        width: 15px;
+        height: 15px;
+        accent-color: #e8d5c4;
+        cursor: pointer;
+      }
+
       .f_agree_label {
-        font-size: 11px; color: rgba(232, 213, 196, 0.6); cursor: pointer;
+        font-size: 11px;
+        color: rgba(232, 213, 196, 0.6);
+        cursor: pointer;
+
         .underline_text {
-          text-decoration: underline; text-underline-offset: 3px;
-          &:hover { color: #fff; }
+          text-decoration: underline;
+          text-underline-offset: 3px;
+
+          &:hover {
+            color: #fff;
+          }
         }
       }
     }
 
     button {
-      height: 44px; padding: 0 30px; background: #e8d5c4; color: #3e3232;
-      font-weight: 900; font-size: 15px; border-radius: 8px; border: none; cursor: pointer;
-      white-space: nowrap; transition: 0.2s;
-      &:hover { background: #fff; }
+      height: 44px;
+      padding: 0 30px;
+      background: #e8d5c4;
+      color: #3e3232;
+      font-weight: 900;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+
+      &:hover {
+        background: #fff;
+      }
     }
   }
 }
 
 /* 모달 디자인 */
 .contactModal {
-  position: fixed; inset: 0; z-index: 9999;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 
   .modalOverlay {
-    position: absolute; inset: 0; background: rgba(36, 30, 26, 0.9); backdrop-filter: blur(5px);
+    position: absolute;
+    inset: 0;
+    background: rgba(36, 30, 26, 0.9);
+    backdrop-filter: blur(5px);
   }
+
   .modalContent {
-    position: relative; width: 100%; max-width: 480px; background: #fff; border-radius: 30px; overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    border-radius: 30px;
+    overflow: hidden;
   }
+
   .modalHeader {
-    display: flex; justify-content: space-between; align-items: center; padding: 24px 30px; border-bottom: 1px solid #f1e9e0;
-    h3 { font-size: 18px; font-weight: 900; color: #3e3232; }
-    button { background: none; border: none; cursor: pointer; color: #3e3232; }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 30px;
+    border-bottom: 1px solid #f1e9e0;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 900;
+      color: #3e3232;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #3e3232;
+      flex-shrink: 0;
+    }
   }
+
   .modalBody {
-    padding: 30px; font-size: 14px; line-height: 1.6; color: #666;
+    padding: 30px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+
     .policyBox {
-      background: #fdfcfb; border: 1px solid #f1e9e0; padding: 20px; border-radius: 15px;
-      .strong { font-weight: 800; color: #3e3232; margin-bottom: 12px; }
+      background: #fdfcfb;
+      border: 1px solid #f1e9e0;
+      padding: 20px;
+      border-radius: 15px;
+
+      .strong {
+        font-weight: 800;
+        color: #3e3232;
+        margin-bottom: 12px;
+      }
+
       ul {
-        list-style: none; padding: 0;
-        li { margin-bottom: 8px; b { color: #3e3232; } }
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-bottom: 8px;
+
+          b {
+            color: #3e3232;
+          }
+        }
       }
     }
   }
+
   .modalCloseBtn {
-    width: 100%; padding: 20px; background: #3e3232; color: #fff; font-weight: 900; border: none; cursor: pointer;
-    &:hover { background: #241E1A; }
+    width: 100%;
+    padding: 20px;
+    background: #3e3232;
+    color: #fff;
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #241e1a;
+    }
   }
 }
 
-@media (max-width: 1024px) {
-  .fixedBar { display: none; }
+/* 1200 이하 */
+@media (max-width: 1199px) {
+  .contact {
+    .container {
+      padding: 0 28px;
+    }
+  }
+}
+
+/* 태블릿 */
+@media (max-width: 1023px) {
+  .contact {
+    padding: 80px 0;
+
+    .container {
+      padding: 0 26px;
+    }
+
+    .header {
+      margin-bottom: 36px;
+
+      h2 {
+        font-size: 34px;
+      }
+    }
+
+    .grid {
+      gap: 20px;
+    }
+
+    .infoCard.promotional,
+    .formCard {
+      border-radius: 28px;
+    }
+
+    .infoCard.promotional {
+      padding: 42px 32px;
+
+      .dreamBox {
+        .mainTitle {
+          font-size: 28px;
+          margin-bottom: 24px;
+        }
+
+        .desc {
+          font-size: 15px;
+          line-height: 1.7;
+          margin-bottom: 20px;
+        }
+
+        .subDesc {
+          font-size: 13px;
+        }
+      }
+
+      .contactInfo {
+        margin-top: 40px;
+        padding-top: 24px;
+      }
+    }
+
+    .formCard {
+      padding: 32px;
+
+      .inputGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+    }
+  }
+
+  .fixedBar {
+    display: none;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 767px) {
+  .contact {
+    padding: 64px 0;
+
+    .container {
+      padding: 0 18px;
+    }
+
+    .header {
+      margin-bottom: 28px;
+
+      .subTitle {
+        font-size: 12px;
+      }
+
+      h2 {
+        font-size: 28px;
+      }
+    }
+
+    .grid {
+      gap: 16px;
+    }
+
+    .infoCard.promotional,
+    .formCard {
+      border-radius: 22px;
+    }
+
+    .infoCard.promotional {
+      padding: 28px 22px;
+
+      .dreamBox {
+        .subTitle {
+          margin-bottom: 16px;
+        }
+
+        .mainTitle {
+          font-size: 24px;
+          line-height: 1.4;
+          margin-bottom: 18px;
+        }
+
+        .desc {
+          font-size: 14px;
+          line-height: 1.65;
+          margin-bottom: 16px;
+
+          br {
+            display: none;
+          }
+        }
+
+        .subDesc {
+          font-size: 13px;
+
+          br {
+            display: none;
+          }
+        }
+      }
+
+      .bgImage {
+        width: 58%;
+        height: 28%;
+        right: -4%;
+        bottom: 1%;
+      }
+
+      .contactInfo {
+        margin-top: 28px;
+        padding-top: 18px;
+
+        .c_item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+          margin-bottom: 12px;
+
+          strong {
+            text-align: left;
+          }
+        }
+      }
+    }
+
+    .formCard {
+      padding: 24px 18px;
+
+      .inputGrid {
+        gap: 16px;
+      }
+
+      .field {
+        input,
+        select,
+        textarea {
+          padding: 13px 14px;
+          font-size: 14px;
+          border-radius: 12px;
+        }
+      }
+
+      .radioGroup {
+        flex-direction: column;
+
+        .radioLabel {
+          width: 100%;
+          flex: none;
+        }
+      }
+
+      .checkGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .privacyBox {
+        padding: 16px;
+        border-radius: 16px;
+
+        .p_text {
+          padding-left: 0;
+        }
+      }
+
+      .submitBtn {
+        margin-top: 22px;
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .contactModal {
+    padding: 14px;
+
+    .modalContent {
+      border-radius: 22px;
+    }
+
+    .modalHeader {
+      padding: 18px 20px;
+    }
+
+    .modalBody {
+      padding: 20px;
+    }
+
+    .modalCloseBtn {
+      padding: 16px;
+    }
+  }
+}
+
+/* 초소형 모바일 */
+@media (max-width: 480px) {
+  .contact {
+    .container {
+      padding: 0 16px;
+    }
+
+    .formCard {
+      .checkGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
 }

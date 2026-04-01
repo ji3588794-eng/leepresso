@@ -3,7 +3,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import "./Contact.scss";
 
-const channels = ["웹검색", "매장방문", "인스타", "블로그", "유튜브", "지인추천", "기타"];
+const channels = ["웹검색", "인스타", "블로그", "유튜브", "지인추천", "기타"];
 const regions = ["서울/경기", "인천", "충청/대전", "전라/광주", "경상/대구/부산", "강원/제주"];
 
 export default function Contact() {
@@ -56,8 +56,6 @@ export default function Contact() {
             {/* 좌측: 창업 유도 카드 (완전 개편) */}
             <div className="infoCard promotional">
               <div className="dreamBox">
-                <span className="small subTitle text-[#E8D5C4] dark:text-[#EAE3D9]">Why LEEPRESSO</span>
-                
                 {/* 메인 창업 유도 카피 */}
                 <h4 className="mainTitle text-white">
                   막연한 창업의 꿈, <br />
@@ -67,9 +65,11 @@ export default function Contact() {
                 
                 {/* 보내주신 이미지 문구를 재구성 */}
                 <p className="desc text-[#A69689] dark:text-[#BBB]">
-                  "언젠가는 카페 사장님이 되어야지.." <br />
-                  그 막연한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘언젠가’</span>를<br />
-                  바로 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘오늘’</span>로 바꾸는 상담입니다.
+                  "언젠가는 카페 사장이 되어야지.." <br />
+                  <p className="desc text-[#A69689] dark:text-[#BBB]">
+                    막연한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘언젠가’</span>가 아닌 <br />
+                    확실한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘오늘’</span>을 만드는 시작입니다.
+                  </p>
                 </p>
                 
                 <p className="subDesc text-white opacity-80">

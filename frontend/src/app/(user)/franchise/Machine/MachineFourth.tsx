@@ -64,13 +64,10 @@ const MachineFourth = () => {
       <div className="machine_back">
         <div className="m_container">
           <div className="m_top_section">
-            <div className="m_image_box">
-              <div className="image_baristar"></div>
-              <div className="image_machine"></div>
-            </div>
-
             <div className="m_text_box">
+              <div className="m_eyebrow">Precision Coffee System</div>
               <div className="m_sub_text">물 한방울까지 조절하는 정교한 커피머신</div>
+
               <div className="m_main_text">
                 <span className="point">
                   속도는 <em>UP,</em>
@@ -79,18 +76,43 @@ const MachineFourth = () => {
                   맛은 그대로<span className="exclamation">!</span>
                 </strong>
               </div>
+
+              <p className="m_desc">
+                감성적인 비주얼과 안정적인 추출 성능을 함께 갖춘 리프레소 머신 시스템.
+                운영 효율성과 메뉴 확장성까지 고려해 실제 매장 운영에 최적화했습니다.
+              </p>
+            </div>
+
+            <div className="m_visual_stage">
+              <div className="visual_glow visual_glow_1"></div>
+              <div className="visual_glow visual_glow_2"></div>
+              <div className="visual_shadow"></div>
+              <div className="image_machine"></div>
+              <div className="image_baristar"></div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="container feature_section">
-        <div className="m_fourth_contents_box">
+        <div className="feature_shell">
+          <div className="feature_intro">
+            <span className="feature_kicker">Machine Advantage</span>
+            <h3>보여주기 위한 장비가 아니라, 실제 운영을 바꾸는 시스템</h3>
+            <p>
+              단순한 머신 스펙 나열이 아니라 메뉴 확장성, 운영 편의성, 고객 경험까지
+              함께 설계된 무인카페 운영 구조입니다.
+            </p>
+          </div>
+
           <div className="m_fourth_grid six">
             {features.map((item, idx) => (
               <div key={idx} className={`memo_back ${item.color}`}>
                 <div className="memo_inner">
-                  <h3 className="memo_title">{item.title}</h3>
+                  <div className="memo_top">
+                    <span className="memo_chip">POINT {String(idx + 1).padStart(2, "0")}</span>
+                    <h3 className="memo_title">{item.title}</h3>
+                  </div>
 
                   <div className="memo_text_box">
                     {item.contents.map((content, i) => (
@@ -105,10 +127,6 @@ const MachineFourth = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="container graph_section">
-        <div className="machine_graph_image"></div>
       </div>
     </div>
   );

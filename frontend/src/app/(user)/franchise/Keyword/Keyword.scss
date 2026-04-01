@@ -1,813 +1,259 @@
 @use "../../../mixin" as *;
 
+:root {
+  --leepresso-deep: #2c1f1a;
+  --leepresso-point-red: #b86845;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.05);
+}
+
 .keyword {
-  @include bg("/background_3.png");
   position: relative;
   width: 100%;
+  padding: 120px 0;
+  background-color: #fcfaf8;
   overflow: hidden;
-  padding: clamp(90px, 10vw, 150px) 0;
-  background-color: #f7f4f1;
   color: var(--leepresso-deep);
-  isolation: isolate;
 
-  &::before {
-    content: "";
+  // 배경 장식
+  .bg_decoration {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(226, 181, 149, 0.14), transparent 28%),
-      radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.7), transparent 22%),
-      radial-gradient(circle at 50% 70%, rgba(194, 130, 92, 0.08), transparent 30%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .keyword_bg_orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(30px);
-    pointer-events: none;
-    z-index: -1;
-
-    &.orb_1 {
-      width: 280px;
-      height: 280px;
-      top: 8%;
-      left: -60px;
-      background: rgba(214, 153, 116, 0.18);
-    }
-
-    &.orb_2 {
-      width: 420px;
-      height: 420px;
-      top: 20%;
-      right: -100px;
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    &.orb_3 {
-      width: 260px;
-      height: 260px;
-      bottom: 8%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(184, 104, 69, 0.12);
-    }
-  }
-
-  .keyword_spark {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    pointer-events: none;
     z-index: 0;
-    opacity: 0.75;
-    animation: twinkle 2.8s ease-in-out infinite;
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(190, 115, 79, 0.95), rgba(255, 255, 255, 0));
-      border-radius: 999px;
-      transform: translate(-50%, -50%);
-    }
-
-    &::before {
-      width: 2px;
-      height: 14px;
-    }
-
-    &::after {
-      width: 14px;
-      height: 2px;
-    }
-
-    &.spark_1 {
-      top: 13%;
-      left: 16%;
-      animation-delay: 0s;
-    }
-
-    &.spark_2 {
-      top: 24%;
-      right: 20%;
-      animation-delay: 0.7s;
-    }
-
-    &.spark_3 {
-      bottom: 24%;
-      left: 11%;
-      animation-delay: 1.4s;
-    }
-
-    &.spark_4 {
-      bottom: 16%;
-      right: 15%;
-      animation-delay: 2s;
-    }
-  }
-
-  .keyword_grid_line {
-    position: absolute;
     pointer-events: none;
-    opacity: 0.18;
-    z-index: -1;
 
-    &.grid_line_1 {
-      inset: 10% auto auto 6%;
-      width: 420px;
-      height: 420px;
-      border: 1px solid rgba(113, 84, 70, 0.15);
-      border-radius: 32px;
-      transform: rotate(-12deg);
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+
+      &.orb_1 {
+        width: 500px; height: 500px;
+        background: #e2b595;
+        top: -100px; left: -100px;
+      }
+      &.orb_2 {
+        width: 600px; height: 600px;
+        background: #fff;
+        bottom: -100px; right: -100px;
+      }
     }
 
-    &.grid_line_2 {
-      inset: auto 8% 11% auto;
-      width: 360px;
-      height: 360px;
-      border: 1px solid rgba(113, 84, 70, 0.12);
-      border-radius: 50%;
+    .grid_pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(184, 104, 69, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
   }
 
   .container {
-    width: min(100%, 1480px);
-    margin: 0 auto;
-    padding: 0 clamp(16px, 3vw, 32px);
     position: relative;
-    z-index: 2;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
   }
 
+  // 타이틀 영역
   .int_title_box {
     text-align: center;
-    max-width: 860px;
-    margin: 0 auto clamp(38px, 4vw, 60px);
+    margin-bottom: 80px;
 
     .int_kicker {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 9px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(77, 54, 44, 0.14);
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       color: var(--leepresso-point-red);
-      margin-bottom: 18px;
+      background: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     .int_title {
-      font-size: clamp(34px, 4vw, 64px);
+      font-size: clamp(32px, 5vw, 56px);
       font-weight: 900;
-      line-height: 1.14;
-      letter-spacing: -0.03em;
-      margin-bottom: 14px;
-      word-break: keep-all;
+      line-height: 1.2;
+      margin: 24px 0 16px;
+      letter-spacing: -0.02em;
     }
 
     .int_desc {
-      font-size: clamp(15px, 1.2vw, 19px);
-      line-height: 1.8;
-      color: rgba(44, 31, 26, 0.72);
+      font-size: 18px;
+      opacity: 0.7;
+      max-width: 600px;
+      margin: 0 auto;
       word-break: keep-all;
     }
   }
 
+  // 메인 스테이지 레이아웃
   .keyword_stage {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
-    gap: clamp(20px, 2vw, 28px);
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 30px;
     align-items: stretch;
   }
 
+  // 왼쪽 비주얼 영역
   .stage_visual {
     position: relative;
-    min-height: 860px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
     border-radius: 40px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(251, 247, 243, 0.88)),
-      rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(77, 54, 44, 0.1);
-    box-shadow:
-      0 24px 80px rgba(54, 36, 28, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(14px);
-    overflow: hidden;
-    padding: clamp(28px, 3vw, 42px);
+    height: 800px;
+    padding: 40px;
+    box-shadow: var(--shadow-soft);
 
-    .stage_ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(145, 101, 78, 0.16);
-      left: 50%;
-      top: 44%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-
-      &.ring_1 {
-        width: min(50vw, 520px);
-        height: min(50vw, 520px);
-      }
-
-      &.ring_2 {
-        width: min(62vw, 660px);
-        height: min(62vw, 660px);
-        border-style: dashed;
-        opacity: 0.5;
-        animation: rotateRing 20s linear infinite;
-      }
-    }
-
-    .stage_glow {
-      position: absolute;
-      width: 440px;
-      height: 440px;
-      left: 50%;
-      top: 42%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(225, 165, 130, 0.22), rgba(255, 255, 255, 0) 68%);
-      filter: blur(10px);
-      pointer-events: none;
-    }
-
-    .stage_main_card {
-      position: absolute;
-      left: 50%;
-      top: 44%;
-      transform: translate(-50%, -50%);
-      width: min(100%, 460px);
-      min-height: 560px;
-      border-radius: 34px;
-      border: 1px solid rgba(77, 54, 44, 0.12);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 239, 233, 0.95)),
-        #fff;
-      box-shadow:
-        0 28px 60px rgba(59, 38, 29, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.92);
-      padding: 24px 24px 30px;
-      text-align: center;
-      transition: all 0.35s ease;
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 34px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
-        pointer-events: none;
-      }
-
-      &.active_1 {
-        box-shadow:
-          0 30px 70px rgba(185, 114, 73, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.92);
-      }
-    }
-
-    .stage_main_top {
+    .visual_base {
+      position: relative;
+      height: 100%;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-
-      .stage_main_no {
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: 0.14em;
-        color: rgba(55, 38, 31, 0.48);
-      }
-
-      .stage_main_badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 34px;
-        padding: 0 14px;
-        border-radius: 999px;
-        background: rgba(184, 104, 69, 0.1);
-        color: var(--leepresso-point-red);
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-      }
-    }
-
-    .stage_main_image {
-      @include bg("/mark_budget_active.png");
-      width: min(100%, 240px);
-      aspect-ratio: 1 / 1;
-      margin: 0 auto 20px;
-
-      &.row2 {
-        @include bg("/mark_economic_active.png");
-      }
-
-      &.row3 {
-        @include bg("/mark_smart_active.png");
-      }
-
-      &.row4 {
-        @include bg("/mark_tena_active.png");
-      }
-    }
-
-    .stage_main_text {
-      .stage_main_title {
-        display: flex;
-        justify-content: center;
-        align-items: baseline;
-        flex-wrap: wrap;
-        gap: 2px;
-        line-height: 1.04;
-        margin-bottom: 10px;
-
-        .stage_title_point {
-          font-size: clamp(46px, 4.5vw, 66px);
-          font-weight: 900;
-          color: var(--leepresso-point-red);
-        }
-
-        .stage_title_text {
-          font-size: clamp(38px, 4vw, 58px);
-          font-weight: 900;
-          letter-spacing: -0.03em;
-        }
-      }
-
-      .stage_main_sub {
-        font-size: clamp(18px, 1.5vw, 24px);
-        font-weight: 800;
-        margin-bottom: 16px;
-        color: rgba(33, 24, 20, 0.88);
-      }
-
-      .stage_main_summary {
-        font-size: clamp(15px, 1.06vw, 17px);
-        line-height: 1.85;
-        font-weight: 600;
-        color: rgba(44, 31, 26, 0.78);
-        word-break: keep-all;
-      }
-    }
-
-    .floating_cards {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .floating_card {
-      position: absolute;
-      pointer-events: auto;
-      width: 220px;
-      min-height: 170px;
-      border-radius: 24px;
-      border: 1px solid rgba(77, 54, 44, 0.1);
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 16px 36px rgba(49, 34, 28, 0.08);
-      padding: 16px 16px 18px;
-      text-align: left;
-      transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease,
-        background 0.3s ease;
-
-      &:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 22px 44px rgba(49, 34, 28, 0.14);
-      }
-
-      &.active {
-        border-color: rgba(184, 104, 69, 0.28);
-        background: rgba(255, 249, 245, 0.92);
-        box-shadow: 0 24px 46px rgba(184, 104, 69, 0.16);
-      }
-
-      &.fc_1 {
-        left: 28px;
-        top: 42px;
-        transform: rotate(-7deg);
-      }
-
-      &.fc_2 {
-        right: 28px;
-        top: 60px;
-        transform: rotate(7deg);
-      }
-
-      &.fc_3 {
-        left: 42px;
-        bottom: 36px;
-        transform: rotate(-5deg);
-      }
-
-      &.fc_4 {
-        right: 42px;
-        bottom: 46px;
-        transform: rotate(6deg);
-      }
-
-      &.fc_1:hover,
-      &.fc_2:hover,
-      &.fc_3:hover,
-      &.fc_4:hover,
-      &.active {
-        transform: translateY(-8px) scale(1.02);
-      }
-
-      .floating_card_no {
-        font-size: 11px;
-        font-weight: 800;
-        color: rgba(55, 38, 31, 0.45);
-        letter-spacing: 0.12em;
-        margin-bottom: 10px;
-      }
-
-      .floating_card_icon {
-        @include bg("/mark_budget.png");
-        width: 52px;
-        height: 52px;
-        margin-bottom: 12px;
-
-        &.row2 {
-          @include bg("/mark_economic.png");
-        }
-
-        &.row3 {
-          @include bg("/mark_smart.png");
-        }
-
-        &.row4 {
-          @include bg("/mark_tena.png");
-        }
-      }
-
-      .floating_card_title {
-        font-size: 22px;
-        font-weight: 900;
-        line-height: 1.05;
-        margin-bottom: 8px;
-        letter-spacing: -0.03em;
-
-        span {
-          color: var(--leepresso-point-red);
-        }
-      }
-
-      .floating_card_sub {
-        font-size: 14px;
-        font-weight: 700;
-        color: rgba(33, 24, 20, 0.8);
-      }
-    }
-  }
-
-  .stage_detail {
-    min-height: 860px;
-    display: flex;
-
-    .stage_detail_inner {
-      width: 100%;
-      border-radius: 34px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 241, 236, 0.95)),
-        #fff;
-      border: 1px solid rgba(77, 54, 44, 0.1);
-      box-shadow:
-        0 24px 80px rgba(54, 36, 28, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85);
-      padding: clamp(28px, 3vw, 42px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      backdrop-filter: blur(12px);
-    }
-
-    .stage_detail_label {
-      display: inline-flex;
-      width: fit-content;
       align-items: center;
       justify-content: center;
-      min-height: 34px;
-      padding: 0 14px;
-      border-radius: 999px;
-      background: rgba(184, 104, 69, 0.1);
-      color: var(--leepresso-point-red);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      margin-bottom: 18px;
     }
 
-    .stage_detail_title {
-      font-size: clamp(30px, 2.7vw, 48px);
-      line-height: 1.22;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 18px;
-      word-break: keep-all;
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(184, 104, 69, 0.1);
+      
+      &.ring_outer { width: 550px; height: 550px; border-style: dashed; animation: rotate 30s linear infinite; }
+      &.ring_inner { width: 400px; height: 400px; }
     }
 
-    .stage_detail_text {
-      font-size: clamp(15px, 1.1vw, 18px);
-      line-height: 1.95;
-      font-weight: 600;
-      color: rgba(44, 31, 26, 0.78);
-      word-break: keep-all;
-      margin-bottom: 34px;
-    }
+    .main_display_card {
+      position: relative;
+      width: 380px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: 0 30px 60px rgba(59, 38, 29, 0.1);
+      text-align: center;
+      animation: fadeInUp 0.6s ease;
 
-    .stage_detail_nav {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-
-      .detail_nav_btn {
+      .card_header {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 14px;
-        width: 100%;
-        min-height: 68px;
-        padding: 0 16px;
-        border-radius: 18px;
-        border: 1px solid rgba(77, 54, 44, 0.1);
-        background: rgba(255, 255, 255, 0.7);
-        color: var(--leepresso-deep);
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease,
-          border-color 0.25s ease,
-          background 0.25s ease;
-
-        &:hover {
-          transform: translateX(6px);
-          box-shadow: 0 14px 28px rgba(49, 34, 28, 0.08);
-        }
-
-        &.active {
-          border-color: rgba(184, 104, 69, 0.28);
-          background: linear-gradient(90deg, rgba(255, 246, 240, 0.95), rgba(255, 255, 255, 0.95));
-          box-shadow: 0 18px 36px rgba(184, 104, 69, 0.12);
-        }
-
-        .detail_nav_num {
-          flex: 0 0 48px;
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(184, 104, 69, 0.1);
-          color: var(--leepresso-point-red);
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.12em;
-        }
-
-        .detail_nav_name {
-          font-size: 18px;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          text-align: left;
-          line-height: 1.25;
-        }
+        margin-bottom: 20px;
+        
+        .count { font-weight: 900; opacity: 0.2; font-size: 14px; }
+        .badge { font-size: 10px; font-weight: 800; color: var(--leepresso-point-red); border: 1px solid; padding: 4px 10px; border-radius: 20px; }
       }
+
+      .visual_icon {
+        width: 180px; height: 180px;
+        margin: 0 auto 30px;
+        @include bg("/mark_budget_active.png"); // 기본
+        &.row2 { @include bg("/mark_economic_active.png"); }
+        &.row3 { @include bg("/mark_smart_active.png"); }
+        &.row4 { @include bg("/mark_tena_active.png"); }
+      }
+
+      .main_title {
+        font-size: 48px; font-weight: 900;
+        .highlight { color: var(--leepresso-point-red); }
+      }
+      .sub_title { font-size: 22px; font-weight: 800; margin: 10px 0 20px; color: #444; }
+      .summary { font-size: 16px; line-height: 1.6; opacity: 0.8; word-break: keep-all; }
     }
   }
-}
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0.25;
-    transform: scale(0.7) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(90deg);
-  }
-}
+  // 플로팅 버튼들 (동그란 네비게이션 형태)
+  .floating_navigation {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 
-@keyframes rotateRing {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
+    .nav_card {
+      position: absolute;
+      pointer-events: auto;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid transparent;
 
-/* =========================
-   1280 이하
-========================= */
-@media (max-width: 1279px) {
-  .keyword {
-    .keyword_stage {
-      grid-template-columns: 1fr;
-    }
-
-    .stage_visual,
-    .stage_detail {
-      min-height: auto;
-    }
-
-    .stage_visual {
-      min-height: 900px;
-    }
-
-    .stage_detail {
-      .stage_detail_inner {
-        min-height: auto;
+      &:hover, &.active {
+        transform: scale(1.1) translateY(-10px);
+        border-color: var(--leepresso-point-red);
+        box-shadow: 0 15px 35px rgba(184, 104, 69, 0.15);
       }
+
+      .mini_icon { width: 40px; height: 40px; @include bg("/mark_budget.png"); 
+        &.row2 { @include bg("/mark_economic.png"); }
+        &.row3 { @include bg("/mark_smart.png"); }
+        &.row4 { @include bg("/mark_tena.png"); }
+      }
+      
+      .nav_card_info {
+        text-align: left;
+        .p { display: block; font-weight: 900; color: var(--leepresso-point-red); font-size: 18px; }
+        .s { font-size: 13px; font-weight: 700; opacity: 0.6; }
+      }
+
+      &.fc_1 { top: 10%; left: 10%; }
+      &.fc_2 { top: 15%; right: 10%; }
+      &.fc_3 { bottom: 15%; left: 5%; }
+      &.fc_4 { bottom: 10%; right: 5%; }
     }
   }
-}
 
-/* =========================
-   991 이하
-========================= */
-@media (max-width: 991px) {
-  .keyword {
-    .stage_visual {
-      min-height: 980px;
-      padding: 20px;
-
-      .stage_ring.ring_1 {
-        width: 380px;
-        height: 380px;
-      }
-
-      .stage_ring.ring_2 {
-        width: 480px;
-        height: 480px;
-      }
-
-      .stage_main_card {
-        width: min(100%, 400px);
-        min-height: 520px;
-        padding: 20px 18px 24px;
-      }
-
-      .floating_card {
-        width: 180px;
-        min-height: 150px;
-
-        .floating_card_title {
-          font-size: 19px;
-        }
-      }
-
-      .floating_card.fc_1 {
-        left: 12px;
-        top: 18px;
-      }
-
-      .floating_card.fc_2 {
-        right: 12px;
-        top: 18px;
-      }
-
-      .floating_card.fc_3 {
-        left: 12px;
-        bottom: 18px;
-      }
-
-      .floating_card.fc_4 {
-        right: 12px;
-        bottom: 18px;
-      }
-    }
-  }
-}
-
-/* =========================
-   767 이하
-========================= */
-@media (max-width: 767px) {
-  .keyword {
-    padding: 72px 0;
-
-    .container {
-      padding: 0 16px;
-    }
-
-    .int_title_box {
-      .int_title {
-        font-size: 34px;
-      }
-
-      .int_desc {
-        font-size: 14px;
-        line-height: 1.7;
-      }
-    }
-
-    .stage_visual {
-      min-height: auto;
-      padding: 18px 14px 16px;
-      border-radius: 26px;
+  // 오른쪽 상세 영역
+  .stage_detail {
+    .detail_container {
+      height: 100%;
+      background: #fff;
+      border-radius: 40px;
+      padding: 60px 40px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-
-      .stage_ring,
-      .stage_glow {
-        display: none;
-      }
-
-      .stage_main_card {
-        position: relative;
-        left: auto;
-        top: auto;
-        transform: none;
-        width: 100%;
-        min-height: auto;
-        border-radius: 24px;
-      }
-
-      .floating_cards {
-        position: relative;
-        inset: auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        pointer-events: auto;
-      }
-
-      .floating_card {
-        position: relative;
-        inset: auto;
-        width: 100%;
-        min-height: 138px;
-        transform: none !important;
-        border-radius: 18px;
-        padding: 14px 12px;
-
-        &:hover,
-        &.active {
-          transform: translateY(-4px) !important;
-        }
-
-        .floating_card_icon {
-          width: 42px;
-          height: 42px;
-          margin-bottom: 10px;
-        }
-
-        .floating_card_title {
-          font-size: 17px;
-        }
-
-        .floating_card_sub {
-          font-size: 13px;
-        }
-      }
+      justify-content: space-between;
+      box-shadow: var(--shadow-soft);
     }
 
-    .stage_detail {
-      .stage_detail_inner {
-        border-radius: 24px;
-        padding: 22px 16px;
-      }
+    .label { color: var(--leepresso-point-red); font-weight: 800; font-size: 12px; letter-spacing: 0.1em; }
+    .detail_title { font-size: 36px; font-weight: 900; margin: 20px 0; line-height: 1.3; animation: fadeIn 0.5s; }
+    .detail_text { font-size: 18px; line-height: 1.8; opacity: 0.7; margin-bottom: 40px; word-break: keep-all; animation: fadeIn 0.7s; }
 
-      .stage_detail_title {
-        font-size: 28px;
-      }
+    .detail_nav {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
 
-      .stage_detail_text {
-        font-size: 14px;
-        line-height: 1.8;
-        margin-bottom: 24px;
-      }
+      .nav_item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        border-radius: 15px;
+        background: #f8f9fa;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
 
-      .stage_detail_nav {
-        .detail_nav_btn {
-          min-height: 58px;
-          border-radius: 14px;
-          padding: 0 12px;
-          gap: 10px;
+        .num { font-weight: 900; opacity: 0.3; }
+        .name { font-size: 18px; font-weight: 800; }
 
-          .detail_nav_num {
-            flex: 0 0 40px;
-            width: 40px;
-            height: 40px;
-          }
-
-          .detail_nav_name {
-            font-size: 15px;
+        &.active {
+          background: var(--leepresso-deep);
+          color: #fff;
+          .num { color: var(--leepresso-point-red); opacity: 1; }
+          
+          .progress_bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 3px; background: var(--leepresso-point-red);
+            animation: progress 4.5s linear forwards;
           }
         }
       }
@@ -815,42 +261,27 @@
   }
 }
 
-/* =========================
-   480 이하
-========================= */
-@media (max-width: 480px) {
+// 애니메이션
+@keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes progress { from { width: 0%; } to { width: 100%; } }
+
+// 반응형: 모바일은 세로로 깔끔하게 나열
+@media (max-width: 1024px) {
   .keyword {
-    .stage_visual {
-      .floating_cards {
-        grid-template-columns: 1fr;
-      }
+    .keyword_stage { grid-template-columns: 1fr; }
+    .stage_visual { height: 700px; }
+  }
+}
 
-      .stage_main_text {
-        .stage_main_title {
-          .stage_title_point {
-            font-size: 34px;
-          }
-
-          .stage_title_text {
-            font-size: 31px;
-          }
-        }
-
-        .stage_main_sub {
-          font-size: 16px;
-        }
-
-        .stage_main_summary {
-          font-size: 14px;
-          line-height: 1.75;
-        }
-      }
+@media (max-width: 768px) {
+  .keyword {
+    .stage_visual { 
+      height: auto; padding: 20px;
+      .ring, .floating_navigation { display: none; }
+      .main_display_card { width: 100%; }
     }
-
-    .stage_detail {
-      .stage_detail_title {
-        font-size: 24px;
-      }
-    }
+    .stage_detail { padding: 40px 20px; }
   }
 }

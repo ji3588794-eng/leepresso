@@ -18,6 +18,15 @@ export default function MachineFirst() {
 
           {/* 컨텐츠 통합 영역 */}
           <div className="ma_contents_bg">
+            <div className="container graph_section">
+              <div className="graph_frame">
+                <div className="graph_head">
+                  <span className="graph_kicker">Performance View</span>
+                  <h3>운영 효율과 수익 구조를 한눈에 보는 머신 운영 그래프</h3>
+                </div>
+                <div className="machine_graph_image"></div>
+              </div>
+            </div>
             <div className="ma_contents_box">
               
               {/* 좌측: 자갈 배경 + 가독성 강화 텍스트 (60%) */}

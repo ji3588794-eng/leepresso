@@ -12,12 +12,13 @@ export default function Review() {
 
       <div className="container">
         <div className="header">
-          <span className="sub-title">Real Review</span>
-          <h2>누구나 편하게 <span>머물다 가는 곳</span></h2>
-          <p className="desc">
-            다양한 이웃들이 남겨주신 기분 좋은 흔적.<br />
-            전국 리프레소 매장에 매일 쌓이는 실제 리뷰입니다.
-          </p>
+          <span className="sub-title">Guest Experience</span>
+          <h2>고객님들이 전해주신 <br /><span>우리 동네 방문 기록</span></h2>
+          <div className="desc-wrapper">
+            <p className="desc">
+              아이부터 어르신까지,<br /> <strong>이웃들이 남긴 실제 기록</strong>이 리프레소의 지속 가능한 가치를 증명합니다.
+            </p>
+          </div>
         </div>
 
         {/* 리뷰 보드 영역: 사진 크기 극대화 */}
