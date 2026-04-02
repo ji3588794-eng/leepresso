@@ -407,10 +407,10 @@
     }
   }
 
-  // ------------------------------------
+ // ------------------------------------
 // ===== MachineFourth 리디자인 =====
 &.fourth {
-  padding: 0 0 100px;
+  padding: 0 0 110px;
   background:
     linear-gradient(180deg, #f7efe4 0%, #f9f5f0 28%, #f7f2ec 100%);
   overflow: visible;
@@ -832,6 +832,57 @@
         overflow-wrap: anywhere;
       }
     }
+  }
+
+  .graph_section {
+    margin-top: 36px;
+  }
+
+  .graph_frame {
+    background: linear-gradient(180deg, #fffdf9 0%, #fff8f1 100%);
+    border: 1px solid rgba(226, 206, 184, 0.8);
+    border-radius: 30px;
+    padding: 26px;
+    box-shadow:
+      0 20px 42px rgba(62, 50, 50, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  }
+
+  .graph_head {
+    margin-bottom: 18px;
+
+    .graph_kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9f7556;
+    }
+
+    h3 {
+      font-size: clamp(24px, 2vw, 34px);
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: #2f2623;
+      word-break: keep-all;
+    }
+  }
+
+  .machine_graph_image {
+    width: 100%;
+    min-height: 340px;
+    aspect-ratio: 16 / 7.7;
+    border-radius: 22px;
+    overflow: hidden;
+    background-color: #fff;
+    @include bg("/graph_image_2.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 1px rgba(141, 123, 104, 0.08);
   }
 }
 

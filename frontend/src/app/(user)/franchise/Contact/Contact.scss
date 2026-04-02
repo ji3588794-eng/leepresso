@@ -1,12 +1,12 @@
 .contact {
   background: #f9f5f0;
-  padding: 100px 0;
+  padding: 100px 0 200px 0;
   color: #3e3232;
   font-family: 'Suit', sans-serif;
 
   .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1420px;
     margin: 0 auto;
     padding: 0 24px;
     box-sizing: border-box;
@@ -56,17 +56,24 @@
     overflow: hidden;
     min-width: 0;
 
+    .bgGif {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/contact-gif.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.4;
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .dreamBox {
       position: relative;
       z-index: 2;
-
-      .subTitle {
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: 0.2em;
-        margin-bottom: 25px;
-        display: block;
-      }
 
       .mainTitle {
         font-size: 32px;
@@ -84,10 +91,6 @@
         font-weight: 400;
         letter-spacing: -0.01em;
         word-break: keep-all;
-
-        b {
-          font-weight: 800;
-        }
       }
 
       .subDesc {
@@ -97,21 +100,6 @@
         opacity: 0.8;
         word-break: keep-all;
       }
-    }
-
-    .bgImage {
-      position: absolute;
-      bottom: 2%;
-      right: -2%;
-      width: 65%;
-      height: 35%;
-      background-image: url('/images/contact-bg-icon.png');
-      background-repeat: no-repeat;
-      background-position: center bottom;
-      background-size: contain;
-      opacity: 0.15;
-      z-index: 1;
-      pointer-events: none;
     }
 
     .contactInfo {
@@ -128,18 +116,8 @@
         margin-bottom: 14px;
         font-size: 15px;
 
-        span {
-          opacity: 0.5;
-          font-weight: 500;
-          flex-shrink: 0;
-        }
-
-        strong {
-          color: #e8d5c4;
-          font-weight: 700;
-          text-align: right;
-          word-break: break-word;
-        }
+        span { opacity: 0.5; flex-shrink: 0; }
+        strong { color: #e8d5c4; text-align: right; }
       }
     }
   }
@@ -150,7 +128,6 @@
     background: #fff;
     border: 1px solid #e8d5c4;
     box-shadow: 0 20px 40px rgba(62, 50, 50, 0.05);
-    min-width: 0;
 
     .inputGrid {
       display: grid;
@@ -162,74 +139,36 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-width: 0;
-
-      &.full {
-        grid-column: 1 / -1;
-      }
-
-      label {
-        font-size: 13px;
-        font-weight: 800;
-        color: #3e3232;
-        margin-left: 4px;
-      }
-
-      input,
-      select,
-      textarea {
+      &.full { grid-column: 1 / -1; }
+      label { font-size: 13px; font-weight: 800; color: #3e3232; }
+      input, select, textarea {
         width: 100%;
-        min-width: 0;
         padding: 14px 18px;
         border-radius: 15px;
         border: 1.5px solid #f1e9e0;
         background: #fdfcfb;
         font-size: 14px;
         outline: none;
-        transition: 0.3s;
-        box-sizing: border-box;
-
-        &:focus {
-          border-color: #8d7b68;
-          background: #fff;
-        }
-      }
-
-      textarea {
-        resize: vertical;
+        color: #3e3232;
+        &:focus { border-color: #8d7b68; background: #fff; }
       }
     }
 
     .radioGroup {
       display: flex;
       gap: 12px;
-      flex-wrap: wrap;
-
       .radioLabel {
-        flex: 1 1 160px;
+        flex: 1;
         min-height: 50px;
         border-radius: 15px;
         border: 1.5px solid #f1e9e0;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
-        font-weight: 700;
         cursor: pointer;
         color: #8d7b68;
-        text-align: center;
-        padding: 0 12px;
-        box-sizing: border-box;
-
-        input {
-          display: none;
-        }
-
-        &:has(input:checked) {
-          background: #3e3232;
-          color: #fff;
-          border-color: #3e3232;
-        }
+        input { display: none; }
+        &:has(input:checked) { background: #3e3232; color: #fff; border-color: #3e3232; }
       }
     }
 
@@ -237,28 +176,14 @@
       display: grid;
       gap: 10px;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-
       .checkLabel {
-        padding: 10px 8px;
+        padding: 10px;
         border-radius: 12px;
         border: 1.5px solid #f1e9e0;
-        font-size: 13px;
-        font-weight: 600;
-        text-align: center;
         cursor: pointer;
-        color: #8d7b68;
-        min-width: 0;
-        box-sizing: border-box;
-
-        input {
-          display: none;
-        }
-
-        &:has(input:checked) {
-          background: #8d7b68;
-          color: #fff;
-          border-color: #8d7b68;
-        }
+        text-align: center;
+        input { display: none; }
+        &:has(input:checked) { background: #8d7b68; color: #fff; }
       }
     }
 
@@ -267,23 +192,7 @@
       padding: 20px;
       background: #f9f5f0;
       border-radius: 20px;
-
-      .p_agree {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        font-size: 13px;
-        line-height: 1.5;
-      }
-
-      .p_text {
-        font-size: 12px;
-        color: #8d7b68;
-        margin-top: 8px;
-        padding-left: 28px;
-        line-height: 1.6;
-        word-break: keep-all;
-      }
+      .p_text { font-size: 12px; color: #8d7b68; margin-top: 8px; }
     }
 
     .submitBtn {
@@ -297,12 +206,7 @@
       font-weight: 900;
       border: none;
       cursor: pointer;
-      transition: 0.3s;
-
-      &:hover {
-        background: #241e1a;
-        transform: translateY(-2px);
-      }
+      &:hover { background: #241e1a; transform: translateY(-2px); }
     }
   }
 }
@@ -316,22 +220,41 @@
   background: #3e3232;
   padding: 15px 0;
   z-index: 1000;
-  border-top: 2px solid #e8d5c4;
+  border-top: 1px solid #e8d5c4;
+  
+  /* 초기 상태: 숨김 */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.4s ease;
+  pointer-events: none;
+
+  /* 스크롤 시 보임 */
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* 푸터 영역 도달 시 */
+  &.atFooter {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(0);
+  }
 
   .barContainer {
-    max-width: 1200px;
+    max-width: 1420px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     padding: 0 24px;
-    gap: 30px;
-    box-sizing: border-box;
+    gap: 20px;
   }
 
   .phone {
-    font-size: 24px;
-    font-weight: 900;
     color: #e8d5c4;
+    font-weight: 900;
+    font-size: 18px;
     white-space: nowrap;
   }
 
@@ -340,34 +263,17 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
     gap: 12px;
-    min-width: 0;
-
-    input,
-    select {
-      width: 100%;
+    input, select {
       height: 44px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(232, 213, 196, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(232, 213, 196, 0.3);
       color: #fff;
       padding: 0 16px;
-      font-size: 14px;
       border-radius: 8px;
+      font-size: 14px;
       outline: none;
-      box-sizing: border-box;
-
-      &:focus {
-        border-color: #e8d5c4;
-        background: rgba(255, 255, 255, 0.12);
-      }
-
-      &::placeholder {
-        color: rgba(232, 213, 196, 0.5);
-      }
-
-      option {
-        background: #3e3232;
-        color: #fff;
-      }
+      &::placeholder { color: rgba(255, 255, 255, 0.5); }
+      option { background: #3e3232; color: #fff; }
     }
   }
 
@@ -379,394 +285,89 @@
     .f_agree_wrapper {
       display: flex;
       align-items: center;
-      gap: 8px;
-
-      input {
-        width: 15px;
-        height: 15px;
+      gap: 6px;
+      color: #fff;
+      font-size: 12px;
+      input[type="checkbox"] {
         accent-color: #e8d5c4;
         cursor: pointer;
       }
-
-      .f_agree_label {
-        font-size: 11px;
-        color: rgba(232, 213, 196, 0.6);
+      .underline_text {
+        text-decoration: underline;
         cursor: pointer;
-
-        .underline_text {
-          text-decoration: underline;
-          text-underline-offset: 3px;
-
-          &:hover {
-            color: #fff;
-          }
-        }
+        opacity: 0.8;
+        &:hover { opacity: 1; }
       }
     }
 
     button {
       height: 44px;
-      padding: 0 30px;
+      padding: 0 25px;
       background: #e8d5c4;
       color: #3e3232;
       font-weight: 900;
-      font-size: 15px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
       white-space: nowrap;
-      transition: 0.2s;
-
-      &:hover {
-        background: #fff;
-      }
+      transition: background 0.3s;
+      &:hover { background: #fff; }
     }
   }
 }
 
-/* 모달 디자인 */
+/* 모달 스타일 */
 .contactModal {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-
-  .modalOverlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(36, 30, 26, 0.9);
-    backdrop-filter: blur(5px);
-  }
-
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+  .modalOverlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
   .modalContent {
-    position: relative;
-    width: 100%;
-    max-width: 480px;
-    background: #fff;
-    border-radius: 30px;
-    overflow: hidden;
-  }
-
-  .modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 30px;
-    border-bottom: 1px solid #f1e9e0;
-
-    h3 {
-      font-size: 18px;
-      font-weight: 900;
-      color: #3e3232;
+    position: relative; background: #fff; width: 90%; max-width: 500px;
+    padding: 30px; border-radius: 20px;
+    .modalHeader {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+      h3 { font-size: 20px; font-weight: 800; }
+      button { background: none; border: none; cursor: pointer; }
     }
-
-    button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #3e3232;
-      flex-shrink: 0;
-    }
-  }
-
-  .modalBody {
-    padding: 30px;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #666;
-
-    .policyBox {
-      background: #fdfcfb;
-      border: 1px solid #f1e9e0;
-      padding: 20px;
-      border-radius: 15px;
-
-      .strong {
-        font-weight: 800;
-        color: #3e3232;
-        margin-bottom: 12px;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          margin-bottom: 8px;
-
-          b {
-            color: #3e3232;
-          }
-        }
+    .modalBody {
+      .policyBox {
+        background: #f8f8f8; padding: 20px; border-radius: 10px; font-size: 14px; line-height: 1.6;
+        .strong { font-weight: 700; margin-bottom: 10px; display: block; }
+        ul { margin-top: 10px; li { margin-bottom: 5px; b { color: #8d7b68; } } }
       }
     }
-  }
-
-  .modalCloseBtn {
-    width: 100%;
-    padding: 20px;
-    background: #3e3232;
-    color: #fff;
-    font-weight: 900;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      background: #241e1a;
+    .modalCloseBtn {
+      width: 100%; margin-top: 20px; height: 50px; background: #3e3232; color: #fff;
+      border-radius: 10px; font-weight: 700; cursor: pointer; border: none;
     }
   }
 }
 
-/* 1200 이하 */
-@media (max-width: 1199px) {
-  .contact {
-    .container {
-      padding: 0 28px;
-    }
-  }
-}
-
-/* 태블릿 */
+/* 반응형 */
 @media (max-width: 1023px) {
+  .fixedBar { display: none; }
   .contact {
     padding: 80px 0;
-
-    .container {
-      padding: 0 26px;
-    }
-
-    .header {
-      margin-bottom: 36px;
-
-      h2 {
-        font-size: 34px;
-      }
-    }
-
-    .grid {
-      gap: 20px;
-    }
-
-    .infoCard.promotional,
-    .formCard {
-      border-radius: 28px;
-    }
-
-    .infoCard.promotional {
-      padding: 42px 32px;
-
-      .dreamBox {
-        .mainTitle {
-          font-size: 28px;
-          margin-bottom: 24px;
-        }
-
-        .desc {
-          font-size: 15px;
-          line-height: 1.7;
-          margin-bottom: 20px;
-        }
-
-        .subDesc {
-          font-size: 13px;
-        }
-      }
-
-      .contactInfo {
-        margin-top: 40px;
-        padding-top: 24px;
-      }
-    }
-
-    .formCard {
-      padding: 32px;
-
-      .inputGrid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-    }
-  }
-
-  .fixedBar {
-    display: none;
+    .header h2 { font-size: 34px; }
+    .grid { gap: 20px; }
+    .formCard { padding: 32px; .inputGrid { grid-template-columns: 1fr; } }
   }
 }
 
-/* 모바일 */
 @media (max-width: 767px) {
   .contact {
     padding: 64px 0;
-
-    .container {
-      padding: 0 18px;
-    }
-
-    .header {
-      margin-bottom: 28px;
-
-      .subTitle {
-        font-size: 12px;
-      }
-
-      h2 {
-        font-size: 28px;
-      }
-    }
-
-    .grid {
-      gap: 16px;
-    }
-
-    .infoCard.promotional,
-    .formCard {
-      border-radius: 22px;
-    }
-
+    .header h2 { font-size: 28px; }
     .infoCard.promotional {
       padding: 28px 22px;
-
-      .dreamBox {
-        .subTitle {
-          margin-bottom: 16px;
-        }
-
-        .mainTitle {
-          font-size: 24px;
-          line-height: 1.4;
-          margin-bottom: 18px;
-        }
-
-        .desc {
-          font-size: 14px;
-          line-height: 1.65;
-          margin-bottom: 16px;
-
-          br {
-            display: none;
-          }
-        }
-
-        .subDesc {
-          font-size: 13px;
-
-          br {
-            display: none;
-          }
-        }
-      }
-
-      .bgImage {
-        width: 58%;
-        height: 28%;
-        right: -4%;
-        bottom: 1%;
-      }
-
-      .contactInfo {
-        margin-top: 28px;
-        padding-top: 18px;
-
-        .c_item {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 4px;
-          margin-bottom: 12px;
-
-          strong {
-            text-align: left;
-          }
-        }
-      }
+      .dreamBox .mainTitle { font-size: 24px; }
+      .contactInfo .c_item { flex-direction: column; align-items: flex-start; }
     }
-
-    .formCard {
-      padding: 24px 18px;
-
-      .inputGrid {
-        gap: 16px;
-      }
-
-      .field {
-        input,
-        select,
-        textarea {
-          padding: 13px 14px;
-          font-size: 14px;
-          border-radius: 12px;
-        }
-      }
-
-      .radioGroup {
-        flex-direction: column;
-
-        .radioLabel {
-          width: 100%;
-          flex: none;
-        }
-      }
-
-      .checkGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .privacyBox {
-        padding: 16px;
-        border-radius: 16px;
-
-        .p_text {
-          padding-left: 0;
-        }
-      }
-
-      .submitBtn {
-        margin-top: 22px;
-        padding: 16px;
-        font-size: 16px;
-        border-radius: 16px;
-      }
-    }
-  }
-
-  .contactModal {
-    padding: 14px;
-
-    .modalContent {
-      border-radius: 22px;
-    }
-
-    .modalHeader {
-      padding: 18px 20px;
-    }
-
-    .modalBody {
-      padding: 20px;
-    }
-
-    .modalCloseBtn {
-      padding: 16px;
-    }
-  }
-}
-
-/* 초소형 모바일 */
-@media (max-width: 480px) {
-  .contact {
-    .container {
-      padding: 0 16px;
-    }
-
-    .formCard {
-      .checkGrid {
-        grid-template-columns: 1fr;
-      }
+    .formCard { 
+      .radioGroup { flex-direction: column; } 
+      .checkGrid { grid-template-columns: 1fr 1fr; } 
     }
   }
 }

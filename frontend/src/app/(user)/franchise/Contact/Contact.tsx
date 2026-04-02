@@ -1,13 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import "./Contact.scss";
 
 const channels = ["웹검색", "인스타", "블로그", "유튜브", "지인추천", "기타"];
-const regions = ["서울/경기", "인천", "충청/대전", "전라/광주", "경상/대구/부산", "강원/제주"];
+const regions = ["서울/경기", "인천", "충청/대전", "전라/광주", "경상/대구/부산", "강원/제주", "기타"];
 
 export default function Contact() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAtFooter, setIsAtFooter] = useState(false);
+  const [showFixedBar, setShowFixedBar] = useState(false); // 스크롤 감지 상태 추가
+  const sectionRef = useRef<HTMLElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,9 +46,38 @@ export default function Contact() {
     }
   };
 
+  useEffect(() => {
+    // 1. Footer 교차 감지 (기존 로직)
+    const footer = document.querySelector("footer");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAtFooter(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footer) observer.observe(footer);
+
+    // 2. 스크롤 감지 (최상단 숨기기 로직)
+    const handleScroll = () => {
+      if (window.scrollY > 150) { // 150px 이상 내려오면 보임
+        setShowFixedBar(true);
+      } else {
+        setShowFixedBar(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <section id="contact" className="contact">
+      <section id="contact" className="contact" ref={sectionRef} style={{ position: 'relative' }}>
         <div className="container">
           <div className="header">
             <span className="subTitle">Success with LEEPRESSO</span>
@@ -53,33 +85,32 @@ export default function Contact() {
           </div>
 
           <div className="grid">
-            {/* 좌측: 창업 유도 카드 (완전 개편) */}
             <div className="infoCard promotional">
+              {/* GIF 배경이 들어가는 영역 */}
+              <div className="bgGif"></div>
+              
               <div className="dreamBox">
-                {/* 메인 창업 유도 카피 */}
                 <h4 className="mainTitle text-white">
                   막연한 창업의 꿈, <br />
                   <span className="text-[#8D7B68] dark:text-[#E8D5C4]">LEEPRESSO</span>와 함께<br />
                   현실로 만드세요.
                 </h4>
                 
-                {/* 보내주신 이미지 문구를 재구성 */}
-                <p className="desc text-[#A69689] dark:text-[#BBB]">
-                  "언젠가는 카페 사장이 되어야지.." <br />
+                <div className="desc_wrap">
+                  <p className="desc text-[#A69689] dark:text-[#BBB]">
+                    "언젠가는 카페 사장이 되어야지.."
+                  </p>
                   <p className="desc text-[#A69689] dark:text-[#BBB]">
                     막연한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘언젠가’</span>가 아닌 <br />
                     확실한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘오늘’</span>을 만드는 시작입니다.
                   </p>
-                </p>
+                </div>
                 
                 <p className="subDesc text-white opacity-80">
                   성공적인 출점을 위해 가맹점주의 조건에 <br />
                   딱 맞춘 실행 가능한 방향을 검토합니다.
                 </p>
               </div>
-
-              {/* 하단 배경 아이콘 이미지 영역 */}
-              <div className="bgImage"></div>
 
               <div className="contactInfo text-white">
                 <div className="c_item">
@@ -97,7 +128,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* 우측: 신청 폼 (기존 유지) */}
             <form onSubmit={handleSubmit} className="formCard">
               <div className="inputGrid">
                 <div className="field">
@@ -161,38 +191,35 @@ export default function Contact() {
             </form>
           </div>
         </div>
+
+        {/* 하단 고정 바 - showFixedBar 상태에 따라 visible 클래스 조절 */}
+        <div className={`fixedBar ${showFixedBar ? "visible" : ""} ${isAtFooter ? "atFooter" : ""}`}>
+          <form onSubmit={handleSubmit} className="barContainer">
+            <div className="phone">가맹문의 1522-0290</div>
+            <div className="inputArea">
+              <input name="customer_name" placeholder="성함" required />
+              <input name="phone_number" placeholder="연락처" required />
+              <select name="hope_region">
+                <option value="">희망지역 선택</option>
+                {regions.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            </div>
+            <div className="btnArea">
+              <div className="f_agree_wrapper">
+                <input type="checkbox" id="bar_agree" required />
+                <label htmlFor="bar_agree" className="f_agree_label">
+                  <span className="underline_text" onClick={(e) => {
+                    e.preventDefault(); 
+                    setIsModalOpen(true);
+                  }}>개인정보처리동의</span>
+                </label>
+              </div>
+              <button type="submit">빠른 창업상담</button>
+            </div>
+          </form>
+        </div>
       </section>
 
-      {/* FIXED BOTTOM BAR */}
-      <div className="fixedBar">
-        <form onSubmit={handleSubmit} className="barContainer">
-          <div className="phone">1522-0290</div>
-          
-          <div className="inputArea">
-            <input name="customer_name" placeholder="성함" required />
-            <input name="phone_number" placeholder="연락처" required />
-            <select name="hope_region">
-              <option value="">희망지역 선택</option>
-              {regions.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-          </div>
-
-          <div className="btnArea">
-            <div className="f_agree_wrapper">
-              <input type="checkbox" id="bar_agree" required />
-              <label htmlFor="bar_agree" className="f_agree_label">
-                <span className="underline_text" onClick={(e) => {
-                  e.preventDefault(); 
-                  setIsModalOpen(true);
-                }}>개인정보처리동의</span>
-              </label>
-            </div>
-            <button type="submit">빠른 창업상담</button>
-          </div>
-        </form>
-      </div>
-
-      {/* 개인정보처리방침 모달 */}
       {isModalOpen && (
         <div className="contactModal">
           <div className="modalOverlay" onClick={() => setIsModalOpen(false)} />
