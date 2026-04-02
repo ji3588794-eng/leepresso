@@ -68,7 +68,7 @@ export default function MachineSecond() {
           ))}
         </div>
       </div>
-      <div className="leepresso_line mt150"></div>
+      {/* <div className="leepresso_line mt150"></div> */}
     </div>
   );
 }

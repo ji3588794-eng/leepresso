@@ -2,7 +2,7 @@
 
 .franchise_menu {
  @include bg-gradient-color(var(--leepresso-bg), var(--white));
-  padding: 100px 0;
+  padding-bottom:100px;
   color: var(--leepresso-deep);
   .container {
     max-width: 100%;
@@ -12,7 +12,7 @@
       width: 100%;
       height: 850px;
       padding: 70px 0;
-      @include bg-gradient-image(var(--leepresso-bg), var(--white), "/background_coffee.png");
+      //@include bg-gradient-image(var(--leepresso-bg), var(--white), "/background_coffee.png");
       .menu_title_box {
         .menu_title {
           font-size: 50px;

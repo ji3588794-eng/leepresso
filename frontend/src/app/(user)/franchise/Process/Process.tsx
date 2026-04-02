@@ -7,47 +7,17 @@ import {
   PenTool, 
   Settings, 
   Store, 
-  ArrowRight, 
-  ClipboardCheck 
+  CheckCircle2,
+  ArrowRight
 } from "lucide-react";
 
 const processItems = [
-  { 
-    step: "01", 
-    title: "가맹후보점 상권분석", 
-    desc: "데이터 기반 입지 분석 및 유동 인구 조사",
-    icon: <Search size={22} />
-  },
-  { 
-    step: "02", 
-    title: "점주 사업설명회", 
-    desc: "1:1 수익 시뮬레이션과 모델 상담 진행",
-    icon: <Users size={22} />
-  },
-  { 
-    step: "03", 
-    title: "정보공개서 열람", 
-    desc: "투명한 가맹 진행을 위한 법적 절차 이행",
-    icon: <FileText size={22} />
-  },
-  { 
-    step: "04", 
-    title: "프랜차이즈 가맹계약", 
-    desc: "출점 전략과 운영 기준 확정",
-    icon: <PenTool size={22} />
-  },
-  { 
-    step: "05", 
-    title: "인테리어/장비입고", 
-    desc: "공간 설계와 무인 시스템 세팅",
-    icon: <Settings size={22} />
-  },
-  { 
-    step: "06", 
-    title: "가맹점 OPEN", 
-    desc: "현장 교육 및 운영 지원과 함께 오픈",
-    icon: <Store size={22} />
-  },
+  { step: "01", title: "상권분석", desc: "데이터 기반 입지 분석", icon: <Search size={22} /> },
+  { step: "02", title: "사업설명회", desc: "1:1 수익 시뮬레이션", icon: <Users size={22} /> },
+  { step: "03", title: "정보공개서", desc: "투명한 법적 절차 이행", icon: <FileText size={22} /> },
+  { step: "04", title: "가맹계약", desc: "출점 전략 최종 확정", icon: <PenTool size={22} /> },
+  { step: "05", title: "시설세팅", desc: "무인 시스템 완벽 구축", icon: <Settings size={22} /> },
+  { step: "06", title: "가맹점 OPEN", desc: "운영 지원 및 정식 오픈", icon: <Store size={22} /> },
 ];
 
 const documents = [
@@ -63,61 +33,58 @@ export default function Process() {
   return (
     <section id="process-info" className="process">
       <div className="container">
+        {/* 헤더 */}
         <div className="header">
-          <div className="titleWrapper">
-            <span className="sub">Franchise Process</span>
-            <h2>창업 절차</h2>
+          <div className="title-txts4">
+            <img src="/franchise-title4.png" alt="창업 절차" />
           </div>
           <div className="infoRow">
             <p>
-              리프레소와 함께라면 카페 창업이 쉬워집니다. <br />
-              <strong>6단계의 전문적인 컨설팅</strong>을 통해 안정적인 오픈을 지원합니다.
+              리프레소와 함께하는 <strong>전문적인 6단계</strong> 컨설팅. <br />
+              안정적인 창업의 길을 제시합니다.
             </p>
           </div>
         </div>
 
-        {/* 높이가 일정한 직사각형 그리드 */}
+        {/* 6단계 플로우 - 박스 크기 균일화 및 화살표 외부 배치 */}
         <div className="stepGrid">
-          {processItems.map((item) => (
-            <div key={item.step} className="stepCard">
-              <div className="cardInner">
-                <div className="leftSide">
-                  <div className="iconBox">{item.icon}</div>
-                  <div className="stepInfo">
-                    <span className="num">STEP {item.step}</span>
-                    <h3>{item.title}</h3>
-                  </div>
+          {processItems.map((item, index) => (
+            <div key={item.step} className="stepWrapper">
+              <div className="stepBox">
+                <div className="bgNum">{item.step}</div>
+                <div className="topInfo">
+                  <div className="iconWrap">{item.icon}</div>
                 </div>
-                <div className="rightSide">
+                <div className="bottomInfo">
+                  <h3>{item.title}</h3>
                   <p>{item.desc}</p>
-                  <ArrowRight size={20} className="arrowIcon" />
                 </div>
               </div>
+              
+              {/* 마지막 단계가 아닐 때만 화살표 표시 */}
+              {index !== processItems.length - 1 && (
+                <div className="connector">
+                  <ArrowRight size={25} />
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        <div className="docSection">
-          <div className="docCard">
-            <div className="docInfo">
-              <div className="iconTag">
-                <ClipboardCheck size={18} />
-                <span>Documents</span>
-              </div>
-              <h3>필수 구비 서류</h3>
-              <p className="desc">
-                계약 및 영업 신고를 위해 <br />
-                사전에 반드시 준비해주셔야 할 서류입니다.
-              </p>
-            </div>
-            
+        {/* 서류 섹션 */}
+        <div className="docWrapper">
+          <div className="docTitleSide">
+            <div className="tag">Checklist</div>
+            <h2>필수 구비 서류</h2>
+            <p>계약 전 반드시 준비해 주세요.</p>
+          </div>
+          <div className="docContentSide">
             <div className="docList">
               {documents.map((doc, idx) => (
                 <div key={doc} className="docItem">
-                  <div className="docName">
-                    <span className="idx">{idx + 1}</span>
-                    <span className="text">{doc}</span>
-                  </div>
+                  <span className="idx">{idx + 1}</span>
+                  <span className="text">{doc}</span>
+                  <CheckCircle2 size={20} className="check" />
                 </div>
               ))}
             </div>

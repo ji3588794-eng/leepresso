@@ -17,8 +17,8 @@ export default function Interior() {
     <section className="interior">
       <div className="container">
         <div className="comp_bg">
-          <div className="comp_deco deco_1"></div>
-          <div className="comp_deco deco_2"></div>
+          {/* <div className="comp_deco deco_1"></div>
+          <div className="comp_deco deco_2"></div> */}
 
           <div className="comp_content_box">
             <div className="comp_title">
@@ -51,8 +51,12 @@ export default function Interior() {
             </div>
 
             <div className="comp_bottom_box">
-              <div className="comp_bottom_text">인테리어 자유도 UP!</div>
-              <div className="comp_bottom_text">내 카페는 내 스타일로 디자인한다.</div>
+               <div className="comp_bottom_text">
+                거품을 뺀 정직한 시공, <strong>인테리어 자율성 UP!</strong>
+              </div>
+              <div className="comp_bottom_text">
+                특성에 맞춰 점주님의 개성을 담은 공간을 완성해드립니다.
+              </div>
             </div>
           </div>
         </div>

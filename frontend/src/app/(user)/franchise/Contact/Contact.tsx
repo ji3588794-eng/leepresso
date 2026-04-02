@@ -80,14 +80,13 @@ export default function Contact() {
       <section id="contact" className="contact" ref={sectionRef} style={{ position: 'relative' }}>
         <div className="container">
           <div className="header">
-            <span className="subTitle">Success with LEEPRESSO</span>
-            <h2>가맹 상담 신청</h2>
+            <div className="title-txts5">
+              <img src="/franchise-title5.png" alt="가맹상담 신청" />
+            </div>
           </div>
 
           <div className="grid">
             <div className="infoCard promotional">
-              {/* GIF 배경이 들어가는 영역 */}
-              <div className="bgGif"></div>
               
               <div className="dreamBox">
                 <h4 className="mainTitle text-white">

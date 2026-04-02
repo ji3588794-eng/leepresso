@@ -32,7 +32,9 @@ export default function Price() {
     <section id="price" className="price">
       <div className="container">
         <div className="header">
-          <h2>리프레소 창업 비용</h2>
+          <div className="title-txts3">
+            <img src="/franchise-title3.png" alt="창업 절차" />
+          </div>
           <div className="infoRow">
             <span>* 가맹점매장 8평 기준</span>
             <span>* 단위:원 / VAT 별도</span>

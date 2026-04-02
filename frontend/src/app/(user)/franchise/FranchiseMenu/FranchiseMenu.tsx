@@ -1,5 +1,6 @@
 import "./FranchiseMenu.scss";
 import React, { useMemo, useState, useEffect } from "react";
+
 export default function FranchiseMenu() {
   const [current, setCurrent] = useState(0);
   const menuCard = useMemo(
@@ -13,11 +14,11 @@ export default function FranchiseMenu() {
     ],
     [],
   );
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % menuCard.length);
-    }, 500);
-
+    }, 1500); // 0.5초는 너무 빨라 문구가 안 보일 수 있어 1.5초로 살짝 조정했습니다.
     return () => clearInterval(interval);
   }, [menuCard.length]);
 
@@ -27,21 +28,26 @@ export default function FranchiseMenu() {
         <div className="menu_bg">
           <div className="menu_title_box">
             <div className="menu_title">
-              맛있는데 다양하기까지한
-              <span className="menu_point">리프레소</span>
+              압도적인 비주얼, 재방문을 부르는
+              <br />
+              <span className="menu_point">리프레소만의 필승 메뉴</span>
             </div>
-            <div className="menu_sub_text">빠르게 변하는 입맛을 잡는것이 성공의 비결!</div>
+            <div className="menu_sub_text">
+              유행을 타지 않는 탄탄한 기본기에 트렌디함을 더해 점주님의 수익을 극대화합니다.
+            </div>
             <div className="menu_deco_text"></div>
           </div>
           <div className="menu_swipe_box">
             {menuCard.map((menu, i) => (
               <div className={`fade_slide ${current === i ? "active" : ""}`} key={menu.id}>
                 <img src={menu.img} alt={menu.title} />
+                {/* 메뉴 이름이 이미지와 함께 보이면 더 직관적입니다 */}
+                {/* <p className="menu_name_label">{menu.title}</p> */}
               </div>
             ))}
           </div>
           <div className="menu_bottom_text">
-            새로운 메뉴, <span className="menu_bottom_point">절찬업데이트중!</span>
+            멈추지 않는 연구,  <span className="menu_bottom_point">끊임없는 신메뉴 개발</span>
           </div>
         </div>
       </div>

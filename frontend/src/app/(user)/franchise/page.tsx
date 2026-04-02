@@ -62,7 +62,6 @@ export default function FranchisePage() {
 
       {/* 핵심 키워드 */}
       <Keyword />
-      <MachineSecond />
 
       {/* 그래프 */}
       <Graph />

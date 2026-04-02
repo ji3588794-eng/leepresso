@@ -1,287 +1,366 @@
 @use "../../../mixin" as *;
 
 :root {
-  --leepresso-deep: #2c1f1a;
-  --leepresso-point-red: #b86845;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.05);
+  --lp-brown: #241915;
+  --lp-text: #5f5652;
+  --lp-muted: #8d827d;
+  --lp-orange: #b86845;
+  --lp-orange-soft: rgba(184, 104, 69, 0.08);
+  --lp-line: rgba(36, 25, 21, 0.08);
+  --lp-bg: #faf7f4;
+  --white: #ffffff;
 }
 
-.keyword {
+.brandKeyword {
   position: relative;
-  width: 100%;
   padding: 120px 0;
-  background-color: #fcfaf8;
+  background:
+    radial-gradient(circle at top left, rgba(184, 104, 69, 0.06), transparent 28%),
+    linear-gradient(180deg, #fdfbf9 0%, var(--lp-bg) 100%);
   overflow: hidden;
-  color: var(--leepresso-deep);
-
-  // 배경 장식
-  .bg_decoration {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.4;
-
-      &.orb_1 {
-        width: 500px; height: 500px;
-        background: #e2b595;
-        top: -100px; left: -100px;
-      }
-      &.orb_2 {
-        width: 600px; height: 600px;
-        background: #fff;
-        bottom: -100px; right: -100px;
-      }
-    }
-
-    .grid_pattern {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(184, 104, 69, 0.1) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-  }
 
   .container {
-    position: relative;
-    z-index: 1;
-    max-width: 1400px;
+    width: 100%;
+    max-width: 1420px;
     margin: 0 auto;
     padding: 0 24px;
   }
 
-  // 타이틀 영역
-  .int_title_box {
-    text-align: center;
-    margin-bottom: 80px;
+  .sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 60px;
 
-    .int_kicker {
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      color: var(--leepresso-point-red);
-      background: #fff;
-      padding: 8px 20px;
-      border-radius: 50px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    .title-txts {
+      flex: 1 1 auto;
+
+      img {
+        display: block;
+        width: 100%;
+        max-width: 1100px;
+        height: auto;
+      }
     }
 
-    .int_title {
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 900;
-      line-height: 1.2;
-      margin: 24px 0 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .int_desc {
-      font-size: 18px;
-      opacity: 0.7;
-      max-width: 600px;
-      margin: 0 auto;
+    .sectionDesc {
+      flex: 0 0 380px;
+      margin: 0;
+      padding-left: 24px;
+      border-left: 2px solid rgba(184, 104, 69, 0.2);
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--lp-text);
       word-break: keep-all;
+
+      strong {
+        color: var(--lp-brown);
+        font-weight: 800;
+      }
     }
   }
 
-  // 메인 스테이지 레이아웃
-  .keyword_stage {
+  .keywordGrid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 30px;
-    align-items: stretch;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 110px;
   }
 
-  // 왼쪽 비주얼 영역
-  .stage_visual {
+  .keywordCard {
     position: relative;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 40px;
-    height: 800px;
-    padding: 40px;
-    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+    padding: 32px 28px 28px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid var(--lp-line);
+    border-radius: 28px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 0 14px 34px rgba(20, 10, 8, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 
-    .visual_base {
-      position: relative;
-      height: 100%;
+    &:hover,
+    &.active {
+      transform: translateY(-10px);
+      border-color: rgba(184, 104, 69, 0.22);
+      box-shadow: 0 24px 48px rgba(20, 10, 8, 0.08);
+    }
+
+    .cardTop {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .cardNo {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-width: 54px;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #f5f1ee;
+      color: var(--lp-orange);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
     }
 
-    .ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(184, 104, 69, 0.1);
-      
-      &.ring_outer { width: 550px; height: 550px; border-style: dashed; animation: rotate 30s linear infinite; }
-      &.ring_inner { width: 400px; height: 400px; }
+    .cardIcon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background-color: #f8f5f2;
+      @include bg("/mark_budget.png");
+      background-size: 28px auto;
+      border: 1px solid var(--lp-line);
+
+      &.row2 { @include bg("/mark_economic.png"); background-size: 28px auto; }
+      &.row3 { @include bg("/mark_smart.png"); background-size: 28px auto; }
+      &.row4 { @include bg("/mark_tena.png"); background-size: 28px auto; }
     }
 
-    .main_display_card {
-      position: relative;
-      width: 380px;
-      background: #fff;
-      padding: 40px;
-      border-radius: 30px;
-      box-shadow: 0 30px 60px rgba(59, 38, 29, 0.1);
-      text-align: center;
-      animation: fadeInUp 0.6s ease;
+    .cardBody {
+      .pointTitle {
+        margin: 0 0 10px;
+        font-size: 34px;
+        line-height: 1.05;
+        font-weight: 900;
+        color: var(--lp-brown);
+        letter-spacing: -0.03em;
 
-      .card_header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        
-        .count { font-weight: 900; opacity: 0.2; font-size: 14px; }
-        .badge { font-size: 10px; font-weight: 800; color: var(--leepresso-point-red); border: 1px solid; padding: 4px 10px; border-radius: 20px; }
-      }
-
-      .visual_icon {
-        width: 180px; height: 180px;
-        margin: 0 auto 30px;
-        @include bg("/mark_budget_active.png"); // 기본
-        &.row2 { @include bg("/mark_economic_active.png"); }
-        &.row3 { @include bg("/mark_smart_active.png"); }
-        &.row4 { @include bg("/mark_tena_active.png"); }
-      }
-
-      .main_title {
-        font-size: 48px; font-weight: 900;
-        .highlight { color: var(--leepresso-point-red); }
-      }
-      .sub_title { font-size: 22px; font-weight: 800; margin: 10px 0 20px; color: #444; }
-      .summary { font-size: 16px; line-height: 1.6; opacity: 0.8; word-break: keep-all; }
-    }
-  }
-
-  // 플로팅 버튼들 (동그란 네비게이션 형태)
-  .floating_navigation {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-
-    .nav_card {
-      position: absolute;
-      pointer-events: auto;
-      background: #fff;
-      padding: 15px 20px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 1px solid transparent;
-
-      &:hover, &.active {
-        transform: scale(1.1) translateY(-10px);
-        border-color: var(--leepresso-point-red);
-        box-shadow: 0 15px 35px rgba(184, 104, 69, 0.15);
-      }
-
-      .mini_icon { width: 40px; height: 40px; @include bg("/mark_budget.png"); 
-        &.row2 { @include bg("/mark_economic.png"); }
-        &.row3 { @include bg("/mark_smart.png"); }
-        &.row4 { @include bg("/mark_tena.png"); }
-      }
-      
-      .nav_card_info {
-        text-align: left;
-        .p { display: block; font-weight: 900; color: var(--leepresso-point-red); font-size: 18px; }
-        .s { font-size: 13px; font-weight: 700; opacity: 0.6; }
-      }
-
-      &.fc_1 { top: 10%; left: 10%; }
-      &.fc_2 { top: 15%; right: 10%; }
-      &.fc_3 { bottom: 15%; left: 5%; }
-      &.fc_4 { bottom: 10%; right: 5%; }
-    }
-  }
-
-  // 오른쪽 상세 영역
-  .stage_detail {
-    .detail_container {
-      height: 100%;
-      background: #fff;
-      border-radius: 40px;
-      padding: 60px 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .label { color: var(--leepresso-point-red); font-weight: 800; font-size: 12px; letter-spacing: 0.1em; }
-    .detail_title { font-size: 36px; font-weight: 900; margin: 20px 0; line-height: 1.3; animation: fadeIn 0.5s; }
-    .detail_text { font-size: 18px; line-height: 1.8; opacity: 0.7; margin-bottom: 40px; word-break: keep-all; animation: fadeIn 0.7s; }
-
-    .detail_nav {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-
-      .nav_item {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 20px;
-        border-radius: 15px;
-        background: #f8f9fa;
-        transition: all 0.3s;
-        position: relative;
-        overflow: hidden;
-
-        .num { font-weight: 900; opacity: 0.3; }
-        .name { font-size: 18px; font-weight: 800; }
-
-        &.active {
-          background: var(--leepresso-deep);
-          color: #fff;
-          .num { color: var(--leepresso-point-red); opacity: 1; }
-          
-          .progress_bar {
-            position: absolute;
-            bottom: 0; left: 0;
-            height: 3px; background: var(--leepresso-point-red);
-            animation: progress 4.5s linear forwards;
-          }
+        span {
+          color: var(--lp-orange);
         }
+      }
+
+      .subTitle {
+        margin: 0 0 16px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #3d322d;
+        letter-spacing: -0.02em;
+      }
+
+      .summary {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--lp-text);
+        word-break: keep-all;
+      }
+    }
+
+    .cardBottom {
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(36, 25, 21, 0.08);
+
+      h5 {
+        margin: 0 0 10px;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--lp-orange);
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--lp-text);
+        word-break: keep-all;
+      }
+    }
+
+    .timerBar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 0 0 28px 28px;
+      background: var(--lp-orange);
+      animation: progressBar 4s linear forwards;
+    }
+  }
+
+  .machineSection {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--lp-line);
+    border-radius: 34px;
+    padding: 44px;
+    box-shadow: 0 14px 34px rgba(20, 10, 8, 0.04);
+
+    .machineIntro {
+      margin-bottom: 28px;
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        color: var(--lp-orange);
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 1.2;
+        font-weight: 900;
+        color: var(--lp-brown);
+        letter-spacing: -0.03em;
+      }
+
+      p {
+        max-width: 760px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--lp-text);
+        word-break: keep-all;
+      }
+    }
+
+    .machineGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .machineItem {
+      width: 100%;
+      text-align: left;
+      padding: 26px 24px;
+      background: #fcfbfa;
+      border: 1px solid rgba(36, 25, 21, 0.06);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.28s ease;
+
+      &:hover,
+      &.active {
+        background: var(--lp-orange);
+        border-color: var(--lp-orange);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(184, 104, 69, 0.16);
+
+        .machineCate,
+        .machineTitle,
+        .machineText {
+          color: #fff;
+        }
+      }
+
+      .machineCate {
+        margin-bottom: 10px;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        color: var(--lp-orange);
+      }
+
+      .machineTitle {
+        margin-bottom: 10px;
+        font-size: 24px;
+        line-height: 1.25;
+        font-weight: 800;
+        color: var(--lp-brown);
+        letter-spacing: -0.03em;
+        word-break: keep-all;
+      }
+
+      .machineText {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--lp-text);
+        word-break: keep-all;
       }
     }
   }
 }
 
-// 애니메이션
-@keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes progress { from { width: 0%; } to { width: 100%; } }
+@keyframes progressBar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
 
-// 반응형: 모바일은 세로로 깔끔하게 나열
-@media (max-width: 1024px) {
-  .keyword {
-    .keyword_stage { grid-template-columns: 1fr; }
-    .stage_visual { height: 700px; }
+@media (max-width: 1200px) {
+  .brandKeyword {
+    .sectionHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+
+      .sectionDesc {
+        flex: none;
+        max-width: 100%;
+        padding-left: 18px;
+      }
+    }
+
+    .keywordGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
 @media (max-width: 768px) {
-  .keyword {
-    .stage_visual { 
-      height: auto; padding: 20px;
-      .ring, .floating_navigation { display: none; }
-      .main_display_card { width: 100%; }
+  .brandKeyword {
+    padding: 90px 0;
+
+    .container {
+      padding: 0 18px;
     }
-    .stage_detail { padding: 40px 20px; }
+
+    .keywordGrid {
+      grid-template-columns: 1fr;
+      margin-bottom: 72px;
+    }
+
+    .keywordCard {
+      min-height: auto;
+      padding: 26px 20px 22px;
+
+      .cardBody {
+        .pointTitle {
+          font-size: 30px;
+        }
+
+        .subTitle {
+          font-size: 17px;
+        }
+
+        .summary {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .machineSection {
+      padding: 24px 18px;
+      border-radius: 24px;
+
+      .machineGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .machineItem {
+        padding: 22px 18px;
+
+        .machineTitle {
+          font-size: 20px;
+        }
+
+        .machineText {
+          font-size: 14px;
+        }
+      }
+    }
   }
 }
