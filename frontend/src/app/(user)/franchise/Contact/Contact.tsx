@@ -36,7 +36,7 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        alert("가맹 상담 신청이 완료되었습니다.");
+        alert("성공 창업을 위한 첫 걸음, 리프레소 가맹 상담 신청이 완료되었습니다! <br />보내주신 소중한 정보 확인 후, 빠르게 연락드려 상세히 안내해 드리겠습니다.");
         form.reset();
       } else {
         alert(`서버 응답 오류 (코드: ${response.status})`);
