@@ -78,11 +78,13 @@ router.post('/login', async (req, res) => {
     // 💡 [수정] 동일 도메인 HTTPS 최적화 설정
     res.cookie('admin_token', token, {
       httpOnly: true,
-      secure: true,      // HTTPS니까 true 유지
-      sameSite: 'lax',   // 💡 동일 도메인이면 lax가 무조건 제일 안전하고 확실함
+      secure: true,      // HTTPS 필수
+      sameSite: 'lax',   // 동일 도메인(leepresso.com) 최적 설정
       maxAge: 1000 * 60 * 60 * 8,
-      path: '/',         // 💡 경로 루트로 고정
+      path: '/',         // 도메인 전체에서 유효
+      domain: 'leepresso.com', // 💡 도메인을 명시해서 확실하게 고정
     });
+
     res.json({ 
       success: true, 
       token: token, 

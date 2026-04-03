@@ -10,6 +10,11 @@ export default async function AdminMainAuthLayout({ children }: { children: Reac
   const cookieStore = await cookies();
   const token = cookieStore.get('admin_token');
 
+  // 💡 실서버 로그 확인용 (터미널에 찍힘)
+  console.log('--- Auth Check ---');
+  console.log('Token object:', token);
+  console.log('Token value:', token?.value);
+  
   // 토큰 없으면 컷
   if (!token || !token.value) {
     redirect('/admin/login');
