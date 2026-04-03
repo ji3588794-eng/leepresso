@@ -5,7 +5,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// 💡 함수 이름을 AdminRootLayout으로 변경!
 export default function AdminRootLayout({
   children,
 }: {
@@ -13,7 +12,7 @@ export default function AdminRootLayout({
 }) {
   return (
     <div className="admin-base-wrapper">
-      {/* 여기엔 사이드바 넣지 마라. 로그인 화면에서도 나오면 안 되니까. */}
+      {/* 로그인 페이지도 이 레이아웃을 타니까 사이드바는 절대 넣지 마라 */}
       {children}
     </div>
   );

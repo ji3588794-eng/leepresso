@@ -2,7 +2,9 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import AdminMainShell from './AdminMainShell';
 
-// 💡 함수 이름을 AdminMainAuthLayout으로 변경!
+// 💡 실서버 쿠키 캐싱 방지
+export const dynamic = 'force-dynamic';
+
 export default async function AdminMainAuthLayout({
   children,
 }: {
@@ -11,8 +13,8 @@ export default async function AdminMainAuthLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get('admin_token');
 
-  // 토큰 없으면 로그인으로 튕겨내기
-  if (!token) {
+  // 토큰 없으면 로그인 페이지로 튕겨내기
+  if (!token || !token.value) {
     redirect('/admin/login');
   }
 
