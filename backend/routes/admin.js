@@ -81,11 +81,11 @@ router.post('/login', async (req, res) => {
     // 1. 쿠키 설정
     res.cookie('admin_token', token, {
       httpOnly: true,
-      secure: true,      // HTTPS 필수
-      sameSite: 'none',   // 동일 도메인 최적 설정
+      secure: true,      // Render(HTTPS)니까 무조건 true
+      sameSite: 'none',  // 💡 [핵심] 프론트와 백엔드 도메인이 다를 때 필수! (Lax 쓰지 마라)
       maxAge: 1000 * 60 * 60 * 8,
       path: '/',
-      domain: 'leepresso.com', 
+      // domain: 'leepresso.com', // 💡 [삭제] 일단 이 줄을 지워라. 
     });
 
     // 💡 2. 콘솔 출력 (백엔드 터미널 확인용)
