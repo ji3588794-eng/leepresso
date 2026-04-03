@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+  withCredentials: true, // 💡 이게 있어야 서버가 보낸 쿠키를 저장함
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 });
 
 api.interceptors.response.use(

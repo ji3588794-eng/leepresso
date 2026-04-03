@@ -82,7 +82,7 @@ router.post('/login', async (req, res) => {
     res.cookie('admin_token', token, {
       httpOnly: true,
       secure: true,      // HTTPS 필수
-      sameSite: 'lax',   // 동일 도메인 최적 설정
+      sameSite: 'none',   // 동일 도메인 최적 설정
       maxAge: 1000 * 60 * 60 * 8,
       path: '/',
       domain: 'leepresso.com', 
