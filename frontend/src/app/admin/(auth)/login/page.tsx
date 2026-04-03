@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './login.module.scss';
-import api from '@/app/lib/api';
+import api from '../../../lib/api';
 
 export default function AdminLoginPage() {
   const [formData, setFormData] = useState({
@@ -22,7 +22,6 @@ export default function AdminLoginPage() {
       const res = await api.post('/admin/login', formData);
 
       if (res.data.success) {
-  // 💡 href를 써야 브라우저 세션이 완전히 갱신되면서 대시보드로 넘어간다.
         window.location.href = '/admin/dashboard';
       } else {
         alert(res.data.message || '로그인 정보를 확인해주세요.');

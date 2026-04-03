@@ -40,6 +40,9 @@ const verifyToken = (req, res, next) => {
 /* ---------------------------------------------------------
    로그인 / 로그아웃 / 관리자 정보
 --------------------------------------------------------- */
+/* ---------------------------------------------------------
+   로그인 / 로그아웃 / 관리자 정보
+--------------------------------------------------------- */
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -71,30 +74,41 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
-      SECRET_KEY,
+      process.env.JWT_SECRET, // SECRET_KEY
       { expiresIn: '8h' }
     );
 
-    // 💡 [수정] 동일 도메인 HTTPS 최적화 설정
+    // 1. 쿠키 설정
     res.cookie('admin_token', token, {
       httpOnly: true,
       secure: true,      // HTTPS 필수
-      sameSite: 'lax',   // 동일 도메인(leepresso.com) 최적 설정
+      sameSite: 'lax',   // 동일 도메인 최적 설정
       maxAge: 1000 * 60 * 60 * 8,
-      path: '/',         // 도메인 전체에서 유효
-      domain: 'leepresso.com', // 💡 도메인을 명시해서 확실하게 고정
+      path: '/',
+      domain: 'leepresso.com', 
     });
 
-    res.json({ 
+    // 💡 2. 콘솔 출력 (백엔드 터미널 확인용)
+    console.log('-------------------------------------------');
+    console.log('✅ [LOGIN SUCCESS]');
+    console.log('User:', user.username);
+    console.log('Token:', token.substring(0, 20) + '...');
+    console.log('Cookie Domain:', 'leepresso.com');
+    console.log('-------------------------------------------');
+
+    // 💡 3. 응답 전송 (이게 실행되면 프론트엔드 로딩이 끝남)
+    return res.status(200).json({ 
       success: true, 
       token: token, 
       user: { id: user.id, username: user.username, role: user.role } 
     });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('❌ [LOGIN ERROR]:', error.message);
+    // 에러 발생 시에도 응답을 던져서 로딩을 끊어줘야 함
+    return res.status(500).json({ success: false, error: error.message });
   }
 });
-
 router.post('/logout', (req, res) => {
   res.clearCookie('admin_token', {
     httpOnly: true,
