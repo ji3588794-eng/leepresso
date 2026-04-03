@@ -14,17 +14,17 @@ export default function AdminLoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     try {
-      // 1. 로그인 API 호출 (여기서 서버가 쿠키를 구워줘야 함)
+      // 1. 로그인 API 호출 (서버에서 admin_token 쿠키를 구워줌)
       const res = await api.post('/admin/login', formData);
 
       if (res.data.success) {
-        // 💡 중요: 
-        // 1) window.location.replace를 사용하면 뒤로가기로 다시 로그인 창에 오는 걸 방지합니다.
-        // 2) 토큰이 쿠키에 저장된 직후 Next.js 서버 컴포넌트가 이를 인식할 수 있게 새로고침하며 이동합니다.
-        window.location.assign('/admin/dashboard');
+        // 💡 [수정 핵심] href를 사용하여 페이지를 완전히 새로고침하며 대시보드로 진입.
+        // 이렇게 해야 서버 컴포넌트가 최신 쿠키(token)를 완벽하게 인식한다.
+        window.location.href = '/admin/dashboard';
       } else {
         alert(res.data.message || '로그인 정보를 확인해주세요.');
       }
