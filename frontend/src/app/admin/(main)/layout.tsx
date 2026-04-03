@@ -1,22 +1,33 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import AdminMainShell from './AdminMainShell';
+import api from '../../lib/api';
 
-// 💡 [필수] Vercel이 쿠키 상태를 캐싱하지 못하게 강제함
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export default function AdminMainAuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const [ready, setReady] = useState(false);
 
-export default async function AdminMainAuthLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('admin_token');
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // 서버 쿠키 기반 로그인 확인
+        await api.get('/admin/me');
+        setReady(true);
+      } catch (error) {
+        router.replace('/admin/login');
+      }
+    };
 
-  // 로그 확인용 (Vercel 로그에 찍힘)
-  console.log('ADMIN_TOKEN_CHECK:', token?.value ? '존재함' : '없음');
+    checkAuth();
+  }, [router]);
 
-  if (!token || !token.value) {
-    // 쿠키가 없으면 로그인 페이지로 멱살 잡고 끌고 감
-    redirect('/admin/login');
-  }
+  if (!ready) return null;
 
   return <AdminMainShell>{children}</AdminMainShell>;
 }
