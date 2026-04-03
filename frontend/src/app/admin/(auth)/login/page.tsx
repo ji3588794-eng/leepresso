@@ -22,8 +22,7 @@ export default function AdminLoginPage() {
       const res = await api.post('/admin/login', formData);
 
       if (res.data.success) {
-        // 💡 [수정 핵심] href를 사용하여 페이지를 완전히 새로고침하며 대시보드로 진입.
-        // 이렇게 해야 서버 컴포넌트가 최신 쿠키(token)를 완벽하게 인식한다.
+  // 💡 href를 써야 브라우저 세션이 완전히 갱신되면서 대시보드로 넘어간다.
         window.location.href = '/admin/dashboard';
       } else {
         alert(res.data.message || '로그인 정보를 확인해주세요.');

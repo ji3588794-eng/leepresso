@@ -78,13 +78,16 @@ router.post('/login', async (req, res) => {
     // 💡 [수정] 동일 도메인 HTTPS 최적화 설정
     res.cookie('admin_token', token, {
       httpOnly: true,
-      secure: true,      // HTTPS 환경 필수
-      sameSite: 'lax',   // 동일 도메인이면 lax가 가장 안 터짐
+      secure: true,      // HTTPS니까 true 유지
+      sameSite: 'lax',   // 💡 동일 도메인이면 lax가 무조건 제일 안전하고 확실함
       maxAge: 1000 * 60 * 60 * 8,
-      path: '/',         // 💡 이거 안 박으면 /api 에서만 쿠키 놀고 /admin 에선 못 읽음
+      path: '/',         // 💡 경로 루트로 고정
     });
-
-    res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
+    res.json({ 
+      success: true, 
+      token: token, 
+      user: { id: user.id, username: user.username, role: user.role } 
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

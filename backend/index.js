@@ -11,7 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 3001; 
 
 // 미들웨어 설정
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false, 
+}));
 app.use(cors({
   origin: [
     'https://leepresso.com',
@@ -19,7 +22,7 @@ app.use(cors({
     'https://leepresso-project.vercel.app',
     'http://localhost:3000'
   ],
-  credentials: true,
+  credentials: true, // 이건 잘 되어 있다.
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
