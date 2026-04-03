@@ -17,11 +17,14 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      // 1. 로그인 API 호출 (여기서 서버가 쿠키를 구워줘야 함)
       const res = await api.post('/admin/login', formData);
 
       if (res.data.success) {
-        // 실서버 세션 갱신 및 미들웨어 인식을 위해 강제 페이지 이동
-        window.location.href = '/admin/dashboard';
+        // 💡 중요: 
+        // 1) window.location.replace를 사용하면 뒤로가기로 다시 로그인 창에 오는 걸 방지합니다.
+        // 2) 토큰이 쿠키에 저장된 직후 Next.js 서버 컴포넌트가 이를 인식할 수 있게 새로고침하며 이동합니다.
+        window.location.assign('/admin/dashboard');
       } else {
         alert(res.data.message || '로그인 정보를 확인해주세요.');
       }
