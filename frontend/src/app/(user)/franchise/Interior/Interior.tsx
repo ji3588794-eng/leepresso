@@ -5,9 +5,9 @@ export default function Interior() {
   const cardsPart3 = useMemo(
     () => [
       { id: 1, title: "천안두정점", img: "/store_1.jpg" },
-      { id: 2, title: "브랜드 공간", img: "/store_2.png" },
-      { id: 3, title: "무인 운영 공간", img: "/store_3.png" },
-      { id: 4, title: "브랜드 무드", img: "/store_4.png" },
+      { id: 2, title: "브랜드 공간", img: "/store_2.PNG" },
+      { id: 3, title: "무인 운영 공간", img: "/store_3.PNG" },
+      { id: 4, title: "브랜드 무드", img: "/store_4.PNG" },
       { id: 5, title: "리프레소 스토어", img: "/store-2.jpg" },
     ],
     [],
