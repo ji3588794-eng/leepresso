@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './login.module.scss';
-import api, { getImageUrl } from '@/app/lib/api';
+import api from '@/app/lib/api';
 
 export default function AdminLoginPage() {
   const [formData, setFormData] = useState({
@@ -20,8 +20,7 @@ export default function AdminLoginPage() {
       const res = await api.post('/admin/login', formData);
 
       if (res.data.success) {
-        // 💡 router.push('/admin/dashboard') 대신 아래 방식을 사용해.
-        // 실서버 환경에서 미들웨어나 레이아웃 꼬임 현상을 완전히 무시하고 새로 진입해.
+        // 실서버 세션 갱신 및 미들웨어 인식을 위해 강제 페이지 이동
         window.location.href = '/admin/dashboard';
       } else {
         alert(res.data.message || '로그인 정보를 확인해주세요.');
