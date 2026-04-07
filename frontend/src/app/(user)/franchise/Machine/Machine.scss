@@ -1,236 +1,122 @@
 @use "../../../mixin" as *;
 
-.machine {
-  background-color: var(--leepresso-bg);
-  color: var(--leepresso-deep);
-  overflow: hidden;
-
-  .container {
-    max-width: 100%;
+.machine_wrapper {
+  background: #fff;
+  
+  .inner_1500 {
+    max-width: 1500px;
     margin: 0 auto;
-    text-align: center;
+    padding: 0 40px;
+  }
 
-    .m_main_text {
-      font-size: clamp(48px, 5vw, 40px);
-      font-weight: 900;
-      color: #2f2623;
-      line-height: 1.1;
-      letter-spacing: -0.04em;
-
-      em {
-        font-style: normal;
-        color: #b44a3e;
-        font-family: var(--font-pen);
-        font-size: 1.1em;
-        margin: 0 10px;
-      }
-
-      .title_line {
-        margin-top: 10px;
-        position: relative;
-      }
-    }
-
-    .machine_bg {
-      .ma_title_box {
-        padding: 100px 0 60px;
-        font-family: var(--font-pretendard);
-        text-align: center;
-        background: #fff;
-
-        .ma_title {
-          color: var(--leepresso-point);
-          font-size: 40px;
-          font-weight: 700;
-
+  // 02. Engineering Section (Dark)
+  .engineering_sec {
+    padding: 150px 0; background: #1a1a1a; color: #fff;
+    .eng_grid {
+      display: flex; gap: 80px; align-items: center;
+      .eng_info {
+        flex: 1;
+        .label { 
+          margin-bottom: 25px;
+          .ma_txt { font-size: 22.5px; color: #fff; font-weight: 500; }
           .ma_point {
-            padding-left: 10px;
-            font-size: 60px;
-            color: var(--leepresso-deep);
-            font-weight: 900;
-            position: relative;
-            display: inline-block;
-
+            padding-left: 10px; font-size: 52px; color: #ffffff; font-weight: 900;
+            position: relative; display: inline-block;
             &::after {
-              content: "";
-              position: absolute;
-              width: 100%;
-              height: 60px;
+              content: ""; position: absolute; width: 100%; height: 40px;
               @include bg-cover("/underline_3.png");
-              bottom: -15px;
-              right: -60px;
-              z-index: 1;
+              bottom: -10px; right: -40px; z-index: 1;
             }
           }
         }
+        h3 { font-size: 48px; font-family: var(--font-jeju); margin-bottom: 20px; color: #fff; }
+        p { color: #aaa; margin-bottom: 30px; font-size: 18px; }
+        .eng_rows .row {
+          display: flex; gap: 20px; padding: 25px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+          .n { color: #A9443D; font-weight: 800; font-size: 18px; }
+          .t_box {
+            strong { display: block; font-size: 18px; margin-bottom: 5px; color: #eee; }
+            span { color: #888; font-size: 16px; line-height: 1.6; }
+          }
+        }
       }
+      .eng_visual { flex: 1; height: 780px; .eng_main_img { width: 100%; height: 100%; @include bg-cover("/machine_sv_1_2.png"); } }
     }
   }
 
-  // --- MachineThird 상세 스펙 추가 디자인 ---
-  &.third {
-    font-family: var(--font-pretendard) !important;
-    .container {
-      .m_third_contents_box {
-        background-color: #fff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        font-size: 0;
-
-        .third_img_box {
-          @include bg-cover("/machine_sv_1_2.png");
-          width: 40%;
-          display: inline-block;
-          height: 800px;
-          vertical-align: middle;
-          @media (max-width: 1024px) { width: 100%; height: 400px; display: block; }
-        }
-
-        .third_text_box {
-          display: inline-block;
-          vertical-align: middle;
-          padding: 20px 50px;
-          width: 60%;
-          font-size: 16px;
-          @media (max-width: 1024px) { width: 100%; padding: 40px 20px; display: block; }
-
-          .text_top_box {
-            padding-bottom: 25px;
-            font-weight: 700;
-            .third_text_point { color: var(--leepresso-point-red); font-size: 15px; padding-bottom: 25px; }
-            .third_text_title { font-size: 50px; padding-bottom: 25px; font-weight: 500; font-family: var(--font-jeju) !important; }
-            .third_text_sub { font-size: 20px; font-weight: 500; padding-bottom: 30px; }
-          }
-
-          .text_row_box {
-            .text_row {
-              border-top: 1px solid #e8d5c4;
-              border-bottom: 1px solid #e8d5c4;
-              padding: 30px;
-              min-height: 100px;
-              width: 100%;
-              font-size: 0;
-              .row_title { display: inline-block; width: 250px; font-size: 20px; font-weight: 700; vertical-align: middle; }
-              .row_text { display: inline-block; width: calc(100% - 250px); font-size: 15px; font-weight: 500; vertical-align: middle; }
-            }
-          }
-        }
-      }
-
-      // [추가 디자인] 이미지 도표 스타일
-      .spec_full_grid {
-        display: flex;
-        width: 100%;
-        background: #fff;
-        border-top: 1px solid #eeeeee;
-
-        .spec_card {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          border-right: 1px solid #eee;
-          padding: 60px 50px;
-
-          &:last-child { border-right: none; }
-
-          .spec_visual {
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-            img { max-height: 100%; max-width: 100%; object-fit: contain; }
-          }
-
-          .spec_info {
-            text-align: left;
-            .spec_name_header {
-              text-align:center;
-              font-size: 20px;
-              font-weight: 800;
-              color: #222;
-              border-bottom: 2px solid #222;
-              padding-bottom: 15px;
-              margin-bottom: 20px;
-            }
-            .spec_table {
-              width: 100%;
-              tr {
-                border-bottom: 1px solid #f0f0f0;
-                th { width: 90px; padding: 12px 0; font-size: 13px; color: #888; text-align: left; font-weight: 600; }
-                td { padding: 12px 0; font-size: 14px; color: #333; font-weight: 500; }
-                &:last-child { border-bottom: none; }
-              }
-            }
-          }
-        }
-
-        @media (max-width: 1024px) { flex-direction: column; .spec_card { border-right: none; border-bottom: 1px solid #eee; } }
-      }
-    }
-  }
-
-  // --- MachineSecond (기존 유지) ---
-  &.second {
-    .m_bottom_container {
-      padding: 100px 0;
-      .m_contents_box {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        .m_row_box {
-          flex: 1;
-          padding: 40px;
-          background: #fff;
-          border: 1px solid #eee;
-          cursor: pointer;
-          &.active { border-color: var(--leepresso-point-red); }
-          .m_row_cate { color: var(--leepresso-point-red); font-size: 14px; margin-bottom: 15px; }
-          .m_row_title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
-          .m_row_text { font-size: 15px; line-height: 1.6; color: #666; }
-        }
-      }
-    }
-  }
-
-  // --- MachineFourth (기존 유지) ---
-  &.fourth {
+  // 03. Spec Section
+  .spec_sec {
     padding: 100px 0;
-    background: #fff;
-    .feature_section {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 40px;
-      .feature_intro {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        border-bottom: 2px solid #222;
-        padding-bottom: 30px;
-        margin-bottom: 60px;
-        h3 { font-size: 40px; font-weight: 900; }
-        p { font-size: 18px; color: #777; }
-      }
-      .m_fourth_grid.six {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1px;
-        background: #eee;
-        border: 1px solid #eee;
-        .memo_back {
-          background: #fff;
-          padding: 60px 40px;
-          .memo_chip { font-size: 12px; color: #b44a3e; font-weight: 800; display: block; margin-bottom: 20px; }
-          .memo_title { font-size: 26px; font-weight: 800; margin-bottom: 25px; }
-          .memo_text_box {
-            .memo_text {
-              display: flex; gap: 10px; margin-bottom: 10px;
-              .dot { width: 5px; height: 5px; background: #d2aa7c; border-radius: 50%; margin-top: 8px; }
-              .txt { font-size: 15px; color: #555; }
-            }
+    .spec_grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+      .spec_card {
+        background: #fff; border: 1px solid #eee; border-radius: 20px; padding: 40px;
+        .img_holder { height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; img { max-height: 100%; } }
+        .txt_holder {
+          h4 { font-size: 22px; font-weight: 800; border-bottom: 2px solid #222; padding-bottom: 15px; margin-bottom: 20px; }
+          .spec_table {
+            width: 100%;
+            th { text-align: left; font-size: 13px; color: #888; padding: 12px 0; border-bottom: 1px solid #f0f0f0; width: 40%; }
+            td { font-size: 14px; font-weight: 600; padding: 12px 0; border-bottom: 1px solid #f0f0f0; text-align: right; }
           }
         }
       }
     }
+  }
+
+.wave-bg {
+  background-image: url('/bottom-wave.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  height: 125px;
+  transform: scaleY(-1);
+}
+
+  // 04. Value Slide Section
+  .value_slide_sec {
+    padding-bottom: 100px;
+    .value_grid {
+      display: flex; gap: 20px;
+      .value_item {
+        flex: 1; padding: 40px; border: 1px solid #eee; position: relative; background: #fff;
+        &.active { border-color: #b44a3e; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .cate { color: #b44a3e; font-size: 13px; font-weight: 800; margin-bottom: 15px; }
+        h5 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+        p { font-size: 15px; color: #666; line-height: 1.6; }
+        .progress_wrap {
+          position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: #eee;
+          .fill { height: 100%; background: #b44a3e; transition: width 4s linear; }
+        }
+      }
+    }
+  }
+
+  // 05. Success Points (4 Grid)
+  .points_sec {
+    padding-top: 50px; background: #f9f5f0;
+    padding-bottom: 100px;
+    .sec_head { text-align: center; margin-bottom: 70px; h3 { font-size: 40px; font-weight: 900; } p { color: #777; font-size: 18px; } }
+    .points_grid.four_cols {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #ddd; border: 1px solid #ddd;
+      .point_item {
+        background: #fff; padding: 40px;
+        .idx { display: block; color: #b44a3e; font-weight: 900; margin-bottom: 20px; opacity: 0.3; font-size: 20px; }
+        h5 { font-size: 22px; font-weight: 800; margin-bottom: 20px; min-height: 54px; display: flex; align-items: center; word-break: keep-all; }
+        .contents p { font-size: 14px; color: #666; line-height: 1.7; word-break: keep-all; }
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .machine_wrapper .points_grid.four_cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .machine_wrapper {
+    .engineering_sec .eng_grid { flex-direction: column; }
+    .spec_sec .spec_grid, .value_slide_sec .value_grid, .points_sec .points_grid.four_cols { grid-template-columns: 1fr; }
   }
 }

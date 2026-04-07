@@ -1,180 +1,208 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Keyword.scss";
 
-const Keyword = () => {
-  const [activeRow, setActiveRow] = useState(0);
-  const [machineActive, setMachineActive] = useState(0);
-  const intervalRef = useRef(null);
-  const machineIntervalRef = useRef(null);
+interface KeywordItem {
+  no: number;
+  point: string;
+  title: string;
+  sub: string;
+  text: string;
+  descTitle: string;
+  descText: string;
+  bgImg: string;
+  accent: string;
+}
 
-  const rowData = [
+const Keyword: React.FC = () => {
+  const [activeRow, setActiveRow] = useState<number | null>(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const defaultBg =
+    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80";
+
+  const rowData: KeywordItem[] = [
     {
       no: 1,
       point: "B",
       title: "udget",
       sub: "합리적인 창업 비용",
-      text: "불필요한 거품을 줄이고 실제 운영에 필요한 요소만 담아 초기 부담을 낮춥니다.",
-      descTitle: "낮은 진입 부담, 빠른 운영 안정화",
+      text: "불필요한 거품을 덜어낸 효율 중심 구조로 초기 투자 부담을 낮췄습니다.",
+      descTitle: "낮은 진입장벽, 빠른 회수 구조",
       descText:
-        "보여주기식 구성이 아닌 실운영 중심의 창업 구조로, 꼭 필요한 항목만 남겨 안정적인 출발을 돕습니다.",
+        "실제 운영 효율과 수익 구조를 우선해 안정적인 시작을 돕습니다.",
+      bgImg:
+        "/main-section-back.png",
+      accent: "#f2c94c",
     },
     {
       no: 2,
       point: "E",
-      title: "conomic",
-      sub: "인건비 부담 없는 무인 운영",
-      text: "상주 인력 없이 운영 가능한 시스템으로 고정비를 줄이고 효율을 높입니다.",
-      descTitle: "운영은 가볍게, 수익 구조는 안정적으로",
+      title: "xpert",
+      sub: "상권 분석 전문가",
+      text: "데이터 기반 분석으로 수익 가능성이 높은 입지를 제안합니다.",
+      descTitle: "입지가 곧 수익입니다",
       descText:
-        "반복적인 인건비 부담을 줄이고, 점주는 더 적은 관리 시간으로 매장을 효율적으로 운영할 수 있습니다.",
+        "유동인구, 소비 흐름, 경쟁사까지 종합 분석해 출점 방향을 잡습니다.",
+      bgImg:
+        "https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1800&q=80",
+      accent: "#36a9e1",
     },
     {
       no: 3,
       point: "S",
-      title: "mart",
-      sub: "데이터 기반 상권 분석",
-      text: "유동 인구와 소비 흐름을 분석해 수익 가능성이 높은 입지를 함께 검토합니다.",
-      descTitle: "감이 아닌 데이터로 판단",
+      title: "tayable",
+      sub: "지속 가능한 운영",
+      text: "유행을 타지 않고 오래 운영할 수 있는 구조를 설계합니다.",
+      descTitle: "오래가는 매장",
       descText:
-        "입지는 창업 성과를 좌우하는 핵심 요소입니다. 다양한 데이터를 기반으로 보다 안정적인 출점 방향을 제안합니다.",
+        "반복 구매와 고정 수요를 중심으로 매장의 지속성을 높입니다.",
+      bgImg:
+        "/main-section-back2.png",
+      accent: "#14c79a",
     },
     {
       no: 4,
       point: "T",
-      title: "enacious",
-      sub: "오래가는 운영 모델",
-      text: "유행에 휘둘리지 않는 구조로 장기적인 매출 흐름을 만들 수 있도록 설계합니다.",
-      descTitle: "짧은 반짝임보다 지속 가능한 운영",
+      title: "rust",
+      sub: "빠른 대응 시스템",
+      text: "운영 지원 체계를 갖추어 문제가 생겼을 때 빠르게 대응합니다.",
+      descTitle: "운영이 멈추지 않도록",
       descText:
-        "일시적인 이슈보다 꾸준히 운영 가능한 시스템과 반복 매출 구조를 중심으로 안정적인 기반을 만듭니다.",
+        "장비 이슈와 현장 대응에 대해 본사 기준의 빠른 피드백을 지원합니다.",
+      bgImg:
+        "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1800&q=80",
+      accent: "#ffffff",
     },
   ];
 
-  const machineData = [
-    {
-      cate: "CATEGORY 01",
-      title: "빠른 A/S 대응 시스템",
-      text: "가맹본사 중심 관리 체계로 현장 이슈에 보다 신속하고 정확하게 대응합니다.",
-    },
-    {
-      cate: "CATEGORY 02",
-      title: "메뉴 확장으로 추가 매출 확보",
-      text: "커피 외 다양한 메뉴 운영이 가능해 객단가와 재방문율을 함께 높일 수 있습니다.",
-    },
-    {
-      cate: "CATEGORY 03",
-      title: "안정적인 고사양 커피머신",
-      text: "일관된 추출 품질과 안정적인 운영을 위해 검증된 장비 구성을 적용합니다.",
-    },
-    {
-      cate: "CATEGORY 04",
-      title: "스마트 원격 관리",
-      text: "매장 상태 확인부터 운영 체크까지 모바일 기반으로 효율적인 관리가 가능합니다.",
-    },
-  ];
+  const startInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(() => {
+      setActiveRow((prev) => {
+        if (prev === null) return 0;
+        return (prev + 1) % rowData.length;
+      });
+    }, 4500);
+  };
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setActiveRow((prev) => (prev + 1) % rowData.length);
-    }, 4000);
-
-    machineIntervalRef.current = setInterval(() => {
-      setMachineActive((prev) => (prev + 1) % machineData.length);
-    }, 3500);
-
+    startInterval();
     return () => {
-      clearInterval(intervalRef.current);
-      clearInterval(machineIntervalRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
-  const handleKeywordHover = (index) => {
+  const handleEnter = (index: number) => {
     setActiveRow(index);
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setActiveRow((prev) => (prev + 1) % rowData.length);
-    }, 4000);
-  };
-
-  const handleMachineHover = (index) => {
-    setMachineActive(index);
-    clearInterval(machineIntervalRef.current);
-    machineIntervalRef.current = setInterval(() => {
-      setMachineActive((prev) => (prev + 1) % machineData.length);
-    }, 3500);
+    startInterval();
   };
 
   return (
-    <section className="brandKeyword">
-      <div className="container">
-        <header className="sectionHeader">
-          <div className="title-txts">
-            <img src="/franchise-title1.png" alt="브랜드 경쟁력" />
-          </div>
-          <p className="sectionDesc">
-            리프레소는 과장된 포장이 아닌,
-            <strong> 실제 운영에 필요한 경쟁력</strong>을 기준으로
-            안정적인 무인카페 창업 구조를 제안합니다.
-          </p>
-        </header>
+    <section className="brandKeyword" onMouseLeave={startInterval}>
+      <div className="backgroundWrap">
+        <div
+          className={`bgLayer defaultBg ${activeRow === null ? "active" : ""}`}
+          style={{ backgroundImage: `url(${defaultBg})` }}
+        />
 
-        <div className="keywordGrid">
-          {rowData.map((item, i) => (
+        {rowData.map((item, index) => (
+          <div
+            key={`bg-${item.no}`}
+            className={`bgLayer ${activeRow === index ? "active" : ""}`}
+            style={{ backgroundImage: `url(${item.bgImg})` }}
+          />
+        ))}
+
+        <div className="bgDim" />
+      </div>
+
+      <div className="verticalLines">
+        <span className="line line1" />
+        <span className="line line2" />
+        <span className="line line3" />
+        <span className="line line4" />
+        <span className="line line5" />
+      </div>
+
+      <div className="keywordCenterCopy">
+        <div className="circleText">
+          <svg className="circleSvg" viewBox="0 0 300 300" aria-hidden="true">
+            <defs>
+              <path
+                id="bestCirclePath"
+                d="
+                  M 150,150
+                  m -112,0
+                  a 112,112 0 1,1 224,0
+                  a 112,112 0 1,1 -224,0
+                "
+              />
+              <path
+                id="bestTopCurve"
+                d="M 70 96 Q 150 18 230 96"
+              />
+            </defs>
+
+            <g className="circleRotate">
+              <text className="circleTextPath">
+                <textPath href="#bestCirclePath" startOffset="0%">
+                  LEEPRESSO COFFEE • LEEPRESSO COFFEE • LEEPRESSO COFFEE •
+                </textPath>
+              </text>
+            </g>
+
+          </svg>
+
+          <div className="circleInner">
+            <strong>브랜드 경쟁력</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="keywordGrid">
+        {rowData.map((item, index) => {
+          const isActive = activeRow === index;
+
+          return (
             <div
               key={item.no}
-              className={`keywordCard ${activeRow === i ? "active" : ""}`}
-              onMouseEnter={() => handleKeywordHover(i)}
+              className={`keywordItem ${isActive ? "active" : ""}`}
+              onMouseEnter={() => handleEnter(index)}
             >
-              <div className="cardTop">
-                <span className="cardNo">0{item.no}</span>
-                <div className={`cardIcon row${item.no}`}></div>
-              </div>
+              <div className="itemInner">
+                <div className="contentBottom">
+                  <div className="mainCopy">
+                    <div className="itemMeta">
+                      <span className="itemNo">0{item.no}</span>
+                    </div>
 
-              <div className="cardBody">
-                <h3 className="pointTitle">
-                  <span>{item.point}</span>
-                  {item.title}
-                </h3>
-                <h4 className="subTitle">{item.sub}</h4>
-                <p className="summary">{item.text}</p>
-              </div>
+                    <h3
+                      className="wordMark"
+                      style={{ color: isActive ? item.accent : "#fff" }}
+                    >
+                      <span>{item.point}</span>
+                      {item.title}
+                    </h3>
 
-              <div className="cardBottom">
-                <h5>{item.descTitle}</h5>
-                <p>{item.descText}</p>
-              </div>
+                    <p className="sub">{item.sub}</p>
+                    <p className="summary">{item.text}</p>
+                  </div>
 
-              {activeRow === i && <div className="timerBar"></div>}
+                  <div className="detailBox">
+                    <h4>{item.descTitle}</h4>
+                    <p>{item.descText}</p>
+                  </div>
+                </div>
+
+                <div className="timerBarWrap">
+                  {isActive && <div className="timerBar" />}
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-
-        <div className="machineSection">
-          <div className="machineIntro">
-            <span className="eyebrow">OPERATING SYSTEM</span>
-            <h2>실제 운영에서 차이가 나는 핵심 요소</h2>
-            <p>
-              오픈 이후에도 흔들리지 않는 운영을 위해,
-              리프레소는 장비·메뉴·관리·대응 체계를 함께 설계합니다.
-            </p>
-          </div>
-
-          <div className="machineGrid">
-            {machineData.map((item, i) => (
-              <button
-                key={i}
-                className={`machineItem ${machineActive === i ? "active" : ""}`}
-                onMouseEnter={() => handleMachineHover(i)}
-                onClick={() => handleMachineHover(i)}
-              >
-                <div className="machineCate">{item.cate}</div>
-                <div className="machineTitle">{item.title}</div>
-                <p className="machineText">{item.text}</p>
-              </button>
-            ))}
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

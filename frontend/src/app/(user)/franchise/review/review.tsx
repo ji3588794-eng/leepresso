@@ -4,6 +4,7 @@ import './Review.scss';
 export default function Review() {
   return (
     <>
+    <div className="leepresso_line"></div>
     <section id="review-info" className="review">
       {/* 뒷배경: 흐릿한 리뷰 벽면 */}
       <div className="bg-image-wrapper">

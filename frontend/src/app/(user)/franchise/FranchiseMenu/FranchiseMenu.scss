@@ -1,72 +1,141 @@
 @use "../../../mixin" as *;
 
 .franchise_menu {
- @include bg-gradient-color(var(--leepresso-bg), var(--white));
-  padding-bottom:100px;
   color: var(--leepresso-deep);
+  overflow: hidden;
+
   .container {
     max-width: 100%;
     margin: 0 auto;
     text-align: center;
+
     .menu_bg {
       width: 100%;
-      height: 850px;
-      padding: 70px 0;
-      //@include bg-gradient-image(var(--leepresso-bg), var(--white), "/background_coffee.png");
+      padding: 70px 0 0;
+      position: relative;
+
       .menu_title_box {
+        position: relative;
+        z-index: 20;
+
         .menu_title {
           font-size: 50px;
+          line-height: 1.25;
+          font-weight: 500;
+          letter-spacing: -0.03em;
+
           .menu_point {
-            background-color: #c46a2d;
+            background-color: #A9443D;
             margin: 0 10px;
+            padding: 4px 12px;
             color: #fff;
-            font-weight: 700;
+            font-weight: 800;
+            display: inline-block;
+            border-radius: 22px 2px 22px 2px;
           }
         }
+
         .menu_sub_text {
           padding: 20px 0;
-          font-size: 20px;
+          font-size: 22px;
+          line-height: 1.6;
+          color: rgba(60, 40, 30, 0.78);
         }
+
         .menu_deco_text {
           @include bg("/signature.png");
           width: 100%;
-          height: 40px;
+          height: 42px;
+          opacity: 0.72;
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          margin-bottom: 20px;
         }
       }
 
-      .menu_bottom_text {
-        font-size: 30px;
-        font-weight: 600;
-        .menu_bottom_point {
-          font-weight: 900;
-          color: #c46a2d;
-        }
-      }
       .menu_swipe_box {
         position: relative;
         width: 100%;
-        height: 450px; // 이미지 높이에 맞게 조절
+        height: 600px;
+        margin-top: 50px;
+        margin-bottom: 50px;
 
-        .fade_slide {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transition: opacity 0.3s ease-in-out;
-          text-align: center;
-          z-index: 0;
-
-          img {
-            width: 450px;
-            margin: 0 auto;
-            display: block;
-          }
+        .swipe_stage {
+          position: relative;
+          width: 100%;
+          max-width: 1920px;
+          height: 100%;
+          margin: 0 auto;
         }
 
-        .fade_slide.active {
-          opacity: 1;
-          z-index: 2;
+        .curve_card {
+          position: absolute;
+          left: 50%;
+          top: 40px;
+          width: 400px;
+          transform-origin: center center;
+          // 전환 효과 최적화: 0.6초로 단축 + 부드러운 가속도 곡선
+          transition: 
+            transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), 
+            opacity 0.6s ease, 
+            filter 0.6s ease;
+          will-change: transform, opacity, filter;
+
+          .curve_card_inner {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
+
+          .drink_visual {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            // 기본 상태는 애니메이션 없음
+            img {
+              width: 100%;
+              max-width: 440px;
+              user-select: none;
+              -webkit-user-drag: none;
+              filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.1));
+            }
+          }
+
+          // [핵심] 중앙에 있는 카드만 둥실거리는 애니메이션 적용
+          &.active {
+            .drink_visual {
+              animation: centerFloat 3s ease-in-out infinite;
+            }
+          }
         }
       }
     }
+  }
+}
+
+// 중앙 카드 전용 부드러운 유영 애니메이션
+@keyframes centerFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@media (max-width: 1500px) {
+  .franchise_menu .container .menu_bg .menu_swipe_box {
+    height: 480px;
+    .curve_card { width: 320px; img { max-width: 320px; } }
+  }
+}
+
+@media (max-width: 768px) {
+  .franchise_menu {
+    padding-bottom: 60px;
+    .container .menu_bg .menu_swipe_box {
+      height: 300px;
+      margin-top: 20px;
+      .curve_card { width: 160px; top: 10px; img { max-width: 160px; } }
+    }
+    .container .menu_bg .menu_title_box .menu_title { font-size: 26px; }
   }
 }

@@ -15,6 +15,7 @@ import MachineSecond from "./Machine/MachineSecond";
 import MachineThird from "./Machine/MachineThird";
 import MachineFourth from "./Machine/MachineFourth";
 import Machine from "./Machine/Machine";
+import FirstSection from "./FirstSection/FirstSection";
 
 export default function FranchisePage() {
   // 스크롤 로직(Hash 처리)은 페이지 전체에 영향을 주므로 여기에 남겨둡니다.
@@ -60,6 +61,9 @@ export default function FranchisePage() {
     <div className="relative overflow-hidden bg-white text-[#191919]">
       {/* 1. 메인 HERO */}
       <Hero />
+
+      {/* 간단소개 */}
+      <FirstSection />
 
       {/* 핵심 키워드 */}
       <Keyword />

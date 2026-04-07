@@ -3,7 +3,8 @@ $dark: #3e3232;
 
 .process {
   background: #f9f5f0;
-  padding: 120px 0;
+  padding-top: 100px;
+  padding-bottom: 50px;
   font-family: 'Suit', sans-serif;
 
   .container {
@@ -127,7 +128,6 @@ $dark: #3e3232;
     background: #fff;
     border-radius: 30px;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
     border: 1px solid #f0f0f0;
 
     .docTitleSide {

@@ -2,93 +2,50 @@
 
 .interior {
   position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 900px; // 내용 보강으로 인한 최소 높이 상향
+  display: flex;
+  align-items: center;
+  background: #fff;
   overflow: hidden;
-  padding: 200px 0;
-  background-color: #fff;
-  color: #1a1a1a;
-
-  // 1. 배경 장식 - 고급스러운 투명도와 레이어링
-  .bg-vertical-text {
-    position: absolute;
-    top: 30%;
-    left: 0;
-    font-size: clamp(100px, 15vw, 240px);
-    font-weight: 900;
-    color: rgba(0, 0, 0, 0.02);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 1;
-    line-height: 1;
-  }
-
-  .bg-deco-frame {
-    position: absolute;
-    top: 10%;
-    right: 3%;
-    width: 35%;
-    height: 80%;
-    border-right: 1px solid rgba(169, 68, 61, 0.12);
-    border-top: 1px solid rgba(169, 68, 61, 0.12);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .bg-dot-pattern {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 100px;
-    height: 100px;
-    background-image: radial-gradient(#d1b7a0 1px, transparent 1px);
-    background-size: 10px 10px;
-    opacity: 0.3;
-  }
 
   .full-container {
-    max-width: 1720px;
+    width: 100%;
+    max-width: 1500px;
     margin: 0 auto;
-    padding: 0 60px;
-    position: relative;
-    z-index: 5;
+    padding: 0 50px;
   }
 
-  // 2. 상단 레이아웃 - 텍스트 가독성 중심
+  .interior-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
   .top-layout {
     display: flex;
+    align-items: flex-start; // 상단 정렬
     justify-content: space-between;
-    align-items: flex-end;
-    gap: 100px;
-    margin-bottom: 160px;
+    gap: 80px;
 
     .head-text-block {
-      flex: 0 0 520px;
+      flex: 0 0 600px;
       
       .section-label {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 35px;
-        .line { width: 40px; height: 2px; background: var(--leepresso-point-red); }
-        .txt { font-size: 13px; font-weight: 800; letter-spacing: 0.2em; color: var(--leepresso-point-red); }
+        display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+        .line { width: 40px; height: 1px; background: var(--leepresso-point-red); }
+        .txt { color: var(--leepresso-point-red); font-weight: 700; font-size: 13px; letter-spacing: 2px; }
       }
 
       .comp_title {
-        font-size: 74px;
-        font-weight: 800;
-        line-height: 1.05;
-        letter-spacing: -0.05em;
-        margin-bottom: 45px;
+        font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 35px;
         .accent { color: var(--leepresso-point); }
       }
 
-      .hero-desc {
-        font-size: 19px;
-        line-height: 1.85;
-        color: #444;
-        word-break: keep-all;
-        strong { color: #000; font-weight: 700; position: relative; z-index: 1;
-          &::after { content: ""; position: absolute; left: 0; bottom: 2px; width: 100%; height: 8px; background: rgba(209, 183, 160, 0.2); z-index: -1; }
-        }
+      .detailed-desc {
+        .main-p { font-size: 20px; color: #222; margin-bottom: 20px; line-height: 1.6; }
+        .sub-p { font-size: 16px; color: #777; margin-bottom: 15px; line-height: 1.8; word-break: keep-all; }
       }
     }
 
@@ -96,129 +53,75 @@
       flex: 1;
       .img-frame {
         position: relative;
-        height: 640px;
-        box-shadow: 40px 40px 80px rgba(0, 0, 0, 0.08);
-        
+        width: 100%;
+        height: 550px; // 세로로 더 길게 수정
+        border-radius: 0 80px 0 0;
+        overflow: hidden;
+        box-shadow: 30px 30px 60px rgba(0,0,0,0.08);
+
         img { width: 100%; height: 100%; object-fit: cover; }
         
-        .frame-border-deco {
-          position: absolute;
-          top: -25px;
-          right: -25px;
-          width: 120px;
-          height: 120px;
-          border-top: 5px solid var(--leepresso-point-red);
-          border-right: 5px solid var(--leepresso-point-red);
-        }
-
-        .frame-tag {
-          position: absolute;
-          bottom: 30px;
-          right: -30px;
-          background: var(--leepresso-deep);
-          color: #fff;
-          padding: 12px 25px;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
+        .frame-deco {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+          border: 1px solid rgba(0,0,0,0.05); border-radius: 0 80px 0 0;
+          pointer-events: none;
         }
       }
     }
   }
 
-  // 3. 중간 레이아웃 - 비정형 그리드
-  .middle-layout {
-    display: flex;
-    gap: 120px;
-    align-items: center;
-    margin-bottom: 180px;
+  .bottom-grid-section {
+    .info-row {
+      display: flex; gap: 80px; margin-bottom: 30px; padding-bottom: 25px;
+      border-bottom: 1px solid #f0f0f0;
 
-    .sub-images-group {
-      flex: 1.2;
-      display: flex;
-      align-items: center;
-      gap: 40px;
-      
-      .sub-img-item {
-        position: relative;
-        overflow: hidden;
-        .img-inner {
-          position: relative;
-          img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
-          .img-overlay { position: absolute; inset: 0; background: rgba(169, 68, 61, 0.05); opacity: 0; transition: 0.5s; }
-        }
-        &:hover img { transform: scale(1.08); }
-        &:hover .img-overlay { opacity: 1; }
-
-        &:nth-child(1) { flex: 1.3; height: 500px; border-radius: 0 100px 0 0; }
-        &:nth-child(2) { flex: 1; height: 420px; border-radius: 0 0 0 80px; }
-      }
-    }
-
-    .side-info-block {
-      flex: 0.8;
       .info-item {
-        display: flex;
-        gap: 30px;
-        margin-bottom: 80px;
-        
-        .num-box {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          .num { font-size: 48px; font-weight: 900; color: var(--leepresso-point-red); line-height: 0.8; opacity: 0.2; }
-          .bar { width: 2px; height: 40px; background: rgba(169, 68, 61, 0.1); margin-top: 15px; }
-        }
-
-        .text {
-          h3 { font-size: 28px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
-          p { font-size: 17px; color: #555; line-height: 1.8; word-break: keep-all; }
-        }
+        display: flex; align-items: center; gap: 15px;
+        .num { font-size: 28px; font-weight: 900; color: var(--leepresso-point-red); opacity: 0.2; }
+        p { font-size: 15px; color: #444; strong { color: #000; font-weight: 700; } }
       }
     }
-  }
 
-  // 4. 하단 레이아웃 - 와이드 임팩트
-  .bottom-layout {
-    .last-visual-box {
-      position: relative;
-      width: 100%;
-      height: 600px;
-      overflow: hidden;
-      img { width: 100%; height: 100%; object-fit: cover; }
-      
-      .floating-banner {
-        position: absolute;
-        bottom: 60px;
-        left: 60px;
-        background: #fff;
-        padding: 35px 50px;
-        font-size: 24px;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.15);
+    .image-horizontal-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+
+      .grid-item {
+        position: relative;
+        height: 200px;
+        border-radius: 15px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: 0.3s;
+
+        img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: 0.4s; }
         
-        .accent-dot { width: 12px; height: 12px; background: var(--leepresso-point-red); border-radius: 50%; }
+        .click-overlay {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+          background: rgba(0,0,0,0.4); color: #fff; font-size: 12px; font-weight: 800;
+          display: flex; align-items: center; justify-content: center;
+          opacity: 0; transition: 0.3s;
+        }
+
+        &:hover {
+          img { filter: grayscale(0); transform: scale(1.05); }
+          .click-overlay { opacity: 1; }
+        }
+
+        &.active {
+          border: 3px solid var(--leepresso-point-red);
+          img { filter: grayscale(0); }
+        }
       }
     }
   }
 }
 
-// 반응형 최적화
-@media (max-width: 1280px) {
+// 반응형 대응
+@media (max-height: 950px) {
   .interior {
-    .top-layout { .head-text-block { flex: 0 0 420px; .comp_title { font-size: 56px; } } }
-    .middle-layout { gap: 60px; .side-info-block .info-item .text h3 { font-size: 24px; } }
-  }
-}
-
-@media (max-width: 1024px) {
-  .interior {
-    padding: 100px 0;
-    .top-layout { flex-direction: column; align-items: flex-start; .head-text-block { width: 100%; margin-bottom: 60px; } }
-    .middle-layout { flex-direction: column; .sub-images-group { width: 100%; } }
-    .bottom-layout .last-visual-box .floating-banner { left: 20px; right: 20px; font-size: 18px; padding: 25px; white-space: normal; }
+    height: auto; padding: 80px 0;
+    .top-layout .main-visual-box .img-frame { height: 450px; }
   }
 }

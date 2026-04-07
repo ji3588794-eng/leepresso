@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import "./Machine.scss";
 
 export default function Machine() {
@@ -35,7 +36,7 @@ export default function Machine() {
     stopAutoSlide();
     intervalRef.current = setInterval(() => {
       setActiveRow((prev) => (prev + 1) % rowDataSecond.length);
-    }, 4000); // 4초로 약간 여유 있게 변경
+    }, 4000);
   };
 
   const stopAutoSlide = () => {
@@ -47,27 +48,15 @@ export default function Machine() {
     return () => stopAutoSlide();
   }, []);
 
-  // --- MachineThird: 핵심 기술 스택 (이미지 기반 설명) ---
+  // --- MachineThird: 핵심 기술 스택 ---
   const rowDataThird = [
-    {
-      title: "플랫버 그라인더",
-      text: "커피원두를 일관되고 정밀하게 분쇄해 최상의 맛과 향을 이끌어냅니다. 특수 고강도 합금강으로 제작되어 내구성과 내열성이 뛰어납니다.",
-    },
-    {
-      title: "고성능 로터리 베인 펌프",
-      text: "가정용 바이브레이션 펌프와 차원이 다른 9 bar의 일정한 압력을 유지하여, 조밀하고 부드러운 황금빛 크레마를 안정적으로 추출합니다.",
-    },
-    {
-      title: "듀얼 보일러 컨트롤",
-      text: "추출수와 스팀/온수 보일러를 분리하여 대량 주문 시에도 온도 편차 없는 완벽한 한 잔을 제공하는 연속 추출 능력을 갖췄습니다.",
-    },
-    {
-      title: "프리인퓨전",
-      text: "추출 전 원두를 고르게 적셔 내부 가스를 배출함으로써 채널링 현상을 방지하고, 원두 본연의 단맛과 바디감을 극대화합니다.",
-    },
+    { title: "플랫버 그라인더", text: "커피원두를 일관되고 정밀하게 분쇄해 최상의 맛과 향을 이끌어냅니다. 특수 고강도 합금강으로 제작되어 내구성과 내열성이 뛰어납니다." },
+    { title: "고성능 로터리 베인 펌프", text: "가정용 바이브레이션 펌프와 차원이 다른 9 bar의 일정한 압력을 유지하여, 조밀하고 부드러운 황금빛 크레마를 안정적으로 추출합니다." },
+    { title: "듀얼 보일러 컨트롤", text: "추출수와 스팀/온수 보일러를 분리하여 대량 주문 시에도 온도 편차 없는 완벽한 한 잔을 제공하는 연속 추출 능력을 갖췄습니다." },
+    { title: "프리인퓨전 시스템", text: "추출 전 원두를 고르게 적셔 내부 가스를 배출함으로써 채널링 현상을 방지하고, 원두 본연의 단맛과 바디감을 극대화합니다." },
   ];
 
-  // --- 상세 제원 데이터 (테이블용) ---
+  // --- 원본 상세 제원 데이터 ---
   const specData = [
     {
       name: "제빙기",
@@ -101,110 +90,85 @@ export default function Machine() {
     }
   ];
 
-  // --- MachineFourth: 시스템 포인트 ---
+  // --- 제품 특성 (제안서 이미지 원본 문구 기반 4개 구성) ---
   const features = [
     {
-      title: "Unlimited Menu",
+      title: "위생적인 자동 세척관리",
       contents: [
-        "원두 2종, 파우더 6종, 액상 시럽의 자유로운 조합",
-        "전문 바리스타가 세팅한 70여 가지 레시피 프리셋",
-        "상권 특성에 맞춘 계절별 독점 시즌 메뉴 구성",
+        "일관된 맛과 품질의 음료 추출을 위해 모든 과정에서 발생하는 잔여물이 머신 내부에 쌓이지 않도록 자동세척 기능이 적용되었습니다.",
       ],
     },
     {
-      title: "Auto Management",
+      title: "디스플레이 모드 선택",
       contents: [
-        "24시간 실시간 머신 컨디션 모니터링",
-        "원재료 소진 알림 및 자동 주문 연동 시스템",
-        "매일 정해진 시간에 작동하는 지능형 자동 세척",
+        "머신이 설치된 장소의 분위기와 조화롭게 어우러질 수 있도록 디스플레이의 다양한 테마를 제공합니다.",
       ],
     },
     {
-      title: "Premium Design",
+      title: "다양한 음료 제조 가능",
       contents: [
-        "지문 방지 스웨이드 블랙 코팅의 고급스러운 마감",
-        "어떤 인테리어와도 조화를 이루는 모던 큐빅 폼",
-        "은은한 LED 라이팅으로 완성되는 감성적인 무드",
+        "대용량 원두 호퍼와 믹스 캐니스터, 액상 에이드를 사용하여 100여종의 다양한 음료 판매가 가능합니다.",
       ],
     },
     {
-      title: "Customer Loyalty",
+      title: "다양한 결제수단 지원",
       contents: [
-        "자체 서버 기반의 멤버십 포인트 통합 관리",
-        "카카오 알림톡 기반의 쿠폰 및 이벤트 발송",
-        "재방문율 분석을 통한 데이터 마케팅 지원",
-      ],
-    },
-    {
-      title: "Extreme Durability",
-      contents: [
-        "상업용 최상급 부품 사용으로 고장률 0.5% 미만",
-        "과부하 방지를 위한 지능형 냉각 쿨링 시스템",
-        "반영구적 사용이 가능한 고강도 하드웨어 설계",
-      ],
-    },
-    {
-      title: "Smart Payment",
-      contents: [
-        "모든 신용카드 및 간편결제(삼성/Apple/카카오/네이버)",
-        "멤버십 카드 및 선불권 결제 완벽 지원",
-        "외국인 관광객을 위한 글로벌 페이먼트 대응",
+        "신용카드, 삼성페이, 카카오/네이버페이, QR코드 등 사용자의 편의를 고려한 다양한 결제 시스템을 지원합니다.",
       ],
     },
   ];
 
   return (
     <div className="machine_wrapper">
-      {/* Visual Section */}
-      <section id="machine" className="machine">
-        <div className="container">
-          <div className="machine_bg">
-            <div className="ma_title_box">
-              <div className="ma_title">
-                리프레소의 특별한 <span className="ma_point">MACHINE</span>
+      {/* 02. Engineering Details */}
+      <section className="engineering_sec">
+        <div className="inner_1500">
+          <div className="eng_grid">
+            <div className="eng_info">
+              <div className="label">
+                <motion.div 
+                  className="ma_title"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="ma_txt">리프레소의 특별한</span> 
+                  <span className="ma_point">MACHINE</span>
+                </motion.div>
               </div>
-              <h2 className="m_main_text">
-                압도적인 속도, <em>Signature</em> <span className="title_line">변함없는 본연의 맛</span>
-              </h2>
+              <h3>하이엔드 무인커피머신</h3>
+              <p>완벽한 퀄리티를 구현하는 최상급 엔지니어링 솔루션</p>
+              
+              <div className="eng_rows">
+                {rowDataThird.map((item, i) => (
+                  <div className="row" key={i}>
+                    <div className="n">{String(i + 1).padStart(2, '0')}</div>
+                    <div className="t_box">
+                      <strong>{item.title}</strong>
+                      <span>{item.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="eng_visual">
+               <div className="eng_main_img"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Engineering Section */}
-      <div className="machine third">
-        <div className="container">
-          <div className="m_third_contents_box">
-            <div className="third_img_box"></div>
-            <div className="third_text_box">
-              <div className="text_top_box">
-                <div className="third_text_point">PREMIUM SELF - SERVICE <br />COFFEE TECHNOLOGY</div>
-                <div className="third_text_title">하이엔드 무인커피머신</div>
-                <div className="third_text_sub">완벽한 퀄리티를 구현하는 최상급 엔지니어링 솔루션</div>
-              </div>
-              <div className="text_row_box">
-                {rowDataThird.map((item, i) => (
-                  <div className="text_row" key={i}>
-                    <div className="row_title">{item.title}</div>
-                    <div className="row_text">{item.text}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="leepresso_mark_box">
-                <div className="leepresso_mark"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Specification Grid */}
-          <div className="spec_full_grid">
+      {/* 03. Specification Cards */}
+      <section className="spec_sec">
+        <div className="inner_1500">
+          <div className="spec_grid">
             {specData.map((spec, idx) => (
               <div className="spec_card" key={idx}>
-                <div className="spec_visual">
+                <div className="img_holder">
                   <img src={spec.img} alt={spec.name} />
                 </div>
-                <div className="spec_info">
-                  <div className="spec_name_header">{spec.name}</div>
+                <div className="txt_holder">
+                  <h4>{spec.name}</h4>
                   <table className="spec_table">
                     <tbody>
                       {spec.specs.map((s, i) => (
@@ -220,61 +184,54 @@ export default function Machine() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-    <div className="leepresso_line"></div>
-
-      {/* Brand Value Section */}
-      <div className="machine second">
-        <div className="m_bottom_container">
-          <div className="m_contents_box">
+      {/* 04. Brand Value - 자동 슬라이드 */}
+      <section className="value_slide_sec">
+        <div className="inner_1500">
+          <div className="value_grid">
             {rowDataSecond.map((item, i) => (
-              <div
-                className={`m_row_box ${activeRow === i ? "active" : ""}`}
+              <div 
+                className={`value_item ${activeRow === i ? "active" : ""}`} 
                 key={i}
                 onMouseEnter={() => { stopAutoSlide(); setActiveRow(i); }}
                 onMouseLeave={startAutoSlide}
               >
-                <div className="m_row_cate">{item.cate}</div>
-                <div className="m_row_title">{item.title}</div>
-                <div className="m_row_text">{item.text}</div>
-                <div className="progress_bar">
-                   <div className="fill" style={{ width: activeRow === i ? '100%' : '0%' }}></div>
+                <div className="cate">{item.cate}</div>
+                <h5>{item.title}</h5>
+                <p>{item.text}</p>
+                <div className="progress_wrap">
+                  <div className="fill" style={{ width: activeRow === i ? '100%' : '0%' }}></div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Features Grid Section */}
-      <div className="machine fourth">
-        <section className="feature_section">
-          <div className="feature_intro">
-            <div className="intro_left">
-              <h3>성공적인 비즈니스를 위한 토탈 시스템</h3>
-            </div>
-            <p>압도적인 기기 성능부터 운영 효율성, 단골 관리까지 리프레소가 제안하는 6가지 성공 포인트</p>
+      </section>
+          
+      <div className="wave-bg"></div>
+      {/* 05. 제품 특성 - 제안서 기반 4그리드 */}
+      <section className="points_sec">
+        <div className="inner_1500">
+          <div className="sec_head">
+            <h3>압도적인 기기 성능과 편의성</h3>
+            <p>리프레소가 제안하는 머신 핵심 포인트</p>
           </div>
-          <div className="m_fourth_grid six">
+          <div className="points_grid four_cols">
             {features.map((item, idx) => (
-              <div key={idx} className="memo_back">
-                <span className="memo_chip">FEATURE {String(idx + 1).padStart(2, "0")}</span>
-                <h3 className="memo_title">{item.title}</h3>
-                <div className="memo_text_box">
+              <div key={idx} className="point_item">
+                <span className="idx">0{idx+1}</span>
+                <h5>{item.title}</h5>
+                <div className="contents">
                   {item.contents.map((content, i) => (
-                    <div key={i} className="memo_text">
-                      <span className="dot"></span>
-                      <span className="txt">{content}</span>
-                    </div>
+                    <p key={i}>{content}</p>
                   ))}
                 </div>
               </div>
             ))}
           </div>
-        </section>
-      </div>
-      <div className="leepresso_line"></div>
+        </div>
+      </section>
     </div>
   );
 }
