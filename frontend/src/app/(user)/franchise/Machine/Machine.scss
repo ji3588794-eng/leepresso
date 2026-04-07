@@ -10,412 +10,8 @@
     margin: 0 auto;
     text-align: center;
 
-.machine_bg {
-  .ma_title_box {
-    padding: 100px 0 60px;
-    font-family: var(--font-pretendard);
-    text-align: center;
-    background: #fff;
-
-    .ma_title {
-      color: var(--leepresso-point);
-      font-size: 40px;
-      font-weight: 700;
-
-      .ma_point {
-        padding-left: 10px;
-        font-size: 60px;
-        color: var(--leepresso-deep);
-        font-weight: 900;
-        position: relative;
-        display: inline-block;
-
-        &::after {
-          content: "";
-          position: absolute;
-          width: 100%;
-          height: 60px;
-          @include bg-cover("/underline_3.png");
-          bottom: -15px;
-          right: -60px;
-          z-index: 1;
-        }
-      }
-    }
-  }
-
-    .ma_contents_bg {
-    .graph_frame {
-      //background: linear-gradient(180deg, #fffdf9 0%, #fff8f1 100%);
-      //border: 1px solid rgba(226, 206, 184, 0.8);
-      //border-radius: 30px;
-      //padding: 26px;
-      /*box-shadow:
-        0 20px 42px rgba(62, 50, 50, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.46); */
-    }
-
-    .graph_head {
-      margin-bottom: 18px;
-
-      .graph_kicker {
-        display: inline-block;
-        margin-bottom: 8px;
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: #9f7556;
-      }
-
-      h3 {
-        font-size: clamp(24px, 2vw, 34px);
-        font-weight: 900;
-        line-height: 1.25;
-        letter-spacing: -0.02em;
-        color: #2f2623;
-        word-break: keep-all;
-      }
-    }
-
-    .machine_graph_image {
-        width: 100vw;               /* 화면 가로 너비를 100% 꽉 채움 */
-
-        min-height: 50vw;          /* 시원하게 높이감 확보 */
-        aspect-ratio: auto;         /* 비율 제한 해제 */
-        border-radius: 0;           /* 화면 끝에 닿으므로 곡률 제거 */
-        overflow: hidden;
-        background-color: #fcfcfc;
-        @include bg("/graph_image_2.png");
-        background-size: cover;     /* 배경 이미지가 가로로 가득 차도록 설정 */
-        background-position: center;
-        background-repeat: no-repeat;
-        box-shadow: none;           /* 테두리 그림자 제거로 깔끔하게 정리 */
-      }
-
-    .ma_contents_box {
-      display: flex;
-      width: 100%;
-      margin: 0 auto;
-      overflow: hidden;
-      position: relative;
-      padding: 0;
-      align-items: stretch; // 이미지 높이를 좌측 텍스트 높이에 강제 일치
-
-      @media (max-width: 1024px) {
-        flex-direction: column;
-      }
-    }
-
-    // 좌측 텍스트 영역 (60%)
-    .ma_info_side {
-      width: 60%;
-      @include bg-cover("/background_2.png");
-      padding: 80px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .info_inner {
-        width: 100%;
-        max-width: 680px;
-        display: flex;
-        flex-direction: column;
-        gap: 60px;
-      }
-
-      .info_section {
-        .row_title {
-          font-size: clamp(34px, 4vw, 47px);
-          line-height: 1.2;
-          font-weight: 900;
-          letter-spacing: -0.06em;
-          color: var(--leepresso-deep);
-          padding-bottom: 25px;
-          word-break: keep-all;
-        }
-
-        .row_text_group {
-          // 텍스트 가독성을 위한 컨테이너 디자인
-          //background: rgba(255, 255, 255, 0.4); 
-          padding: 30px;
-          //border-radius: 20px;
-          //backdrop-filter: blur(10px);
-          //border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .row_text {
-          font-size: clamp(16px, 1.1vw, 19px);
-          padding-bottom: 15px;
-          font-weight: 600; // 폰트 굵기 강화
-          line-height: 1.8;
-          color: #222; // 더 진한 색상으로 변경
-          word-break: keep-all;
-          
-          &:last-child { padding-bottom: 0; }
-          
-          span { color: var(--leepresso-point-red); font-weight: 800; }
-        }
-
-        .highlight_box {
-          margin-top: 20px;
-          padding: 20px;
-          //background: rgba(255, 255, 255, 0.8);
-          //border-radius: 12px;
-          //box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-      }
-
-      @media (max-width: 1024px) {
-        width: 100%;
-        order: 2;
-        padding: 60px 20px;
-      }
-    }
-
-    // 우측 이미지 영역 (40%)
-    .ma_visual_side {
-      width: 40%;
-      //background: #000;
-      display: flex;
-
-      .image_stack {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        
-        .row_image {
-          width: 100%;
-          flex: 1; 
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-          
-          &.img_01 { @include bg-cover("/sv1_black_2.png"); }
-          &.img_02 { @include bg-cover("/coffee_1.png"); border-top: 1px solid rgba(255,255,255,0.1); }
-        }
-      }
-
-      @media (max-width: 1024px) {
-        width: 100%;
-        height: 600px;
-        order: 1;
-      }
-    }
-  }
-}
-  }
-
-  // ------------------------------------
-  // ===== MachineThird (기존 유지) =====
-  &.third {
-    font-family: var(--font-pretendard) !important;
-    //padding-bottom: 100px;
-
-    @media (max-width: 1024px) {
-      padding-bottom: 50px;
-    }
-
-    .container {
-      .m_third_contents_box {
-        background-color: #fff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.315);
-        text-align: left;
-        font-size: 0;
-
-        .third_img_box {
-          @include bg-cover("/machine_sv_1_2.png");
-          width: 40%;
-          display: inline-block;
-          height: 800px;
-          vertical-align: middle;
-
-          @media (max-width: 1024px) {
-            width: 100%;
-            height: 400px;
-            display: block;
-          }
-        }
-
-        .third_text_box {
-          display: inline-block;
-          vertical-align: middle;
-          padding: 20px 50px;
-          width: 60%;
-          font-size: 16px;
-
-          @media (max-width: 1024px) {
-            width: 100%;
-            padding: 40px 20px;
-            display: block;
-          }
-
-          .text_top_box {
-            padding-bottom: 25px;
-            font-weight: 700;
-            .third_text_point {
-              color: var(--leepresso-point-red);
-              font-size: 15px;
-              padding-bottom: 25px;
-            }
-            .third_text_title {
-              font-size: 50px;
-              padding-bottom: 25px;
-              font-weight: 500;
-              font-family: var(--font-jeju) !important;
-              @media (max-width: 768px) {
-                font-size: 30px;
-                padding-bottom: 15px;
-              }
-            }
-            .third_text_sub {
-              font-size: 20px;
-              font-weight: 500;
-              padding-bottom: 30px;
-              @media (max-width: 768px) {
-                font-size: 16px;
-              }
-            }
-          }
-
-          .text_row_box {
-            .text_row {
-              border-top: 1px solid #e8d5c4;
-              border-bottom: 1px solid #e8d5c4;
-              padding: 30px;
-              min-height: 100px;
-              width: 100%;
-              font-size: 0;
-              @media (max-width: 768px) {
-                padding: 20px 10px;
-              }
-              .row_title {
-                display: inline-block;
-                width: 300px;
-                font-size: 20px;
-                font-weight: 700;
-                vertical-align: middle;
-                text-align: center;
-                @media (max-width: 1200px) {
-                  width: 200px;
-                }
-                @media (max-width: 768px) {
-                  display: block;
-                  width: 100%;
-                  text-align: left;
-                  margin-bottom: 10px;
-                }
-              }
-              .row_text {
-                display: inline-block;
-                width: calc(100% - 400px);
-                font-size: 15px;
-                font-weight: 500;
-                vertical-align: middle;
-                @media (max-width: 1200px) {
-                  width: calc(100% - 200px);
-                }
-                @media (max-width: 768px) {
-                  display: block;
-                  width: 100%;
-                  font-size: 14px;
-                  line-height: 1.5;
-                }
-              }
-            }
-          }
-        }
-      }
-      .leepresso_mark_box {
-        text-align: right;
-        padding: 20px 0 0;
-        .leepresso_mark {
-          display: inline-block;
-          @include bg("/leepresso_2.png");
-          width: 200px;
-          height: 50px;
-          @media (max-width: 768px) {
-            width: 140px;
-            height: 35px;
-            background-size: contain;
-            background-repeat: no-repeat;
-          }
-        }
-      }
-    }
-  }
-
-// ------------------------------------
-// ===== MachineFourth 리디자인 (Wide & Full Layout) =====
-// ------------------------------------
-
-&.fourth {
-  padding: 0 0 100px;
-  background: #fff; 
-  overflow: hidden;
-
-  // 전체를 감싸는 영역을 100%로 확장
-  .m_container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0; // 박스형 패딩 제거
-  }
-
-  // 배경을 화면 끝에서 끝까지 (Full Width)
-  .machine_back {
-    position: relative;
-    width: 100%;
-    min-height: 500px;
-    background: #f8f6f4;
-    display: flex;
-    align-items: center;
-
-    // 장식용 내부 보더 제거 (깔끔하게 배경만)
-    &::before { display: none; }
-    
-    &::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(232, 221, 208, 0.3));
-    }
-  }
-
-  .m_top_section {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1400px; // 콘텐츠 응집도만 유지
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: center;
-    padding: 0 40px;
-  }
-
-  .m_text_box {
-    .m_eyebrow {
-      font-size: 14px;
-      font-weight: 800;
-      color: #b44a3e;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      display: block;
-    }
-
-    .m_sub_text {
-      font-size: 24px;
-      font-weight: 500;
-      color: #8d7b68;
-      margin-bottom: 16px;
-    }
-
     .m_main_text {
-      font-size: clamp(48px, 5vw, 84px); // 글씨 크기도 더 시원하게
+      font-size: clamp(48px, 5vw, 40px);
       font-weight: 900;
       color: #2f2623;
       line-height: 1.1;
@@ -430,145 +26,211 @@
       }
 
       .title_line {
-        display: block;
         margin-top: 10px;
         position: relative;
-        width: fit-content;
-
-        &::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 15px;
-          width: 110%;
-          height: 24px;
-          background: rgba(180, 74, 62, 0.08);
-          z-index: -1;
-        }
       }
     }
 
-    .m_desc {
-      margin-top: 40px;
-      font-size: 18px;
-      line-height: 1.8;
-      color: #666;
-      max-width: 540px;
-      word-break: keep-all;
+    .machine_bg {
+      .ma_title_box {
+        padding: 100px 0 60px;
+        font-family: var(--font-pretendard);
+        text-align: center;
+        background: #fff;
+
+        .ma_title {
+          color: var(--leepresso-point);
+          font-size: 40px;
+          font-weight: 700;
+
+          .ma_point {
+            padding-left: 10px;
+            font-size: 60px;
+            color: var(--leepresso-deep);
+            font-weight: 900;
+            position: relative;
+            display: inline-block;
+
+            &::after {
+              content: "";
+              position: absolute;
+              width: 100%;
+              height: 60px;
+              @include bg-cover("/underline_3.png");
+              bottom: -15px;
+              right: -60px;
+              z-index: 1;
+            }
+          }
+        }
+      }
     }
   }
 
-  .m_visual_stage {
-    position: relative;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
+  // --- MachineThird 상세 스펙 추가 디자인 ---
+  &.third {
+    font-family: var(--font-pretendard) !important;
+    .container {
+      .m_third_contents_box {
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        font-size: 0;
 
-    .image_machine {
-      width: 120%; // 화면 밖으로 살짝 나가는 느낌으로 크게
-      max-width: 900px;
-      aspect-ratio: 1.2;
-      @include bg("/machine_sv_1.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: right center;
-      filter: drop-shadow(40px 60px 80px rgba(0,0,0,0.15));
+        .third_img_box {
+          @include bg-cover("/machine_sv_1_2.png");
+          width: 40%;
+          display: inline-block;
+          height: 800px;
+          vertical-align: middle;
+          @media (max-width: 1024px) { width: 100%; height: 400px; display: block; }
+        }
+
+        .third_text_box {
+          display: inline-block;
+          vertical-align: middle;
+          padding: 20px 50px;
+          width: 60%;
+          font-size: 16px;
+          @media (max-width: 1024px) { width: 100%; padding: 40px 20px; display: block; }
+
+          .text_top_box {
+            padding-bottom: 25px;
+            font-weight: 700;
+            .third_text_point { color: var(--leepresso-point-red); font-size: 15px; padding-bottom: 25px; }
+            .third_text_title { font-size: 50px; padding-bottom: 25px; font-weight: 500; font-family: var(--font-jeju) !important; }
+            .third_text_sub { font-size: 20px; font-weight: 500; padding-bottom: 30px; }
+          }
+
+          .text_row_box {
+            .text_row {
+              border-top: 1px solid #e8d5c4;
+              border-bottom: 1px solid #e8d5c4;
+              padding: 30px;
+              min-height: 100px;
+              width: 100%;
+              font-size: 0;
+              .row_title { display: inline-block; width: 250px; font-size: 20px; font-weight: 700; vertical-align: middle; }
+              .row_text { display: inline-block; width: calc(100% - 250px); font-size: 15px; font-weight: 500; vertical-align: middle; }
+            }
+          }
+        }
+      }
+
+      // [추가 디자인] 이미지 도표 스타일
+      .spec_full_grid {
+        display: flex;
+        width: 100%;
+        background: #fff;
+        border-top: 1px solid #eeeeee;
+
+        .spec_card {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          border-right: 1px solid #eee;
+          padding: 60px 50px;
+
+          &:last-child { border-right: none; }
+
+          .spec_visual {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            img { max-height: 100%; max-width: 100%; object-fit: contain; }
+          }
+
+          .spec_info {
+            text-align: left;
+            .spec_name_header {
+              text-align:center;
+              font-size: 20px;
+              font-weight: 800;
+              color: #222;
+              border-bottom: 2px solid #222;
+              padding-bottom: 15px;
+              margin-bottom: 20px;
+            }
+            .spec_table {
+              width: 100%;
+              tr {
+                border-bottom: 1px solid #f0f0f0;
+                th { width: 90px; padding: 12px 0; font-size: 13px; color: #888; text-align: left; font-weight: 600; }
+                td { padding: 12px 0; font-size: 14px; color: #333; font-weight: 500; }
+                &:last-child { border-bottom: none; }
+              }
+            }
+          }
+        }
+
+        @media (max-width: 1024px) { flex-direction: column; .spec_card { border-right: none; border-bottom: 1px solid #eee; } }
+      }
     }
   }
 
-  // 피처 섹션 - 그리드 넓게 확장
-  .feature_section {
-    width: 100%;
-    max-width: 100%; // 가로 100%
-    margin-top: 50px;
-    padding: 0 40px;
-  }
-
-  .feature_intro {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: 2px solid #2f2623; // 깔끔한 라인으로 구분
-    padding-bottom: 30px;
-
-    .intro_left {
-      h3 { font-size: 44px; font-weight: 900; color: #2f2623; letter-spacing: -0.03em; }
+  // --- MachineSecond (기존 유지) ---
+  &.second {
+    .m_bottom_container {
+      padding: 100px 0;
+      .m_contents_box {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        .m_row_box {
+          flex: 1;
+          padding: 40px;
+          background: #fff;
+          border: 1px solid #eee;
+          cursor: pointer;
+          &.active { border-color: var(--leepresso-point-red); }
+          .m_row_cate { color: var(--leepresso-point-red); font-size: 14px; margin-bottom: 15px; }
+          .m_row_title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+          .m_row_text { font-size: 15px; line-height: 1.6; color: #666; }
+        }
+      }
     }
-    
-    p { font-size: 18px; color: #777; max-width: 500px; margin: 0; text-align: right; }
   }
 
-  .m_fourth_grid.six {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px; // 선으로 구분되는 느낌
-    background: #eee; // 그리드 선 색상
-    border: 1px solid #eee;
-  }
-
-  .memo_back {
+  // --- MachineFourth (기존 유지) ---
+  &.fourth {
+    padding: 100px 0;
     background: #fff;
-    padding: 60px 40px;
-    transition: background 0.3s ease;
-
-    &:hover {
-      background: #fbf9f7;
-      .memo_title { color: #b44a3e; }
-    }
-
-    .memo_chip {
-      font-size: 12px;
-      font-weight: 800;
-      color: #b44a3e;
-      display: block;
-      margin-bottom: 30px;
-    }
-
-    .memo_title { 
-      font-size: 28px; 
-      font-weight: 800; 
-      color: #2f2623; 
-      margin-bottom: 24px;
-      transition: color 0.3s ease;
-    }
-
-    .memo_text_box {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .memo_text {
-      display: flex;
-      gap: 12px;
-      .dot { width: 6px; height: 6px; background: #d2aa7c; border-radius: 50%; margin-top: 10px; }
-      .txt { font-size: 16px; color: #555; line-height: 1.6; }
+    .feature_section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      .feature_intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid #222;
+        padding-bottom: 30px;
+        margin-bottom: 60px;
+        h3 { font-size: 40px; font-weight: 900; }
+        p { font-size: 18px; color: #777; }
+      }
+      .m_fourth_grid.six {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: #eee;
+        border: 1px solid #eee;
+        .memo_back {
+          background: #fff;
+          padding: 60px 40px;
+          .memo_chip { font-size: 12px; color: #b44a3e; font-weight: 800; display: block; margin-bottom: 20px; }
+          .memo_title { font-size: 26px; font-weight: 800; margin-bottom: 25px; }
+          .memo_text_box {
+            .memo_text {
+              display: flex; gap: 10px; margin-bottom: 10px;
+              .dot { width: 5px; height: 5px; background: #d2aa7c; border-radius: 50%; margin-top: 8px; }
+              .txt { font-size: 15px; color: #555; }
+            }
+          }
+        }
+      }
     }
   }
-}
-
-// 반응형
-@media (max-width: 1200px) {
-  &.fourth {
-    .m_top_section { grid-template-columns: 1fr; padding-top: 60px; text-align: center; }
-    .m_text_box { .m_main_text { width: 100%; justify-content: center; .title_line { margin: 10px auto; } } .m_desc { margin: 40px auto; } }
-    .m_visual_stage { justify-content: center; .image_machine { width: 100%; background-position: center; } }
-    .feature_intro { flex-direction: column; align-items: center; text-align: center; gap: 20px; p { text-align: center; } }
-    .m_fourth_grid.six { grid-template-columns: repeat(2, 1fr); }
-  }
-}
-
-@media (max-width: 768px) {
-  &.fourth {
-    .m_fourth_grid.six { grid-template-columns: 1fr; }
-    .feature_section { padding: 0 20px; }
-    .m_top_section { padding: 0 20px; }
-  }
-}
 }

@@ -3,6 +3,7 @@ import './Review.scss';
 
 export default function Review() {
   return (
+    <>
     <section id="review-info" className="review">
       {/* 뒷배경: 흐릿한 리뷰 벽면 */}
       <div className="bg-image-wrapper">
@@ -12,7 +13,6 @@ export default function Review() {
 
       <div className="container">
         <div className="header">
-          <span className="sub-title">Guest Experience</span>
           <h2>고객님들이 전해주신 <br /><span>우리 동네 방문 기록</span></h2>
           <div className="desc-wrapper">
             <p className="desc">
@@ -58,5 +58,7 @@ export default function Review() {
         </div>
       </div>
     </section>
+    <div className="leepresso_line reverse"></div>
+    </>
   );
 }

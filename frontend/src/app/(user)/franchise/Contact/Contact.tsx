@@ -36,7 +36,7 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        alert("성공 창업을 위한 첫 걸음, 리프레소 가맹 상담 신청이 완료되었습니다! <br />보내주신 소중한 정보 확인 후, 빠르게 연락드려 상세히 안내해 드리겠습니다.");
+        alert("성공 창업을 위한 첫 걸음, 리프레소 가맹 상담 신청이 완료되었습니다! \n보내주신 소중한 정보 확인 후, 빠르게 연락드려 상세히 안내해 드리겠습니다.");
         form.reset();
       } else {
         alert(`서버 응답 오류 (코드: ${response.status})`);
@@ -47,7 +47,7 @@ export default function Contact() {
   };
 
   useEffect(() => {
-    // 1. Footer 교차 감지 (기존 로직)
+    // 1. Footer 교차 감지
     const footer = document.querySelector("footer");
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -58,9 +58,9 @@ export default function Contact() {
 
     if (footer) observer.observe(footer);
 
-    // 2. 스크롤 감지 (최상단 숨기기 로직)
+    // 2. 스크롤 감지
     const handleScroll = () => {
-      if (window.scrollY > 150) { // 150px 이상 내려오면 보임
+      if (window.scrollY > 150) {
         setShowFixedBar(true);
       } else {
         setShowFixedBar(false);
@@ -85,48 +85,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="grid">
-            <div className="infoCard promotional">
-              
-              <div className="dreamBox">
-                <h4 className="mainTitle text-white">
-                  막연한 창업의 꿈, <br />
-                  <span className="text-[#8D7B68] dark:text-[#E8D5C4]">LEEPRESSO</span>와 함께<br />
-                  현실로 만드세요.
-                </h4>
-                
-                <div className="desc_wrap">
-                  <p className="desc text-[#A69689] dark:text-[#BBB]">
-                    "언젠가는 카페 사장이 되어야지.."
-                  </p>
-                  <p className="desc text-[#A69689] dark:text-[#BBB]">
-                    막연한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘언젠가’</span>가 아닌 <br />
-                    확실한 <span className="font-bold text-[#E8D5C4] dark:text-[#EAE3D9]">‘오늘’</span>을 만드는 시작입니다.
-                  </p>
-                </div>
-                
-                <p className="subDesc text-white opacity-80">
-                  성공적인 출점을 위해 가맹점주의 조건에 <br />
-                  딱 맞춘 실행 가능한 방향을 검토합니다.
-                </p>
-              </div>
-
-              <div className="contactInfo text-white">
-                <div className="c_item">
-                  <span>상담전화</span>
-                  <strong>1522-0290</strong>
-                </div>
-                <div className="c_item">
-                  <span>이메일</span>
-                  <strong>leepresso24@naver.com</strong>
-                </div>
-                <div className="c_item">
-                  <span>상담시간</span>
-                  <strong>평일 09:00 - 18:00</strong>
-                </div>
-              </div>
-            </div>
-
+          <div className="grid-centered">
             <form onSubmit={handleSubmit} className="formCard">
               <div className="inputGrid">
                 <div className="field">
@@ -179,11 +138,22 @@ export default function Contact() {
               </div>
 
               <div className="privacyBox">
+                <div className="privacyScroll">
+                  <p className="p_title">[개인정보 수집 및 이용 동의 내용]</p>
+                  <div className="p_content">
+                    <p><strong>1. 개인정보 수집항목:</strong> 성함, 연락처, 이메일, 창업 희망 지역, 점포 보유 여부 등 상담 신청 양식 내 기재 정보</p>
+                    <p><strong>2. 개인정보 수집 및 이용목적:</strong> 가맹 창업 상담 신청에 따른 본인 확인, 상담 안내 및 자료 전달, 가맹 관련 최신 정보 제공</p>
+                    <p><strong>3. 개인정보의 보유 및 이용기간:</strong> 수집된 정보는 상담 완료 및 목적 달성 후 1년 간 보관되며, 기간 경과 시 즉시 파기됩니다.</p>
+                    <p><strong>4. 동의 거부 권리:</strong> 귀하는 개인정보 수집에 동의를 거부할 권리가 있으나, 거부 시 가맹 상담 및 서비스 이용이 제한될 수 있습니다.</p>
+                  </div>
+                </div>
                 <div className="p_agree">
                   <input type="checkbox" id="privacy" required />
-                  <label htmlFor="privacy"><strong>개인정보 수집 및 이용 동의 (필수)</strong></label>
+                  <label htmlFor="privacy" className="customCheck">
+                    <span className="checkIcon"></span>
+                    <strong>개인정보 수집 및 이용 동의 (필수)</strong>
+                  </label>
                 </div>
-                <p className="p_text">상담 신청 접수를 위해 연락처를 수집하며, 1년 보관 후 파기됩니다.</p>
               </div>
 
               <button type="submit" className="submitBtn">가맹 상담 신청하기</button>
@@ -191,7 +161,7 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* 하단 고정 바 - showFixedBar 상태에 따라 visible 클래스 조절 */}
+        {/* 하단 고정 바 */}
         <div className={`fixedBar ${showFixedBar ? "visible" : ""} ${isAtFooter ? "atFooter" : ""}`}>
           <form onSubmit={handleSubmit} className="barContainer">
             <div className="phone">가맹문의 1522-0290</div>
@@ -229,15 +199,28 @@ export default function Contact() {
             </div>
             <div className="modalBody">
               <div className="policyBox">
-                <p className="strong">리프레소는 예비 창업주의 정보를 안전하게 관리합니다.</p>
-                <ul>
-                  <li><b>수집항목:</b> 성함, 연락처, 희망지역</li>
-                  <li><b>수집목적:</b> 가맹 창업 상담 및 안내</li>
-                  <li><b>보유기간:</b> 상담 완료 후 1년 보관 (파기 요청 시 즉시 파기)</li>
-                </ul>
+                <p className="policy_main_title">리프레소(LEEPRESSO)는 예비 창업주의 소중한 개인정보를 안전하게 관리합니다.</p>
+                <div className="policy_content_scroll">
+                  <section>
+                    <h4>1. 개인정보 수집 및 이용 목적</h4>
+                    <p>가맹 창업 상담 서비스 제공, 본인 확인, 상담 이력 관리 및 원활한 상담 안내를 위한 목적</p>
+                  </section>
+                  <section>
+                    <h4>2. 수집하는 개인정보 항목</h4>
+                    <p>성함, 연락처, 이메일, 창업 희망 지역, 점포 보유 여부, 문의 경로 등 상담 신청에 필요한 최소 정보</p>
+                  </section>
+                  <section>
+                    <h4>3. 개인정보의 보유 및 이용 기간</h4>
+                    <p className="highlight">상담 신청일로부터 1년 보관 후 즉시 파기 (단, 관계 법령에 따라 보존이 필요한 경우 해당 기간까지 보관)</p>
+                  </section>
+                  <section>
+                    <h4>4. 동의를 거부할 권리 및 불이익</h4>
+                    <p>개인정보 수집 및 이용에 대해 동의를 거부할 권리가 있으나, 거부 시 가맹 상담 및 안내 서비스 이용이 제한될 수 있습니다.</p>
+                  </section>
+                </div>
               </div>
             </div>
-            <button className="modalCloseBtn" onClick={() => setIsModalOpen(false)}>확인</button>
+            <button className="modalCloseBtn" onClick={() => setIsModalOpen(false)}>내용을 확인했습니다</button>
           </div>
         </div>
       )}

@@ -49,19 +49,31 @@ $dark: #3e3232;
       position: relative;
     }
 
-    .stepBox {
-      flex: 1;
-      height: 100%; // wrapper의 높이를 꽉 채움 (박스 크기 동일화 핵심)
-      background: #fff;
-      border: 1px solid #eee;
-      padding: 40px 25px;
-      position: relative;
-      overflow: hidden;
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between; // 아이콘과 텍스트 간격 유지
-      min-height: 220px; // 최소 높이 설정으로 안정감 확보
+      .stepBox {
+        flex: 1;
+        height: 100%; /* wrapper의 높이를 꽉 채움 (박스 크기 동일화 핵심) */
+        background: #fff;
+        
+        /* [모양 구성] 색상 없이 검정색 선으로만 대각선 강조 */
+        border-top: 1px solid #c9c9c9;
+        border-left: 1px solid #c9c9c9;
+        border-right: 1px solid #c9c9c9;
+        border-bottom: 1px solid #c9c9c9;
+
+        /* [Radius] 한쪽 방향으로 흐르는 모양 */
+        border-top-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        padding: 40px 25px;
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* 아이콘과 텍스트 간격 유지 */
+        min-height: 220px; /* 최소 높이 설정으로 안정감 확보 */
       
       .bgNum {
         position: absolute;
@@ -194,4 +206,13 @@ $dark: #3e3232;
     .stepGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .docWrapper .docContentSide { padding: 30px; .docList { grid-template-columns: 1fr; } }
   }
+}
+
+.wave-bg {
+  background-image: url('/bottom-wave-top.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  height: 125px;
 }

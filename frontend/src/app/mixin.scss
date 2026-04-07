@@ -79,21 +79,118 @@
     );
  
 }
+
 .leepresso_line {
-  @include bg("/leepresso_line.png");
   width: 100%;
-  height: 40px;
-  background-repeat: repeat;
-  animation: flow 10s linear infinite;
+  height: 70px; /* 로고가 큼직하게 들어갈 수 있는 높이 */
+  background-color: #fff;
+  
+  /* 위아래 굵은 버건디 라인 */
+  border-top: 7px solid #3E3232;
+  border-bottom: 7px solid #3E3232;
+  
+  /* 텍스트 무한 슬라이드 설정 */
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · ";
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+    font-size: 28px;
+    font-weight: 900;
+    color: #3E3232;
+    /* 속도 늦춤 (40s) */
+    animation: logoSlideFlow 40s linear infinite;
+  }
+
+  /* 뒤따라오는 텍스트 세트: 정확히 절반 뒤에서 시작 */
+  &::after {
+    animation-delay: -20s;
+  }
+
   &.mt150 {
     margin-top: 150px;
   }
 }
-@keyframes flow {
-  from {
-    background-position: 0 0;
+
+.leepresso_line.reverse {
+  width: 100%;
+  height: 70px; /* 로고가 큼직하게 들어갈 수 있는 높이 */
+  background-color: #fff;
+  
+  /* 위아래 굵은 버건디 라인 */
+  border-top: 7px solid #3E3232;
+  border-bottom: 7px solid #3E3232;
+  
+  /* 텍스트 무한 슬라이드 설정 */
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · LEEPRESSO COFFEE · ";
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+    font-size: 28px;
+    font-weight: 900;
+    color: #3E3232;
+    /* 속도 늦춤 (40s) */
+    animation: logoSlideFlowReverse 40s linear infinite;
   }
-  to {
-    background-position: -1000px 0;
+
+  /* 뒤따라오는 텍스트 세트: 정확히 절반 뒤에서 시작 */
+  &::after {
+    animation-delay: -20s;
   }
+
+  &.mt150 {
+    margin-top: 150px;
+  }
+}
+
+/* 모바일에서는 높이와 로고 크기 살짝 축소 */
+@media (max-width: 767px) {
+  .leepresso_line {
+    height: 70px;
+    border-top: 8px solid #3E3232;
+    border-bottom: 8px solid #3E3232;
+    &::before,
+    &::after {
+      font-size: 24px;
+      animation: logoSlideFlow 25s linear infinite;
+    }
+    &::after {
+      animation-delay: -12.5s;
+    }
+  }
+    .leepresso_line.reverse {
+    height: 70px;
+    border-top: 8px solid #3E3232;
+    border-bottom: 8px solid #3E3232;
+    &::before,
+    &::after {
+      font-size: 24px;
+      animation: logoSlideFlow 25s linear infinite;
+    }
+    &::after {
+      animation-delay: -12.5s;
+    }
+  }
+}
+
+@keyframes logoSlideFlow {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); } 
+}
+@keyframes logoSlideFlowReverse {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); } 
 }

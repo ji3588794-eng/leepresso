@@ -1,18 +1,20 @@
 .contact {
-  background: #ffffff;
-  padding: 100px 0 200px 0;
+  position: relative;
+  padding: 100px 0 150px 0;
   color: #3e3232;
   font-family: 'Suit', sans-serif;
-  //background-image: url('/contact-gif.gif');
+  
+  background-image: url('/contact_bg.png'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: scroll;
 
   .title-txts5 {
-    margin-bottom: 10px; // 메인 타이틀과의 간격
+    margin-bottom: 20px;
     img {
-      max-width: 1100px; // 이미지 크기 적절히 조절
-      width:100%;
+      max-width: 1100px;
+      width: 100%;
       height: auto;
       display: block;
       margin: 0 auto;
@@ -20,6 +22,8 @@
   }
 
   .container {
+    position: relative;
+    z-index: 2;
     width: 100%;
     max-width: 1420px;
     margin: 0 auto;
@@ -30,104 +34,23 @@
   .header {
     margin-bottom: 50px;
     text-align: center;
-
-    .subTitle {
-      display: block;
-      font-size: 14px;
-      color: #8d7b68;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      font-size: 42px;
-      font-weight: 900;
-      color: #3e3232;
-      line-height: 1.2;
-      word-break: keep-all;
-    }
   }
 
-  .grid {
-    display: grid;
-    gap: 30px;
-    align-items: stretch;
-    grid-template-columns: 1fr;
-
-    @media (min-width: 1024px) {
-      grid-template-columns: 380px minmax(0, 1fr);
-    }
-  }
-
-  .infoCard.promotional {
-    position: relative;
-    padding: 60px 45px;
-    border-radius: 40px;
-    background: #3e3232;
+  .grid-centered {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
-    min-width: 0;
-
-    .dreamBox {
-      position: relative;
-      z-index: 2;
-
-      .mainTitle {
-        font-size: 32px;
-        font-weight: 900;
-        line-height: 1.35;
-        margin-bottom: 35px;
-        letter-spacing: -0.01em;
-        word-break: keep-all;
-      }
-
-      .desc {
-        font-size: 16px;
-        line-height: 1.8;
-        margin-bottom: 30px;
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        word-break: keep-all;
-      }
-
-      .subDesc {
-        font-size: 14px;
-        line-height: 1.6;
-        font-weight: 300;
-        opacity: 0.8;
-        word-break: keep-all;
-      }
-    }
-
-    .contactInfo {
-      position: relative;
-      z-index: 2;
-      margin-top: 70px;
-      padding-top: 35px;
-      border-top: 1px solid rgba(232, 213, 196, 0.2);
-
-      .c_item {
-        display: flex;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 14px;
-        font-size: 15px;
-
-        span { opacity: 0.5; flex-shrink: 0; }
-        strong { color: #e8d5c4; text-align: right; }
-      }
-    }
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 
   .formCard {
-    padding: 45px;
+    width: 100%;
+    max-width: 900px;
+    padding: 60px;
     border-radius: 40px;
-    background: #fff;
-    border: 1px solid #e8d5c4;
-    box-shadow: 0 20px 40px rgba(62, 50, 50, 0.05);
+    background: #ffffff;
+    border: 2px solid #e8d5c4;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 
     .inputGrid {
       display: grid;
@@ -138,75 +61,168 @@
     .field {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       &.full { grid-column: 1 / -1; }
-      label { font-size: 13px; font-weight: 800; color: #3e3232; }
+      label { font-size: 14px; font-weight: 800; color: #3e3232; padding-left: 5px;}
+      
       input, select, textarea {
         width: 100%;
-        padding: 14px 18px;
+        padding: 18px 20px;
         border-radius: 15px;
-        border: 1.5px solid #f1e9e0;
+        border: 2px solid #f1e9e0;
         background: #fdfcfb;
-        font-size: 14px;
+        font-size: 15px;
         outline: none;
         color: #3e3232;
-        &:focus { border-color: #8d7b68; background: #fff; }
+        transition: all 0.2s;
+        
+        &::placeholder { color: #bbb; }
+        &:focus { 
+          border-color: #3e3232; 
+          background: #fff;
+          box-shadow: 0 0 8px rgba(62, 50, 50, 0.1);
+        }
       }
     }
 
     .radioGroup {
       display: flex;
-      gap: 12px;
+      gap: 15px;
       .radioLabel {
         flex: 1;
-        min-height: 50px;
+        min-height: 55px;
         border-radius: 15px;
-        border: 1.5px solid #f1e9e0;
+        border: 2px solid #f1e9e0;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: #8d7b68;
+        color: #3e3232;
+        font-weight: 700;
+        background: #fff;
+        transition: all 0.2s;
+        
         input { display: none; }
-        &:has(input:checked) { background: #3e3232; color: #fff; border-color: #3e3232; }
+        &:has(input:checked) { 
+          background: #3e3232; 
+          color: #fff; 
+          border-color: #3e3232;
+        }
       }
     }
 
     .checkGrid {
       display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
       .checkLabel {
-        padding: 10px;
+        padding: 14px;
         border-radius: 12px;
-        border: 1.5px solid #f1e9e0;
+        border: 2px solid #f1e9e0;
         cursor: pointer;
         text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        background: #fff;
+        color: #3e3232;
+        transition: all 0.2s;
+        
         input { display: none; }
-        &:has(input:checked) { background: #8d7b68; color: #fff; }
+        &:has(input:checked) { 
+          background: #3e3232; 
+          color: #fff; 
+          border-color: #3e3232; 
+        }
       }
     }
 
     .privacyBox {
-      margin-top: 25px;
-      padding: 20px;
+      margin-top: 30px;
       background: #f9f5f0;
       border-radius: 20px;
-      .p_text { font-size: 12px; color: #8d7b68; margin-top: 8px; }
+      overflow: hidden;
+      border: 1px solid #e8d5c4;
+
+      .privacyScroll {
+        height: 120px;
+        padding: 20px;
+        overflow-y: scroll;
+        background: #fff;
+        border-bottom: 1px solid #e8d5c4;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #666;
+
+        &::-webkit-scrollbar { width: 6px; }
+        &::-webkit-scrollbar-track { background: #f1f1f1; }
+        &::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+        .p_title { font-weight: 800; color: #3e3232; margin-bottom: 10px; }
+      }
+
+      .p_agree {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+
+        input[type="checkbox"] { display: none; }
+        
+        .customCheck {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          font-size: 15px;
+
+          .checkIcon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #3e3232;
+            border-radius: 6px;
+            background: #fff;
+            position: relative;
+            transition: all 0.2s;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 7px; top: 3px;
+              width: 6px; height: 11px;
+              border: solid white;
+              border-width: 0 3px 3px 0;
+              transform: rotate(45deg);
+              display: none;
+            }
+          }
+          strong { color: #3e3232; font-weight: 800; }
+        }
+
+        input[type="checkbox"]:checked + .customCheck {
+          .checkIcon {
+            background: #3e3232;
+            &::after { display: block; }
+          }
+        }
+      }
     }
 
     .submitBtn {
       width: 100%;
-      margin-top: 30px;
-      padding: 20px;
+      margin-top: 40px;
+      padding: 22px;
       border-radius: 20px;
       background: #3e3232;
       color: #fff;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
       border: none;
       cursor: pointer;
-      &:hover { background: #241e1a; transform: translateY(-2px); }
+      transition: all 0.3s ease;
+      &:hover { 
+        background: #000; 
+        transform: translateY(-3px); 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+      }
     }
   }
 }
@@ -220,22 +236,18 @@
   background: #3e3232;
   padding: 15px 0;
   z-index: 1000;
-  border-top: 1px solid #e8d5c4;
-  
-  /* 초기 상태: 숨김 */
+  border-top: 2px solid #544646;
   opacity: 0;
   transform: translateY(100%);
   transition: all 0.4s ease;
   pointer-events: none;
 
-  /* 스크롤 시 보임 */
   &.visible {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
   }
 
-  /* 푸터 영역 도달 시 */
   &.atFooter {
     position: absolute;
     bottom: 0;
@@ -296,7 +308,7 @@
         text-decoration: underline;
         cursor: pointer;
         opacity: 0.8;
-        &:hover { opacity: 1; }
+        &:hover { opacity: 1; color: #e8d5c4; }
       }
     }
 
@@ -316,7 +328,7 @@
   }
 }
 
-/* 모달 스타일 */
+/* 모달 스타일 (QuickBar와 디자인 통일) */
 .contactModal {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -324,23 +336,65 @@
   z-index: 2000;
   .modalOverlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
   .modalContent {
-    position: relative; background: #fff; width: 90%; max-width: 500px;
-    padding: 30px; border-radius: 20px;
+    position: relative; 
+    background: #fff; 
+    width: 90%; 
+    max-width: 550px;
+    padding: 40px; 
+    border-radius: 30px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+
     .modalHeader {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-      h3 { font-size: 20px; font-weight: 800; }
-      button { background: none; border: none; cursor: pointer; }
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+      h3 { font-size: 24px; font-weight: 900; color: #3e3232; letter-spacing: -0.02em; }
+      button { background: none; border: none; cursor: pointer; color: #999; &:hover { color: #3e3232; } }
     }
+
     .modalBody {
       .policyBox {
-        background: #f8f8f8; padding: 20px; border-radius: 10px; font-size: 14px; line-height: 1.6;
-        .strong { font-weight: 700; margin-bottom: 10px; display: block; }
-        ul { margin-top: 10px; li { margin-bottom: 5px; b { color: #8d7b68; } } }
+        .policy_main_title {
+          font-size: 15px;
+          font-weight: 700;
+          color: #3e3232;
+          margin-bottom: 20px;
+          line-height: 1.5;
+        }
+
+        .policy_content_scroll {
+          height: 280px;
+          overflow-y: auto;
+          padding: 20px;
+          background: #f9f5f0;
+          border-radius: 15px;
+          border: 1px solid #e8d5c4;
+
+          &::-webkit-scrollbar { width: 4px; }
+          &::-webkit-scrollbar-thumb { background: #e8d5c4; border-radius: 10px; }
+
+          section {
+            margin-bottom: 25px;
+            &:last-child { margin-bottom: 0; }
+            h4 { font-size: 14px; font-weight: 800; color: #3e3232; margin-bottom: 8px; }
+            p { font-size: 13px; line-height: 1.7; color: #666; word-break: keep-all; }
+            .highlight { color: #3e3232; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+          }
+        }
       }
     }
+
     .modalCloseBtn {
-      width: 100%; margin-top: 20px; height: 50px; background: #3e3232; color: #fff;
-      border-radius: 10px; font-weight: 700; cursor: pointer; border: none;
+      width: 100%; 
+      margin-top: 25px; 
+      height: 60px; 
+      background: #3e3232; 
+      color: #fff;
+      border-radius: 15px; 
+      font-weight: 800; 
+      font-size: 16px;
+      cursor: pointer; 
+      border: none;
+      transition: all 0.3s;
+      &:hover { background: #000; transform: translateY(-2px); }
     }
   }
 }
@@ -350,24 +404,25 @@
   .fixedBar { display: none; }
   .contact {
     padding: 80px 0;
-    .header h2 { font-size: 34px; }
-    .grid { gap: 20px; }
-    .formCard { padding: 32px; .inputGrid { grid-template-columns: 1fr; } }
+    .formCard { 
+      padding: 40px; 
+      .inputGrid { grid-template-columns: 1fr; } 
+    }
   }
 }
 
 @media (max-width: 767px) {
   .contact {
     padding: 64px 0;
-    .header h2 { font-size: 28px; }
-    .infoCard.promotional {
-      padding: 28px 22px;
-      .dreamBox .mainTitle { font-size: 24px; }
-      .contactInfo .c_item { flex-direction: column; align-items: flex-start; }
-    }
     .formCard { 
+      padding: 30px 20px;
       .radioGroup { flex-direction: column; } 
       .checkGrid { grid-template-columns: 1fr 1fr; } 
+    }
+    .modalContent {
+      padding: 30px 20px;
+      .modalHeader h3 { font-size: 20px; }
+      .modalCloseBtn { height: 50px; font-size: 15px; }
     }
   }
 }

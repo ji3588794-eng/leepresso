@@ -24,7 +24,7 @@ app.use(cors({
     'https://leepresso-project.vercel.app',
     'http://localhost:3000'
   ],
-  credentials: true, // 이건 잘 되어 있다.
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization']
 }));

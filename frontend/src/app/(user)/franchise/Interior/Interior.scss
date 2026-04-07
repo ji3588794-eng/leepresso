@@ -1,150 +1,224 @@
 @use "../../../mixin" as *;
 
 .interior {
-  background-color: var(--leepresso-bg);
-  color: var(--leepresso-deep);
+  position: relative;
+  overflow: hidden;
+  padding: 200px 0;
+  background-color: #fff;
+  color: #1a1a1a;
 
-  .container {
-    max-width: 100%;
+  // 1. 배경 장식 - 고급스러운 투명도와 레이어링
+  .bg-vertical-text {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    font-size: clamp(100px, 15vw, 240px);
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+    line-height: 1;
+  }
+
+  .bg-deco-frame {
+    position: absolute;
+    top: 10%;
+    right: 3%;
+    width: 35%;
+    height: 80%;
+    border-right: 1px solid rgba(169, 68, 61, 0.12);
+    border-top: 1px solid rgba(169, 68, 61, 0.12);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bg-dot-pattern {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 100px;
+    height: 100px;
+    background-image: radial-gradient(#d1b7a0 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.3;
+  }
+
+  .full-container {
+    max-width: 1720px;
     margin: 0 auto;
-    text-align: center;
+    padding: 0 60px;
+    position: relative;
+    z-index: 5;
+  }
 
-    .comp_bg {
-      position: relative;
-      width: 100%;
-      padding: 100px 0;
+  // 2. 상단 레이아웃 - 텍스트 가독성 중심
+  .top-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 100px;
+    margin-bottom: 160px;
 
-      // ⭐ deco는 content랑 분리된 레이어
-      .comp_deco {
-        position: absolute;
-        width: 500px;
-        height: 38vw;
-        z-index: 20; // ⭐ 최상단
-
-        pointer-events: none; // 클릭 방해 방지 (선택)
-
-        &.deco_1 {
-          @include bg-cover("/comp_deco_1.png");
-          top: -300px;
-          right: -120px;
-        }
-
-        &.deco_2 {
-          @include bg-cover("/comp_deco_2.png");
-          bottom: -150px; // ⭐ 더 세게 빼줌
-          left: -200px;
-        }
+    .head-text-block {
+      flex: 0 0 520px;
+      
+      .section-label {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 35px;
+        .line { width: 40px; height: 2px; background: var(--leepresso-point-red); }
+        .txt { font-size: 13px; font-weight: 800; letter-spacing: 0.2em; color: var(--leepresso-point-red); }
       }
 
-      .comp_content_box {
-        position: relative;
-        z-index: 2;
+      .comp_title {
+        font-size: 74px;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+        margin-bottom: 45px;
+        .accent { color: var(--leepresso-point); }
+      }
 
-        background-color: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: inset 0 8px 32px rgba(0, 0, 0, 0.1);
-
-        width: 90%;
-        margin: 0 auto;
-        padding: 50px;
-
-        .comp_title {
-          font-size: 50px;
-          font-weight: 700;
-          padding-bottom: 50px;
-
-          .comp_point {
-            background-color: var(--leepresso-point-red);
-            margin: 0 10px;
-            color: var(--white);
-          }
-        }
-
-        .comp_bottom_box {
-          padding-top: 50px;
-
-          .comp_bottom_text {
-            font-size: 30px;
-            font-weight: 600;
-          }
-        }
-
-        .comp_swipe_box {
-          width: 100vw;
-          margin-left: calc(-50vw + 50%);
-
-          .slider-wrapper {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            width: 100%;
-            overflow: hidden; // 👉 여기 있어도 이제 영향 없음
-
-            .slider-track {
-              display: flex;
-              width: max-content;
-              animation: infinite-slider 20s linear infinite;
-
-              &:hover {
-                animation-play-state: paused;
-              }
-
-              .slider-set {
-                display: flex;
-                gap: 0.75rem;
-                padding-right: 0.75rem;
-
-                @media (min-width: 640px) {
-                  gap: 1rem;
-                  padding-right: 1rem;
-                }
-
-                @media (min-width: 1024px) {
-                  gap: 1.25rem;
-                  padding-right: 1.25rem;
-                }
-
-                .slider-card {
-                  flex-shrink: 0;
-
-                  .card-inner {
-                    position: relative;
-                    overflow: hidden;
-                    background-color: #e0dcd3;
-
-                    height: 250px;
-                    width: 350px;
-
-                    @media (min-width: 640px) {
-                      height: 300px;
-                      width: 420px;
-                    }
-                    @media (min-width: 768px) {
-                      height: 350px;
-                      width: 480px;
-                    }
-                    @media (min-width: 1024px) {
-                      height: 400px;
-                      width: 550px;
-                    }
-
-                    img {
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                    }
-                  }
-                }
-              }
-            }
-          }
+      .hero-desc {
+        font-size: 19px;
+        line-height: 1.85;
+        color: #444;
+        word-break: keep-all;
+        strong { color: #000; font-weight: 700; position: relative; z-index: 1;
+          &::after { content: ""; position: absolute; left: 0; bottom: 2px; width: 100%; height: 8px; background: rgba(209, 183, 160, 0.2); z-index: -1; }
         }
       }
     }
+
+    .main-visual-box {
+      flex: 1;
+      .img-frame {
+        position: relative;
+        height: 640px;
+        box-shadow: 40px 40px 80px rgba(0, 0, 0, 0.08);
+        
+        img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .frame-border-deco {
+          position: absolute;
+          top: -25px;
+          right: -25px;
+          width: 120px;
+          height: 120px;
+          border-top: 5px solid var(--leepresso-point-red);
+          border-right: 5px solid var(--leepresso-point-red);
+        }
+
+        .frame-tag {
+          position: absolute;
+          bottom: 30px;
+          right: -30px;
+          background: var(--leepresso-deep);
+          color: #fff;
+          padding: 12px 25px;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+        }
+      }
+    }
+  }
+
+  // 3. 중간 레이아웃 - 비정형 그리드
+  .middle-layout {
+    display: flex;
+    gap: 120px;
+    align-items: center;
+    margin-bottom: 180px;
+
+    .sub-images-group {
+      flex: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      
+      .sub-img-item {
+        position: relative;
+        overflow: hidden;
+        .img-inner {
+          position: relative;
+          img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
+          .img-overlay { position: absolute; inset: 0; background: rgba(169, 68, 61, 0.05); opacity: 0; transition: 0.5s; }
+        }
+        &:hover img { transform: scale(1.08); }
+        &:hover .img-overlay { opacity: 1; }
+
+        &:nth-child(1) { flex: 1.3; height: 500px; border-radius: 0 100px 0 0; }
+        &:nth-child(2) { flex: 1; height: 420px; border-radius: 0 0 0 80px; }
+      }
+    }
+
+    .side-info-block {
+      flex: 0.8;
+      .info-item {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 80px;
+        
+        .num-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .num { font-size: 48px; font-weight: 900; color: var(--leepresso-point-red); line-height: 0.8; opacity: 0.2; }
+          .bar { width: 2px; height: 40px; background: rgba(169, 68, 61, 0.1); margin-top: 15px; }
+        }
+
+        .text {
+          h3 { font-size: 28px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
+          p { font-size: 17px; color: #555; line-height: 1.8; word-break: keep-all; }
+        }
+      }
+    }
+  }
+
+  // 4. 하단 레이아웃 - 와이드 임팩트
+  .bottom-layout {
+    .last-visual-box {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      overflow: hidden;
+      img { width: 100%; height: 100%; object-fit: cover; }
+      
+      .floating-banner {
+        position: absolute;
+        bottom: 60px;
+        left: 60px;
+        background: #fff;
+        padding: 35px 50px;
+        font-size: 24px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.15);
+        
+        .accent-dot { width: 12px; height: 12px; background: var(--leepresso-point-red); border-radius: 50%; }
+      }
+    }
+  }
+}
+
+// 반응형 최적화
+@media (max-width: 1280px) {
+  .interior {
+    .top-layout { .head-text-block { flex: 0 0 420px; .comp_title { font-size: 56px; } } }
+    .middle-layout { gap: 60px; .side-info-block .info-item .text h3 { font-size: 24px; } }
+  }
+}
+
+@media (max-width: 1024px) {
+  .interior {
+    padding: 100px 0;
+    .top-layout { flex-direction: column; align-items: flex-start; .head-text-block { width: 100%; margin-bottom: 60px; } }
+    .middle-layout { flex-direction: column; .sub-images-group { width: 100%; } }
+    .bottom-layout .last-visual-box .floating-banner { left: 20px; right: 20px; font-size: 18px; padding: 25px; white-space: normal; }
   }
 }

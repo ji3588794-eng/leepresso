@@ -14,9 +14,15 @@
 .brandKeyword {
   position: relative;
   padding: 120px 0;
-  background:
+  background: url("/test1.png") no-repeat center center;
+  background-size: cover; // 화면에 꽉 차게
+  //background-attachment: fixed; // 스크롤 시 시차 효과 (패럴랙스)를 주면 더 고급스러움
+  
+  overflow: hidden;
+
+  /* background:
     radial-gradient(circle at top left, rgba(184, 104, 69, 0.06), transparent 28%),
-    linear-gradient(180deg, #fdfbf9 0%, var(--lp-bg) 100%);
+    linear-gradient(180deg, #fdfbf9 0%, var(--lp-bg) 100%); */
   overflow: hidden;
 
   .container {

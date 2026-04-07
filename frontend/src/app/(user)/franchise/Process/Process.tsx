@@ -31,6 +31,7 @@ const documents = [
 
 export default function Process() {
   return (
+    <>
     <section id="process-info" className="process">
       <div className="container">
         {/* 헤더 */}
@@ -92,5 +93,7 @@ export default function Process() {
         </div>
       </div>
     </section>
+    <div className="wave-bg"></div>
+    </>
   );
 }
