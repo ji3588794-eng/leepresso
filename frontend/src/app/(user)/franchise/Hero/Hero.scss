@@ -1,8 +1,9 @@
 .hero {
   position: relative;
   width: 100%;
+  // 기본적으로 화면에 꽉 차게 설정
   height: 100vh;
-  height: 100dvh;
+  height: 100dvh; 
   overflow: hidden;
   background: #000;
 }
@@ -11,7 +12,8 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  // 영상이 섹션을 가득 채우면서 비율에 맞춰 잘리도록 설정 (넘치지 않음)
+  object-fit: cover; 
   object-position: center center;
 }
 
@@ -19,25 +21,33 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  pointer-events: none; // 컨텐츠가 비디오 클릭을 방해하지 않도록 설정(필요시)
 }
 
-/* 태블릿 이하부터는 100vh 버리고 원본 비율로 섹션 높이 생성 */
+/* 태블릿 이하: 고정 높이(100vh) 대신 영상 비율에 맞게 섹션 높이 조절 */
 @media (max-width: 1180px) {
   .hero {
-    height: auto;
+    // 100vh를 해제하고 비율에 따름
+    height: auto; 
+    // aspect-ratio를 사용할 때 width가 100%면 height는 자동으로 계산됨
     aspect-ratio: var(--hero-ratio);
   }
 
   .hero-asset {
+    // 섹션이 비율대로 변했으므로 영상도 그에 맞게 꽉 채움
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center center;
+    object-fit: cover; 
   }
 }
 
-/* 모바일은 필요하면 위치만 조금 조정 */
+/* 모바일 전용 조정 */
 @media (max-width: 768px) {
+  #leepresso {
+    // 모바일에서 영상이 너무 얇아 보이면 최소 높이 지정 가능
+    margin-top: 80px;
+  }
+  
   .hero-asset {
     object-position: center center;
   }

@@ -101,7 +101,7 @@
     position: absolute;
     left: 0;
     white-space: nowrap;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 900;
     color: #3E3232;
     /* 속도 늦춤 (40s) */
@@ -139,7 +139,7 @@
     position: absolute;
     left: 0;
     white-space: nowrap;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 900;
     color: #3E3232;
     /* 속도 늦춤 (40s) */
@@ -177,7 +177,7 @@
     border-bottom: 8px solid #3E3232;
     &::before,
     &::after {
-      font-size: 24px;
+      font-size: 20px;
       animation: logoSlideFlow 25s linear infinite;
     }
     &::after {

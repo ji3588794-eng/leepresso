@@ -3,6 +3,29 @@
 .franchise_menu {
   color: var(--leepresso-deep);
   overflow: hidden;
+  position: relative; // 자식 요소 위치 설정을 위한 기준
+
+  // 1. 배경 이미지 설정 (그라데이션 제거)
+  background-image: url("/fran-menu-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  // 2. 흰색 투명 오버레이 및 블러 효과 추가
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.4); // 흰색 투명 오버레이 (0.3~0.5 사이 추천)
+    backdrop-filter: blur(6px); // 블러 효과 추가
+    z-index: 1; // 콘텐츠보다 뒤에 위치
+  }
+
+  // 3. 내부 콘텐츠가 오버레이 위에 보이도록 설정
+  .full-container { // 콘텐츠를 감싸는 컨테이너 클래스명에 맞춰 수정 필요
+    position: relative;
+    z-index: 2; // 오버레이보다 위에 위치
+  }
 
   .container {
     max-width: 100%;
@@ -11,7 +34,7 @@
 
     .menu_bg {
       width: 100%;
-      padding: 70px 0 0;
+      padding: 100px 0 0;
       position: relative;
 
       .menu_title_box {
@@ -36,7 +59,7 @@
         }
 
         .menu_sub_text {
-          padding: 20px 0;
+          padding-top: 20px;
           font-size: 22px;
           line-height: 1.6;
           color: rgba(60, 40, 30, 0.78);
@@ -57,7 +80,7 @@
       .menu_swipe_box {
         position: relative;
         width: 100%;
-        height: 600px;
+        height: 500px;
         margin-top: 50px;
         margin-bottom: 50px;
 
@@ -73,7 +96,7 @@
           position: absolute;
           left: 50%;
           top: 40px;
-          width: 400px;
+          width: 370px;
           transform-origin: center center;
           // 전환 효과 최적화: 0.6초로 단축 + 부드러운 가속도 곡선
           transition: 

@@ -23,9 +23,9 @@
             padding-left: 10px; font-size: 52px; color: #ffffff; font-weight: 900;
             position: relative; display: inline-block;
             &::after {
-              content: ""; position: absolute; width: 100%; height: 40px;
+              content: ""; position: absolute; width: 100%; height: 50px;
               @include bg-cover("/underline_3.png");
-              bottom: -10px; right: -40px; z-index: 1;
+              bottom: -15px; right: -45px; z-index: 1;
             }
           }
         }
@@ -46,7 +46,8 @@
 
   // 03. Spec Section
   .spec_sec {
-    padding: 100px 0;
+    padding-top: 50px;
+    padding-bottom: 20px;
     .spec_grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
       .spec_card {
@@ -95,7 +96,7 @@
 
   // 05. Success Points (4 Grid)
   .points_sec {
-    padding-top: 50px; background: #f9f5f0;
+    padding-top: 20px; background: #f9f5f0;
     padding-bottom: 100px;
     .sec_head { text-align: center; margin-bottom: 70px; h3 { font-size: 40px; font-weight: 900; } p { color: #777; font-size: 18px; } }
     .points_grid.four_cols {

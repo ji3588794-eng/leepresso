@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./Hero.scss";
 
 const Hero = () => {
@@ -35,7 +35,7 @@ const Hero = () => {
       />
 
       <div className="hero-content">
-        {/* overlay */}
+        {/* overlay 컨텐츠가 들어갈 자리 */}
       </div>
     </section>
   );

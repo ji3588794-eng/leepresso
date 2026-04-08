@@ -3,14 +3,28 @@
 .interior {
   position: relative;
   width: 100%;
-  height: 100vh;
-  min-height: 900px; // 내용 보강으로 인한 최소 높이 상향
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background: #fff;
-  overflow: hidden;
+  background: #3e3232; 
+  overflow-x: hidden;
+  padding: 100px 0;
+
+  .bg-texture-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    opacity: 0.3;
+  }
 
   .full-container {
+    position: relative;
+    z-index: 2;
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
@@ -20,108 +34,174 @@
   .interior-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 46px;
+    margin-bottom: 60px;
   }
 
   .top-layout {
     display: flex;
-    align-items: flex-start; // 상단 정렬
+    align-items: center;
     justify-content: space-between;
-    gap: 80px;
+    gap: 72px;
 
     .head-text-block {
-      flex: 0 0 600px;
-      
+      flex: 0 0 520px;
       .section-label {
-        display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-        .line { width: 40px; height: 1px; background: var(--leepresso-point-red); }
-        .txt { color: var(--leepresso-point-red); font-weight: 700; font-size: 13px; letter-spacing: 2px; }
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+        .line { width: 36px; height: 1px; background: #ff6b6b; }
+        .txt { color: #ff6b6b; font-weight: 700; font-size: 12px; letter-spacing: 2px; }
       }
-
       .comp_title {
-        font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 35px;
+        font-size: 56px;
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -1.6px;
+        margin-bottom: 34px;
+        color: #ffffff;
         .accent { color: var(--leepresso-point); }
       }
-
       .detailed-desc {
-        .main-p { font-size: 20px; color: #222; margin-bottom: 20px; line-height: 1.6; }
-        .sub-p { font-size: 16px; color: #777; margin-bottom: 15px; line-height: 1.8; word-break: keep-all; }
+        .main-p { font-size: 20px; color: #f0f0f0; margin-bottom: 20px; line-height: 1.7; word-break: keep-all; strong { color: #fff; } }
+        .sub-p { font-size: 15px; color: #bbbbbb; margin-bottom: 14px; line-height: 1.9; word-break: keep-all; }
       }
     }
 
     .main-visual-box {
       flex: 1;
+      min-width: 0;
       .img-frame {
         position: relative;
         width: 100%;
-        height: 550px; // 세로로 더 길게 수정
-        border-radius: 0 80px 0 0;
+        height: 420px;
+        border-radius: 0 42px 0 42px;
         overflow: hidden;
-        box-shadow: 30px 30px 60px rgba(0,0,0,0.08);
-
-        img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .frame-deco {
-          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-          border: 1px solid rgba(0,0,0,0.05); border-radius: 0 80px 0 0;
-          pointer-events: none;
-        }
+        background: #2a2222;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .frame-deco { position: absolute; inset: 0; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0 42px 0 42px; pointer-events: none; }
       }
     }
   }
 
   .bottom-grid-section {
-    .info-row {
-      display: flex; gap: 80px; margin-bottom: 30px; padding-bottom: 25px;
-      border-bottom: 1px solid #f0f0f0;
-
-      .info-item {
-        display: flex; align-items: center; gap: 15px;
-        .num { font-size: 28px; font-weight: 900; color: var(--leepresso-point-red); opacity: 0.2; }
-        p { font-size: 15px; color: #444; strong { color: #000; font-weight: 700; } }
-      }
+    .gallery-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      .line { width: 58px; height: 2px; background: linear-gradient(90deg, #ff6b6b, var(--leepresso-point)); border-radius: 999px; }
+      p { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: #cccccc; }
     }
-
     .image-horizontal-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-
       .grid-item {
         position: relative;
-        height: 200px;
-        border-radius: 15px;
+        height: 170px;
         overflow: hidden;
         cursor: pointer;
-        transition: 0.3s;
-
-        img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: 0.4s; }
-        
-        .click-overlay {
-          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(0,0,0,0.4); color: #fff; font-size: 12px; font-weight: 800;
-          display: flex; align-items: center; justify-content: center;
-          opacity: 0; transition: 0.3s;
-        }
-
-        &:hover {
-          img { filter: grayscale(0); transform: scale(1.05); }
-          .click-overlay { opacity: 1; }
-        }
-
-        &.active {
-          border: 3px solid var(--leepresso-point-red);
-          img { filter: grayscale(0); }
-        }
+        border-radius: 22px;
+        background: #2a2222;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.35s ease;
+        img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); transition: transform 0.5s ease; }
+        .overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 16px; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.5) 100%); opacity: 0; transition: opacity 0.35s ease; span { min-width: 74px; height: 32px; border-radius: 999px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; } }
+        &:hover { .overlay { opacity: 1; } img { transform: scale(1.05); } }
+        &.active { outline: 3px solid #ffffff; outline-offset: -3px; img { filter: brightness(1.1); } }
       }
     }
   }
 }
 
-// 반응형 대응
-@media (max-height: 950px) {
+// 핵심: 배경 고정 이미지
+  .scroll-img {
+    position: relative; // 그라데이션 오버레이를 위한 위치 설정
+    width: 100%;
+    height: 250px;
+    background-image: url("/brandstory_background.png"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    // 검은 그라데이션 오버레이 추가
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg, 
+        rgba(0, 0, 0, 0.6) 0%, 
+        rgba(0, 0, 0, 0.3) 50%, 
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      z-index: 1;
+    }
+    
+    @media (max-width: 1024px) {
+      background-attachment: scroll;
+    }
+  }
+
+
+/* 반응형 완벽 보정 (생략 없음) */
+
+@media (max-width: 1440px) {
   .interior {
-    height: auto; padding: 80px 0;
-    .top-layout .main-visual-box .img-frame { height: 450px; }
+    .top-layout {
+      gap: 52px;
+      .head-text-block { flex: 0 0 470px; .comp_title { font-size: 50px; } }
+      .main-visual-box .img-frame { height: 400px; }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .interior {
+    padding: 80px 0;
+    .bg-texture-layer { display: none; }
+    .full-container { padding: 0 30px; }
+    .top-layout {
+      gap: 36px;
+      .head-text-block { flex: 0 0 430px; .comp_title { font-size: 46px; } }
+      .main-visual-box .img-frame { height: 380px; }
+    }
+    .bottom-grid-section .image-horizontal-4 {
+      grid-template-columns: repeat(2, 1fr);
+      .grid-item { height: 190px; }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .interior {
+    .top-layout {
+      flex-direction: column;
+      align-items: flex-start;
+      .head-text-block { width: 100%; flex: none; .comp_title { font-size: 40px; margin-bottom: 24px; } }
+      .main-visual-box { width: 100%; margin-top: 10px; .img-frame { height: 360px; } }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .interior {
+    padding: 60px 0;
+    .full-container { padding: 0 20px; }
+    .interior-wrapper { gap: 36px; }
+    .top-layout {
+      .head-text-block .comp_title { font-size: 30px; }
+      .main-visual-box .img-frame { height: 260px; border-radius: 0 24px 0 24px; }
+    }
+    .bottom-grid-section .image-horizontal-4 {
+      grid-template-columns: 1fr;
+      .grid-item { height: 200px; }
+    }
+    .scroll-img { height: 200px; }
   }
 }

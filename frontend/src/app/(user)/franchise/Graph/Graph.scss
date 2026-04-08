@@ -1,37 +1,169 @@
 @use "../../../mixin" as *;
 
 .graph {
-  background: linear-gradient(to bottom, var(--white) 50%, var(--leepresso-bg) 100%);
+  background: linear-gradient(to bottom, var(--white) 48%, var(--leepresso-bg) 100%);
   padding: 0;
   color: var(--leepresso-deep);
+
   .container {
     max-width: 100%;
     margin: 0 auto;
-    text-align: center;
+
     .graph_bg {
-      @include bg-gradient-image(var(--white), var(--leepresso-bg), "/graph_bg.png");
-      height: 40vw;
+      //@include bg-gradient-image(var(--white), var(--leepresso-bg), "/graph_bg.png");
       width: 100%;
+      min-height: 42vw;
       position: relative;
+      overflow: hidden;
       z-index: 30;
-      .graph_text_box {
-        padding-top: 5%;
-        padding-left: 5%;
-        width: 50%;
-        text-align: left;
-        .graph_title {
-          font-size: 30px;
-          font-weight: 700;
-          .equip_title_point {
-            font-size: 70px;
-            font-family: var(--font-pen);
-            font-weight: 100;
+
+      .graph_overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.9) 0%,
+          rgba(255, 255, 255, 0.75) 30%,
+          rgba(255, 255, 255, 0.28) 65%,
+          rgba(255, 255, 255, 0.08) 100%
+        );
+        z-index: 1;
+      }
+
+      .graph_content {
+        position: relative;
+        z-index: 2;
+        width: min(1400px, 92%);
+        margin: 0 auto;
+        padding: 6.5% 0 5.5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+
+        .graph_left {
+          width: 52%;
+          text-align: left;
+
+          .graph_eyebrow {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 8px 14px;
+            border: 1px solid rgba(11, 30, 58, 0.14);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--leepresso-blue);
+          }
+
+          .graph_title {
+            margin: 0;
+            font-size: 42px;
+            line-height: 1.34;
+            font-weight: 800;
+            color: var(--leepresso-deep);
+            word-break: keep-all;
+
+            .graph_title_point {
+              font-size: 76px;
+              font-family: var(--font-pen);
+              font-weight: 100;
+              color: var(--leepresso-blue);
+              margin-right: 8px;
+              vertical-align: middle;
+            }
+          }
+
+          .graph_sub_text {
+            margin-top: 28px;
+            font-size: 19px;
+            line-height: 1.9;
+            font-weight: 600;
+            color: rgba(11, 30, 58, 0.82);
+            word-break: keep-all;
+          }
+
+          .graph_note {
+            margin-top: 22px;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(11, 30, 58, 0.55);
           }
         }
-        .graph_sub_text {
-          font-size: 20px;
-          font-weight: 700;
-          padding-top: 20px;
+
+        .graph_right {
+          width: 40%;
+          display: flex;
+          justify-content: flex-end;
+
+          .graph_stat_box {
+            width: 100%;
+            max-width: 520px;
+            padding: 42px 38px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 24px 60px rgba(11, 30, 58, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            text-align: left;
+
+            .graph_stat_label {
+              font-size: 15px;
+              font-weight: 800;
+              letter-spacing: 0.12em;
+              color: var(--leepresso-blue);
+              margin-bottom: 12px;
+            }
+
+            .graph_stat_number {
+              font-size: clamp(72px, 9vw, 140px);
+              line-height: 1;
+              font-weight: 900;
+              color: var(--leepresso-deep);
+              letter-spacing: -0.04em;
+            }
+
+            .graph_stat_title {
+              margin-top: 10px;
+              font-size: 30px;
+              font-weight: 800;
+              color: var(--leepresso-deep);
+            }
+
+            .graph_stat_desc {
+              margin-top: 22px;
+              font-size: 17px;
+              line-height: 1.8;
+              font-weight: 600;
+              color: rgba(11, 30, 58, 0.76);
+              word-break: keep-all;
+            }
+
+            .graph_badges {
+              margin-top: 26px;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+
+              span {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 42px;
+                padding: 0 16px;
+                border-radius: 999px;
+                background: var(--leepresso-bg);
+                border: 1px solid rgba(20, 90, 166, 0.12);
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--leepresso-deep);
+                white-space: nowrap;
+              }
+            }
+          }
         }
       }
     }
@@ -42,12 +174,37 @@
   .graph {
     .container {
       .graph_bg {
-        .graph_text_box {
-          .graph_title {
-            font-size: 25px;
+        min-height: 48vw;
+
+        .graph_content {
+          gap: 40px;
+
+          .graph_left {
+            .graph_title {
+              font-size: 34px;
+
+              .graph_title_point {
+                font-size: 62px;
+              }
+            }
+
+            .graph_sub_text {
+              font-size: 17px;
+            }
           }
-          .graph_sub_text {
-            font-size: 15px;
+
+          .graph_right {
+            .graph_stat_box {
+              padding: 34px 30px;
+
+              .graph_stat_title {
+                font-size: 25px;
+              }
+
+              .graph_stat_desc {
+                font-size: 15px;
+              }
+            }
           }
         }
       }
@@ -59,8 +216,69 @@
   .graph {
     .container {
       .graph_bg {
-        height: 54vw;
-        background: linear-gradient();
+        min-height: auto;
+
+        .graph_overlay {
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(255, 255, 255, 0.8) 35%,
+            rgba(255, 255, 255, 0.45) 100%
+          );
+        }
+
+        .graph_content {
+          width: min(92%, 760px);
+          padding: 80px 0 70px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 28px;
+
+          .graph_left,
+          .graph_right {
+            width: 100%;
+          }
+
+          .graph_left {
+            .graph_title {
+              font-size: 30px;
+
+              .graph_title_point {
+                font-size: 54px;
+              }
+            }
+
+            .graph_sub_text {
+              font-size: 16px;
+              line-height: 1.8;
+            }
+
+            .graph_note {
+              font-size: 13px;
+            }
+          }
+
+          .graph_right {
+            .graph_stat_box {
+              max-width: 100%;
+              padding: 30px 24px;
+
+              .graph_stat_title {
+                font-size: 24px;
+              }
+
+              .graph_stat_desc {
+                font-size: 15px;
+              }
+
+              .graph_badges {
+                span {
+                  font-size: 13px;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -69,7 +287,79 @@
 @media (max-width: 500px) {
   .graph {
     .container {
-      display: none;
+      .graph_bg {
+        .graph_content {
+          width: min(92%, 100%);
+          padding: 60px 0 56px;
+          gap: 22px;
+
+          .graph_left {
+            .graph_eyebrow {
+              font-size: 11px;
+              padding: 7px 12px;
+            }
+
+            .graph_title {
+              font-size: 24px;
+              line-height: 1.45;
+
+              .graph_title_point {
+                display: inline-block;
+                font-size: 42px;
+                margin-right: 6px;
+              }
+            }
+
+            .graph_sub_text {
+              margin-top: 18px;
+              font-size: 14px;
+              line-height: 1.75;
+            }
+
+            .graph_note {
+              margin-top: 16px;
+              font-size: 12px;
+              line-height: 1.6;
+            }
+          }
+
+          .graph_right {
+            .graph_stat_box {
+              padding: 24px 18px;
+              border-radius: 22px;
+
+              .graph_stat_label {
+                font-size: 12px;
+              }
+
+              .graph_stat_number {
+                font-size: 64px;
+              }
+
+              .graph_stat_title {
+                font-size: 21px;
+              }
+
+              .graph_stat_desc {
+                margin-top: 16px;
+                font-size: 13px;
+                line-height: 1.7;
+              }
+
+              .graph_badges {
+                margin-top: 18px;
+                gap: 8px;
+
+                span {
+                  min-height: 36px;
+                  padding: 0 12px;
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
