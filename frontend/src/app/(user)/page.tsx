@@ -196,9 +196,9 @@ export default function GatePage() {
       <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 md:block bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_20%,rgba(255,255,255,0.2)_80%,rgba(255,255,255,0)_100%)] z-20" />
 
       {/* 상단 로고 (모바일에서 크기 살짝 조정) */}
-      <div className="pointer-events-none absolute left-6 top-6 md:left-8 md:top-8 z-30 flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full border-2 border-white/20 bg-black/40 text-[14px] md:text-[18px] font-bold text-white backdrop-blur-xl shadow-2xl">
+      {/* <div className="pointer-events-none absolute left-6 top-6 md:left-8 md:top-8 z-30 flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full border-2 border-white/20 bg-black/40 text-[14px] md:text-[18px] font-bold text-white backdrop-blur-xl shadow-2xl">
         N
-      </div>
+      </div> */}
     </div>
   );
 }
