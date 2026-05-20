@@ -435,20 +435,39 @@ router.post('/register', async (req, res) => {
 /* ---------------------------------------------------------
    시스템 통계 및 인프라 관리 API
 --------------------------------------------------------- */
+/* ---------------------------------------------------------
+   시스템 통계 및 인프라 관리 API (교정본)
+--------------------------------------------------------- */
 router.get('/analytics/visitors', async (req, res) => {
   try {
-    const [rows] = await pool.query(`
+    // [검증용] 실제 테이블에 어떤 컬럼이 있는지 서버 콘솔에 찍어봅니다.
+    // 만약 여기서 visitor_uuid가 없다면 DB 연결 설정(DB_NAME)이 잘못된 곳을 바라보고 있는 것입니다.
+    const [columns] = await pool.query(`DESCRIBE visitor_logs`);
+    console.log('--- visitor_logs 테이블 구조 ---');
+    console.table(columns);
+
+    const query = `
       SELECT 
-        DATE_FORMAT(created_at, '%Y-%m-%d') AS date,
-        COUNT(DISTINCT session_id) AS visitors,
+        DATE_FORMAT(\`created_at\`, '%Y-%m-%d') AS date,
+        COUNT(DISTINCT \`visitor_uuid\`) AS visitors,
         COUNT(*) AS pv
-      FROM visitor_logs
-      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+      FROM \`visitor_logs\`
+      WHERE \`created_at\` >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
       GROUP BY date
       ORDER BY date ASC
-    `);
+    `;
+
+    const [rows] = await pool.query(query);
     res.json({ success: true, data: rows });
-  } catch (error) { res.status(500).json({ success: false, error: error.message }); }
+
+  } catch (error) {
+    console.error('❌ SQL 실행 에러:', error.message);
+    // 에러 발생 시 프론트에 상세 메시지 전달
+    res.status(500).json({ 
+      success: false, 
+      error: `DB 에러: ${error.message}. 컬럼명을 다시 확인하세요.` 
+    });
+  }
 });
 
 router.get('/infra/status', async (req, res) => {

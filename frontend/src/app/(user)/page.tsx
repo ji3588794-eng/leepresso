@@ -94,11 +94,11 @@ export default function GatePage() {
                 item.bgClass
             ].join(' ')} />
 
-            {/* 오버레이 필터 (모바일에서는 가독성을 위해 불투명도 약간 상향) */}
+            {/* 오버레이 필터 (우측 이미지 그라데이션 수정: 좌측은 어둡게, 우측으로 갈수록 밝게) */}
             {item.key === 'brand' ? (
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,9,5,0.96)_0%,rgba(12,9,5,0.85)_35%,rgba(12,9,5,0.3)_70%,rgba(12,9,5,0.15)_100%)] md:opacity-100 opacity-90 transition-opacity duration-700 group-hover:opacity-75 -z-20" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,9,5,0.85)_0%,rgba(12,9,5,0.7)_35%,rgba(12,9,5,0.2)_70%,rgba(12,9,5,0.05)_100%)] md:opacity-100 opacity-80 transition-opacity duration-700 group-hover:opacity-60 -z-20" />
             ) : (
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,0.92)_0%,rgba(8,8,8,0.7)_35%,rgba(8,8,8,0.7)_70%,rgba(8,8,8,0.98)_100%)] md:opacity-100 opacity-90 transition-opacity duration-700 group-hover:opacity-85 -z-20" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,0.95)_0%,rgba(8,8,8,0.8)_35%,rgba(8,8,8,0.3)_70%,rgba(8,8,8,0.1)_100%)] md:opacity-80 opacity-80 transition-opacity duration-700 group-hover:opacity-60 -z-20" />
             )}
             
             <div className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_25%)] -z-20" />

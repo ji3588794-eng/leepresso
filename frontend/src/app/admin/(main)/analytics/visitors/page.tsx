@@ -19,8 +19,7 @@ type VisitorRow = {
   pv: number;
 };
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const VisitorsPage = () => {
   const [data, setData] = useState<VisitorRow[]>([]);
@@ -34,28 +33,21 @@ const VisitorsPage = () => {
 
       const res = await fetch(`${API_BASE}/api/admin/analytics/visitors`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',
       });
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status} ${res.statusText}`);
-      }
-
       const json = await res.json();
 
-      if (json.success) {
-        setData(Array.isArray(json.data) ? json.data : []);
-      } else {
-        setData([]);
-        setError(json.message || '방문자 데이터를 불러오지 못했습니다.');
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || '데이터를 불러오는데 실패했습니다.');
       }
+
+      setData(Array.isArray(json.data) ? json.data : []);
     } catch (err: any) {
-      console.error('❌ Visitors API를 찾을 수 없습니다:', err);
+      console.error('❌ 클라이언트 에러:', err);
+      setError(err.message);
       setData([]);
-      setError(err.message || 'Visitors API 호출 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -66,96 +58,59 @@ const VisitorsPage = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ padding: '20px' }}>
       {error && (
-        <div style={{ padding: '12px 0', color: 'crimson', fontSize: '14px' }}>
-          {error}
+        <div style={{ 
+          padding: '15px', 
+          color: '#721c24', 
+          backgroundColor: '#f8d7da', 
+          border: '1px solid #f5c6cb',
+          borderRadius: '4px',
+          marginBottom: '20px' 
+        }}>
+          <strong>오류 발생:</strong> {error}
         </div>
       )}
 
       <section className={styles.chartSection}>
-        <h3>최근 7일 방문 추이</h3>
-
-        <div style={{ width: '100%', height: '400px' }}>
+        <h3 style={{ marginBottom: '20px' }}>최근 7일 방문 추이</h3>
+        <div style={{ width: '100%', height: '400px', backgroundColor: '#fff', padding: '20px', borderRadius: '12px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                stroke="#eee"
-              />
-              <XAxis
-                dataKey="date"
-                tick={{ fontSize: 12 }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                tick={{ fontSize: 12 }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: '8px',
-                  border: 'none',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                }}
-              />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+              <Tooltip />
               <Legend verticalAlign="top" align="right" />
-              <Line
-                type="monotone"
-                dataKey="visitors"
-                name="방문자(UV)"
-                stroke="#8d7b68"
-                strokeWidth={3}
-                dot={{ r: 4 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="pv"
-                name="페이지뷰(PV)"
-                stroke="#e8d5c4"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-              />
+              <Line type="monotone" dataKey="visitors" name="방문자(UV)" stroke="#8d7b68" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="pv" name="페이지뷰(PV)" stroke="#e8d5c4" strokeWidth={2} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </section>
 
-      <section className={styles.tableSection}>
-        <table>
+      <section className={styles.tableSection} style={{ marginTop: '30px' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr>
-              <th>날짜</th>
-              <th>방문자 수 (UV)</th>
-              <th>페이지뷰 (PV)</th>
-              <th>비고</th>
+            <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+              <th style={{ padding: '12px' }}>날짜</th>
+              <th style={{ padding: '12px' }}>방문자 수 (UV)</th>
+              <th style={{ padding: '12px' }}>페이지뷰 (PV)</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
-                  데이터를 불러오는 중입니다...
-                </td>
-              </tr>
+              <tr><td colSpan={3} style={{ textAlign: 'center', padding: '20px' }}>로딩 중...</td></tr>
             ) : data.length > 0 ? (
               data.map((row) => (
-                <tr key={row.date}>
-                  <td>{row.date}</td>
-                  <td>{Number(row.visitors || 0).toLocaleString()} 명</td>
-                  <td>{Number(row.pv || 0).toLocaleString()} 건</td>
-                  <td>-</td>
+                <tr key={row.date} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '12px' }}>{row.date}</td>
+                  <td style={{ padding: '12px' }}>{Number(row.visitors).toLocaleString()} 명</td>
+                  <td style={{ padding: '12px' }}>{Number(row.pv).toLocaleString()} 건</td>
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
-                  방문자 데이터가 없습니다.
-                </td>
-              </tr>
+              <tr><td colSpan={3} style={{ textAlign: 'center', padding: '20px' }}>데이터가 없습니다.</td></tr>
             )}
           </tbody>
         </table>
