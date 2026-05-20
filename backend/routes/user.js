@@ -4,6 +4,7 @@ const pool = require('../db');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 // 파일 업로드 세팅 (Multer)
 const storage = multer.diskStorage({
@@ -91,7 +92,75 @@ router.post('/franchise', async (req, res) => {
       user_agent || null
     ]);
 
-    // ⭐️ 이 부분이 핵심입니다. 
+    // 🚨 [관리자 이메일 알림 로직] DB 저장 성공 후 알림 발송 시작
+    try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'tbswatermhddcoffee@gmail.com', // 발송에 사용할 구글 계정
+          pass: 'czrghxonbmyzdkwn'              // 발급받은 16자리 앱 비밀번호
+        }
+      });
+
+      const mailOptions = {
+        // 원래 물어보셨던 from 부분입니다. 이름 뒤에 <형 메일주소>를 붙여주는 게 정석입니다.
+        from: '"리프레소 알림" <tbswatermhddcoffee@gmail.com>', 
+        to: 'tbswatermhddcoffee@gmail.com',     // 알림을 받아볼 관리자 메일 주소
+        subject: `🚨 [신규 가맹상담 접수] ${customer_name}님의 문의가 등록되었습니다.`,
+        html: `
+          <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+            <h2 style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 0;">🚨 가맹 상담 신청 알림</h2>
+            <p style="font-size: 14px; color: #555;">홈페이지를 통해 새로운 가맹 상담 신청이 접수되었습니다. 상세 내용은 아래와 같습니다.</p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; width: 30%; font-weight: bold;">성함</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6;">${customer_name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">연락처</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6; color: #d9534f; font-weight: bold;">${phone_number}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">이메일</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6;">${email ? email : '미기재(고객이 입력 안 함)'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">창업 희망 지역</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6;">${hope_region || '미선택'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">점포 보유 여부</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6;">${has_store === 'Y' ? '점포 있음(유)' : '점포 없음(무)'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">문의 경로</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6;">${inquiry_channels || '미기재'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; font-weight: bold;">상세 문의 내용</td>
+                <td style="padding: 10px; border: 1px solid #dee2e6; white-space: pre-wrap;">${inquiry_content || '내용 없음'}</td>
+              </tr>
+            </table>
+            <div style="margin-top: 20px; text-align: center;">
+              <p style="font-size: 12px; color: #888;">접수 IP: ${ip_address}</p>
+            </div>
+          </div>
+        `
+      };
+
+      // 메일 발송 결과와 상관없이 클라이언트 응답을 보장하기 위해 비동기 콜백으로 처리
+      transporter.sendMail(mailOptions, (mailErr, info) => {
+        if (mailErr) {
+          console.error('❌ 관리자 이메일 발송 에러:', mailErr.message);
+        } else {
+          console.log('✅ 관리자 이메일 발송 성공:', info.response);
+        }
+      });
+
+    } catch (mailSetupError) {
+      console.error('❌ 메일 발송 설정 에러:', mailSetupError.message);
+    }
+
     // DB 입력 후 반드시 'json' 형태로 응답을 마쳐야 프론트가 에러로 안 빠집니다.
     return res.status(200).json({ 
       success: true, 
@@ -101,7 +170,6 @@ router.post('/franchise', async (req, res) => {
   } catch (error) {
     console.error('❌ DB 저장 중 에러 발생:', error.message);
     
-    // 에러 발생 시에도 JSON 응답을 보내줘야 프론트가 "통신 오류"라고 안 뜹니다.
     if (!res.headersSent) {
       return res.status(500).json({ 
         success: false, 
