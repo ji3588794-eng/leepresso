@@ -4,27 +4,14 @@ const priceRows = [
   { name: "가맹비", desc: "입지분석, 상권분석, 브랜드 사용권", cost: "0원", old: "500만원", badge: "한시적 면제" },
   { name: "가맹 교육비", desc: "본사 운영 교육 및 매장 오픈 지원", cost: "0원", old: "300만원", badge: "한시적 면제" },
   { name: "계약이행보증금", desc: "계약이행 및 물류이행 보증", cost: "0원", old: "200만원", badge: "한시적 면제" },
-  {
-    name: "커피머신장비",
-    desc: "커피머신, 컵 디스펜서, 제빙기 등(30% 계약금, 36개월 리스)",
-    old: "2200만원",
-    cost: "726만원",
-    badge: "월 550,280원",
-  },
-  {
-    name: "인테리어/간판",
-    desc: "내외관 시공 (8평 기준), 간판 시공",
-    cost: "1,200만원",
-    old: null,
-    badge: "자체시공가능",
-  },
-  {
-    name: "기타/초도물품(지원)",
-    desc: "가구, 오브제, 소품, 스타일링, 개점 홍보, (테이블/의자 별도)",
-    cost: "200만원~",
-    old: null,
-    badge: "오픈패키지",
-  },
+  { name: "인테리어/간판", desc: "내외관 시공 (8평 기준), 간판 시공", cost: "1,200만원", old: null, badge: "자체시공가능" },
+  { name: "가구/스타일링", desc: "가구, 오브제, 소품, 개점 홍보(테이블/의자 별도)", cost: "300만원", old: null, badge: "자체시공가능" },
+  { name: "기타/초도물품", desc: "BI월, 오브제 스타일링", cost: "별도", old: null, badge: "오픈패키지" },
+];
+
+const machineRows = [
+  { name: "커피머신 구매/일시불", cost: "24,000,000", desc: "커피머신 장비 일시불 구매 기준 (200만원 지원)" },
+  { name: "커피머신 렌탈/리스", cost: "7,260,000", desc: "월 550,280 / 36개월 리스, 30% 계약금" },
 ];
 
 export default function Price() {
@@ -33,11 +20,11 @@ export default function Price() {
       <div className="container">
         <div className="header">
           <div className="title-txts3">
-            <img src="/franchise-title3.png" alt="창업 절차" />
+            <img src="/franchise-title3.png" alt="창업 비용" />
           </div>
           <div className="infoRow">
             <span>* 가맹점매장 8평 기준</span>
-            <span>* 단위:원 / VAT 별도</span>
+            <span>* 단위: 원 / VAT 별도</span>
           </div>
         </div>
 
@@ -54,13 +41,13 @@ export default function Price() {
             <tbody>
               {priceRows.map((item, i) => (
                 <tr key={i} className={i % 2 === 1 ? "even" : ""}>
-                  <td className="name" data-label="구분">{item.name}</td>
-                  <td className="costCol" data-label="금액">
-                    <span className="old">{item.old}</span>
+                  <td className="name">{item.name}</td>
+                  <td className="costCol">
+                    {item.old && <span className="old">{item.old}</span>}
                     <span className="cost">{item.cost}</span>
                   </td>
-                  <td className="desc" data-label="상세내용">{item.desc}</td>
-                  <td className="badge" data-label="비고">{item.badge}</td>
+                  <td className="desc">{item.desc}</td>
+                  <td className="badge">{item.badge}</td>
                 </tr>
               ))}
             </tbody>
@@ -69,9 +56,43 @@ export default function Price() {
 
         <div className="totalBox">
           <h3>
-            실투자비용 합계 <span>(프로모션 적용 시)</span>
+            실투자비용 합계 <span>(프로모션 적용 시 / 커피머신 제외)</span>
           </h3>
-          <span className="totalPrice">21,600,000원~</span>
+          <span className="totalPrice">15,000,000원~</span>
+        </div>
+
+        <div className="machineSection">
+          <div className="machineImgBox">
+            <img src="/coffee-machine.png" alt="커피머신" />
+          </div>
+
+          <div className="machineInfo">
+            <div className="machineTitle">
+              <h3>커피머신 장비 비용</h3>
+              <p>단위: 원 / VAT 별도</p>
+            </div>
+
+            <div className="machineTableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style={{ width: "28%" }}>구 분</th>
+                    <th style={{ width: "22%" }}>금 액</th>
+                    <th>상세내용</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {machineRows.map((item, i) => (
+                    <tr key={i}>
+                      <td className="machineName">{item.name}</td>
+                      <td className="machineCost">{item.cost}</td>
+                      <td className="machineDesc">{item.desc}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </section>
