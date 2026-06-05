@@ -1,5 +1,7 @@
 import Script from 'next/script';
+import { Suspense } from 'react';
 import ScrollToTop from './components/common/ScrollToTop';
+import VisitorTracker from './components/common/VisitorTracker';
 
 export default function UserLayout({
   children,
@@ -10,6 +12,9 @@ export default function UserLayout({
     <>
       {/* 전역 스크롤 관리 */}
       <ScrollToTop />
+      <Suspense fallback={null}>
+        <VisitorTracker />
+      </Suspense>
       
       {/* 카카오맵 SDK */}
       <Script

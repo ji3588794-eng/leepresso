@@ -6,6 +6,134 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 
+const getClientIp = (req) => {
+  const forwarded = req.headers['x-forwarded-for'];
+  const rawIp = Array.isArray(forwarded) ? forwarded[0] : (forwarded || req.socket.remoteAddress || '');
+  return String(rawIp).split(',')[0].trim().replace(/^::ffff:/, '');
+};
+
+const SESSION_TIMEOUT_MINUTES = Math.max(Number(process.env.VISITOR_SESSION_TIMEOUT_MINUTES) || 30, 1);
+
+let visitorTablesReady = false;
+
+const addColumnIfMissing = async (tableName, columnName, definition) => {
+  const [columns] = await pool.query(`SHOW COLUMNS FROM ${tableName} LIKE ?`, [columnName]);
+  if (columns.length === 0) {
+    await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${definition}`);
+  }
+};
+
+const ensureVisitorTables = async () => {
+  if (visitorTablesReady) return;
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS visitor_logs (
+      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      session_id VARCHAR(128) NOT NULL,
+      visitor_id VARCHAR(128) NULL,
+      ip_address VARCHAR(64) NOT NULL,
+      path VARCHAR(512) NULL,
+      landing_path VARCHAR(512) NULL,
+      last_path VARCHAR(512) NULL,
+      referrer VARCHAR(1024) NULL,
+      user_agent TEXT NULL,
+      device_type VARCHAR(32) NULL,
+      browser_name VARCHAR(64) NULL,
+      os_name VARCHAR(64) NULL,
+      language VARCHAR(32) NULL,
+      timezone VARCHAR(64) NULL,
+      screen_width INT NULL,
+      screen_height INT NULL,
+      page_view_count INT NOT NULL DEFAULT 1,
+      is_blocked TINYINT(1) NOT NULL DEFAULT 0,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      last_seen_at DATETIME NULL,
+      PRIMARY KEY (id),
+      INDEX idx_visitor_logs_created_at (created_at),
+      INDEX idx_visitor_logs_last_seen_at (last_seen_at),
+      INDEX idx_visitor_logs_session_created (session_id, created_at),
+      INDEX idx_visitor_logs_ip_created (ip_address, created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  await addColumnIfMissing('visitor_logs', 'session_id', 'session_id VARCHAR(128) NULL');
+  await addColumnIfMissing('visitor_logs', 'visitor_id', 'visitor_id VARCHAR(128) NULL');
+  await addColumnIfMissing('visitor_logs', 'ip_address', 'ip_address VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'path', 'path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'landing_path', 'landing_path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'last_path', 'last_path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'referrer', 'referrer VARCHAR(1024) NULL');
+  await addColumnIfMissing('visitor_logs', 'user_agent', 'user_agent TEXT NULL');
+  await addColumnIfMissing('visitor_logs', 'device_type', 'device_type VARCHAR(32) NULL');
+  await addColumnIfMissing('visitor_logs', 'browser_name', 'browser_name VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'os_name', 'os_name VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'language', 'language VARCHAR(32) NULL');
+  await addColumnIfMissing('visitor_logs', 'timezone', 'timezone VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'screen_width', 'screen_width INT NULL');
+  await addColumnIfMissing('visitor_logs', 'screen_height', 'screen_height INT NULL');
+  await addColumnIfMissing('visitor_logs', 'page_view_count', 'page_view_count INT NOT NULL DEFAULT 1');
+  await addColumnIfMissing('visitor_logs', 'last_seen_at', 'last_seen_at DATETIME NULL');
+  await addColumnIfMissing('visitor_logs', 'is_blocked', 'is_blocked TINYINT(1) NOT NULL DEFAULT 0');
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS visitor_blocks (
+      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      ip_address VARCHAR(64) NOT NULL,
+      reason VARCHAR(255) NULL,
+      is_active TINYINT(1) NOT NULL DEFAULT 1,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uniq_visitor_blocks_ip (ip_address),
+      INDEX idx_visitor_blocks_active (is_active)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  visitorTablesReady = true;
+};
+
+const parseUserAgent = (userAgent = '') => {
+  const ua = String(userAgent);
+  const lower = ua.toLowerCase();
+
+  const deviceType = /mobile|iphone|ipod|android.*mobile/.test(lower)
+    ? 'mobile'
+    : /ipad|tablet|android/.test(lower)
+      ? 'tablet'
+      : 'desktop';
+
+  const browserName = /edg\//i.test(ua)
+    ? 'Edge'
+    : /opr\//i.test(ua)
+      ? 'Opera'
+      : /chrome|crios/i.test(ua)
+        ? 'Chrome'
+        : /safari/i.test(ua)
+          ? 'Safari'
+          : /firefox|fxios/i.test(ua)
+            ? 'Firefox'
+            : 'Other';
+
+  const osName = /windows/i.test(ua)
+    ? 'Windows'
+    : /android/i.test(ua)
+      ? 'Android'
+      : /iphone|ipad|ipod/i.test(ua)
+        ? 'iOS'
+        : /mac os|macintosh/i.test(ua)
+          ? 'macOS'
+          : /linux/i.test(ua)
+            ? 'Linux'
+            : 'Other';
+
+  return { deviceType, browserName, osName };
+};
+
+const toNullableNumber = (value) => {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+
 // 파일 업로드 세팅 (Multer)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -16,6 +144,129 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
+
+// [POST] /api/user/track
+router.post('/track', async (req, res) => {
+  const { visitor_id, session_id, path: pagePath, referrer, language, timezone, screen_width, screen_height } = req.body || {};
+  const visitorId = String(visitor_id || '').slice(0, 128);
+  const sessionId = String(session_id || '').slice(0, 128);
+  const ipAddress = getClientIp(req);
+  const userAgent = req.headers['user-agent'] || '';
+  const normalizedPath = pagePath ? String(pagePath).slice(0, 512) : null;
+  const normalizedReferrer = referrer ? String(referrer).slice(0, 1024) : null;
+  const { deviceType, browserName, osName } = parseUserAgent(userAgent);
+
+  if (!sessionId) {
+    return res.status(400).json({ success: false, message: 'session_id is required' });
+  }
+
+  try {
+    await ensureVisitorTables();
+
+    const [blocks] = await pool.query(
+      'SELECT id, reason FROM visitor_blocks WHERE ip_address = ? AND is_active = 1 LIMIT 1',
+      [ipAddress]
+    );
+    const block = blocks[0];
+
+    const [sessions] = await pool.query(
+      `SELECT id
+       FROM visitor_logs
+       WHERE session_id = ?
+         AND COALESCE(last_seen_at, created_at) >= DATE_SUB(NOW(), INTERVAL ? MINUTE)
+       ORDER BY COALESCE(last_seen_at, created_at) DESC
+       LIMIT 1`,
+      [sessionId, SESSION_TIMEOUT_MINUTES]
+    );
+    const activeSession = sessions[0];
+
+    if (activeSession) {
+      await pool.query(
+        `UPDATE visitor_logs
+         SET visitor_id = COALESCE(?, visitor_id),
+             ip_address = ?,
+             path = ?,
+             last_path = ?,
+             referrer = COALESCE(referrer, ?),
+             user_agent = ?,
+             device_type = ?,
+             browser_name = ?,
+             os_name = ?,
+             language = COALESCE(?, language),
+             timezone = COALESCE(?, timezone),
+             screen_width = COALESCE(?, screen_width),
+             screen_height = COALESCE(?, screen_height),
+             page_view_count = COALESCE(page_view_count, 1) + 1,
+             is_blocked = ?,
+             last_seen_at = NOW()
+         WHERE id = ?`,
+        [
+          visitorId || null,
+          ipAddress,
+          normalizedPath,
+          normalizedPath,
+          normalizedReferrer,
+          String(userAgent).slice(0, 1000),
+          deviceType,
+          browserName,
+          osName,
+          language ? String(language).slice(0, 32) : null,
+          timezone ? String(timezone).slice(0, 64) : null,
+          toNullableNumber(screen_width),
+          toNullableNumber(screen_height),
+          block ? 1 : 0,
+          activeSession.id
+        ]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO visitor_logs (
+          visitor_id, session_id, ip_address, path, landing_path, last_path,
+          referrer, user_agent, device_type, browser_name, os_name, language,
+          timezone, screen_width, screen_height, page_view_count, is_blocked,
+          created_at, last_seen_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, NOW(), NOW())`,
+        [
+          visitorId || null,
+          sessionId,
+          ipAddress,
+          normalizedPath,
+          normalizedPath,
+          normalizedPath,
+          normalizedReferrer,
+          String(userAgent).slice(0, 1000),
+          deviceType,
+          browserName,
+          osName,
+          language ? String(language).slice(0, 32) : null,
+          timezone ? String(timezone).slice(0, 64) : null,
+          toNullableNumber(screen_width),
+          toNullableNumber(screen_height),
+          block ? 1 : 0
+        ]
+      );
+    }
+
+    if (block) {
+      return res.status(403).json({
+        success: false,
+        blocked: true,
+        reason: block.reason || '관리자에 의해 접근이 제한되었습니다.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      blocked: false,
+      tracked: activeSession ? 'updated' : 'created',
+      session_timeout_minutes: SESSION_TIMEOUT_MINUTES
+    });
+  } catch (error) {
+    console.error('Visitor tracking error:', error.message);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 
 // [GET] /api/user/popups
