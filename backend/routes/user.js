@@ -19,7 +19,13 @@ let visitorTablesReady = false;
 const addColumnIfMissing = async (tableName, columnName, definition) => {
   const [columns] = await pool.query(`SHOW COLUMNS FROM ${tableName} LIKE ?`, [columnName]);
   if (columns.length === 0) {
-    await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${definition}`);
+    try {
+      await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${definition}`);
+    } catch (error) {
+      if (error.code !== 'ER_DUP_FIELDNAME') {
+        throw error;
+      }
+    }
   }
 };
 

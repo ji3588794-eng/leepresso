@@ -129,16 +129,23 @@
 
 .chartBox {
   height: 380px;
+  min-height: 320px;
+  min-width: 0;
+  width: 100%;
 }
 
 .smallChartBox {
   height: 260px;
+  min-height: 220px;
+  min-width: 0;
+  width: 100%;
 }
 
 .insightGrid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 16px;
+  min-width: 0;
 }
 
 .rankPanel {
