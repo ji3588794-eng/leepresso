@@ -30,6 +30,86 @@ const upload = multer({ storage });
 const SECRET_KEY = process.env.JWT_SECRET;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const SESSION_TIMEOUT_MINUTES = Math.max(Number(process.env.VISITOR_SESSION_TIMEOUT_MINUTES) || 30, 1);
+
+let visitorTablesReady = false;
+
+const addColumnIfMissing = async (tableName, columnName, definition) => {
+  const [columns] = await pool.query(`SHOW COLUMNS FROM ${tableName} LIKE ?`, [columnName]);
+  if (columns.length === 0) {
+    await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${definition}`);
+  }
+};
+
+const ensureVisitorTables = async () => {
+  if (visitorTablesReady) return;
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS visitor_logs (
+      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      session_id VARCHAR(128) NOT NULL,
+      visitor_id VARCHAR(128) NULL,
+      ip_address VARCHAR(64) NOT NULL,
+      path VARCHAR(512) NULL,
+      landing_path VARCHAR(512) NULL,
+      last_path VARCHAR(512) NULL,
+      referrer VARCHAR(1024) NULL,
+      user_agent TEXT NULL,
+      device_type VARCHAR(32) NULL,
+      browser_name VARCHAR(64) NULL,
+      os_name VARCHAR(64) NULL,
+      language VARCHAR(32) NULL,
+      timezone VARCHAR(64) NULL,
+      screen_width INT NULL,
+      screen_height INT NULL,
+      page_view_count INT NOT NULL DEFAULT 1,
+      is_blocked TINYINT(1) NOT NULL DEFAULT 0,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      last_seen_at DATETIME NULL,
+      PRIMARY KEY (id),
+      INDEX idx_visitor_logs_created_at (created_at),
+      INDEX idx_visitor_logs_last_seen_at (last_seen_at),
+      INDEX idx_visitor_logs_session_created (session_id, created_at),
+      INDEX idx_visitor_logs_ip_created (ip_address, created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  await addColumnIfMissing('visitor_logs', 'session_id', 'session_id VARCHAR(128) NULL');
+  await addColumnIfMissing('visitor_logs', 'visitor_id', 'visitor_id VARCHAR(128) NULL');
+  await addColumnIfMissing('visitor_logs', 'ip_address', 'ip_address VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'path', 'path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'landing_path', 'landing_path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'last_path', 'last_path VARCHAR(512) NULL');
+  await addColumnIfMissing('visitor_logs', 'referrer', 'referrer VARCHAR(1024) NULL');
+  await addColumnIfMissing('visitor_logs', 'user_agent', 'user_agent TEXT NULL');
+  await addColumnIfMissing('visitor_logs', 'device_type', 'device_type VARCHAR(32) NULL');
+  await addColumnIfMissing('visitor_logs', 'browser_name', 'browser_name VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'os_name', 'os_name VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'language', 'language VARCHAR(32) NULL');
+  await addColumnIfMissing('visitor_logs', 'timezone', 'timezone VARCHAR(64) NULL');
+  await addColumnIfMissing('visitor_logs', 'screen_width', 'screen_width INT NULL');
+  await addColumnIfMissing('visitor_logs', 'screen_height', 'screen_height INT NULL');
+  await addColumnIfMissing('visitor_logs', 'page_view_count', 'page_view_count INT NOT NULL DEFAULT 1');
+  await addColumnIfMissing('visitor_logs', 'last_seen_at', 'last_seen_at DATETIME NULL');
+  await addColumnIfMissing('visitor_logs', 'is_blocked', 'is_blocked TINYINT(1) NOT NULL DEFAULT 0');
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS visitor_blocks (
+      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      ip_address VARCHAR(64) NOT NULL,
+      reason VARCHAR(255) NULL,
+      is_active TINYINT(1) NOT NULL DEFAULT 1,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uniq_visitor_blocks_ip (ip_address),
+      INDEX idx_visitor_blocks_active (is_active)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  visitorTablesReady = true;
+};
+
 /* ---------------------------------------------------------
    [인증 로직 무력화] 모든 요청 프리패스
 --------------------------------------------------------- */
@@ -440,33 +520,210 @@ router.post('/register', async (req, res) => {
 --------------------------------------------------------- */
 router.get('/analytics/visitors', async (req, res) => {
   try {
-    // [검증용] 실제 테이블에 어떤 컬럼이 있는지 서버 콘솔에 찍어봅니다.
-    // 만약 여기서 visitor_uuid가 없다면 DB 연결 설정(DB_NAME)이 잘못된 곳을 바라보고 있는 것입니다.
-    const [columns] = await pool.query(`DESCRIBE visitor_logs`);
-    console.log('--- visitor_logs 테이블 구조 ---');
-    console.table(columns);
+    await ensureVisitorTables();
+    const days = Math.min(Math.max(Number(req.query.days) || 7, 1), 90);
 
     const query = `
-      SELECT 
-        DATE_FORMAT(\`created_at\`, '%Y-%m-%d') AS date,
-        COUNT(DISTINCT \`visitor_uuid\`) AS visitors,
-        COUNT(*) AS pv
-      FROM \`visitor_logs\`
-      WHERE \`created_at\` >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-      GROUP BY date
+      SELECT
+        DATE_FORMAT(created_at, '%Y-%m-%d') AS date,
+        COUNT(*) AS visitors,
+        COUNT(DISTINCT COALESCE(visitor_id, session_id, ip_address)) AS unique_visitors,
+        SUM(COALESCE(page_view_count, 1)) AS pv,
+        ROUND(AVG(COALESCE(page_view_count, 1)), 1) AS avg_pages,
+        ROUND(AVG(TIMESTAMPDIFF(SECOND, created_at, COALESCE(last_seen_at, created_at)))) AS avg_duration_seconds,
+        SUM(CASE WHEN is_blocked = 1 THEN 1 ELSE 0 END) AS blocked_sessions
+      FROM visitor_logs
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+      GROUP BY DATE_FORMAT(created_at, '%Y-%m-%d')
       ORDER BY date ASC
     `;
 
-    const [rows] = await pool.query(query);
-    res.json({ success: true, data: rows });
+    const [rows] = await pool.query(query, [days - 1]);
+
+    const [[summary]] = await pool.query(
+      `SELECT
+        COUNT(*) AS sessions,
+        COUNT(DISTINCT COALESCE(visitor_id, session_id, ip_address)) AS unique_visitors,
+        COUNT(DISTINCT ip_address) AS unique_ips,
+        SUM(COALESCE(page_view_count, 1)) AS page_views,
+        ROUND(AVG(COALESCE(page_view_count, 1)), 1) AS avg_pages,
+        ROUND(AVG(TIMESTAMPDIFF(SECOND, created_at, COALESCE(last_seen_at, created_at)))) AS avg_duration_seconds,
+        SUM(CASE WHEN is_blocked = 1 THEN 1 ELSE 0 END) AS blocked_sessions
+       FROM visitor_logs
+       WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)`,
+      [days - 1]
+    );
+
+    const [deviceBreakdown] = await pool.query(
+      `SELECT COALESCE(device_type, 'unknown') AS name, COUNT(*) AS sessions, SUM(COALESCE(page_view_count, 1)) AS pv
+       FROM visitor_logs
+       WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+       GROUP BY COALESCE(device_type, 'unknown')
+       ORDER BY sessions DESC`,
+      [days - 1]
+    );
+
+    const [browserBreakdown] = await pool.query(
+      `SELECT COALESCE(browser_name, 'unknown') AS name, COUNT(*) AS sessions, SUM(COALESCE(page_view_count, 1)) AS pv
+       FROM visitor_logs
+       WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+       GROUP BY COALESCE(browser_name, 'unknown')
+       ORDER BY sessions DESC
+       LIMIT 8`,
+      [days - 1]
+    );
+
+    const [topPages] = await pool.query(
+      `SELECT COALESCE(landing_path, path, '/') AS path, COUNT(*) AS entrances, SUM(COALESCE(page_view_count, 1)) AS pv
+       FROM visitor_logs
+       WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+       GROUP BY COALESCE(landing_path, path, '/')
+       ORDER BY entrances DESC, pv DESC
+       LIMIT 10`,
+      [days - 1]
+    );
+
+    res.json({
+      success: true,
+      data: rows,
+      summary: summary || {},
+      breakdowns: {
+        devices: deviceBreakdown,
+        browsers: browserBreakdown,
+        topPages
+      },
+      session_timeout_minutes: SESSION_TIMEOUT_MINUTES
+    });
 
   } catch (error) {
-    console.error('❌ SQL 실행 에러:', error.message);
-    // 에러 발생 시 프론트에 상세 메시지 전달
-    res.status(500).json({ 
-      success: false, 
-      error: `DB 에러: ${error.message}. 컬럼명을 다시 확인하세요.` 
+    console.error('❌ SQL 실행 에러:', error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message
     });
+  }
+});
+
+router.get('/analytics/visitor-logs', async (req, res) => {
+  try {
+    await ensureVisitorTables();
+
+    const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
+    const [rows] = await pool.query(
+      `SELECT
+        id,
+        visitor_id,
+        session_id,
+        ip_address,
+        path,
+        landing_path,
+        last_path,
+        referrer,
+        user_agent,
+        device_type,
+        browser_name,
+        os_name,
+        page_view_count,
+        is_blocked,
+        DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at,
+        DATE_FORMAT(COALESCE(last_seen_at, created_at), '%Y-%m-%d %H:%i:%s') AS last_seen_at,
+        TIMESTAMPDIFF(SECOND, created_at, COALESCE(last_seen_at, created_at)) AS duration_seconds
+      FROM visitor_logs
+      ORDER BY COALESCE(last_seen_at, created_at) DESC
+      LIMIT ?`,
+      [limit]
+    );
+
+    const [activeBlocks] = await pool.query(
+      'SELECT ip_address, reason FROM visitor_blocks WHERE is_active = 1'
+    );
+    const blockMap = new Map(activeBlocks.map((item) => [String(item.ip_address), item.reason]));
+
+    res.json({
+      success: true,
+      data: rows.map((row) => ({
+        ...row,
+        block_active: blockMap.has(String(row.ip_address)) ? 1 : 0,
+        block_reason: blockMap.get(String(row.ip_address)) || null
+      }))
+    });
+  } catch (error) {
+    console.error('Visitor logs error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/analytics/blocks', async (req, res) => {
+  try {
+    await ensureVisitorTables();
+
+    const [rows] = await pool.query(
+      `SELECT
+        id,
+        ip_address,
+        reason,
+        is_active,
+        DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at,
+        DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at
+      FROM visitor_blocks
+      ORDER BY is_active DESC, updated_at DESC, created_at DESC`
+    );
+
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.post('/analytics/blocks', async (req, res) => {
+  const ipAddress = String(req.body.ip_address || '').trim();
+  const reason = req.body.reason ? String(req.body.reason).slice(0, 255) : null;
+
+  if (!ipAddress) {
+    return res.status(400).json({ success: false, message: 'ip_address is required' });
+  }
+
+  try {
+    await ensureVisitorTables();
+
+    await pool.query(
+      `INSERT INTO visitor_blocks (ip_address, reason, is_active, created_at, updated_at)
+       VALUES (?, ?, 1, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE reason = VALUES(reason), is_active = 1, updated_at = NOW()`,
+      [ipAddress, reason]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.patch('/analytics/blocks/:id', async (req, res) => {
+  try {
+    await ensureVisitorTables();
+
+    await pool.query(
+      'UPDATE visitor_blocks SET is_active = ?, updated_at = NOW() WHERE id = ?',
+      [Number(req.body.is_active) ? 1 : 0, req.params.id]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.delete('/analytics/blocks/:id', async (req, res) => {
+  try {
+    await ensureVisitorTables();
+
+    await pool.query('DELETE FROM visitor_blocks WHERE id = ?', [req.params.id]);
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -495,10 +752,12 @@ router.put('/infra/status/:id', async (req, res) => {
 
 router.get('/dashboard/stats', async (req, res) => {
   try {
+    await ensureVisitorTables();
+
     const [[{ f_count }]] = await pool.query("SELECT COUNT(*) as f_count FROM franchise_inquiries WHERE status = 'RECEIVED'").catch(()=>[[{f_count:0}]]);
     const [[{ e_count }]] = await pool.query("SELECT COUNT(*) as e_count FROM board WHERE type = 'event'").catch(()=>[[{e_count:0}]]);
     const [[{ v_count }]] = await pool.query("SELECT COUNT(*) as v_count FROM board WHERE type = 'voc' AND is_answered = 0").catch(()=>[[{v_count:0}]]);
-    const [[{ today_uv }]] = await pool.query("SELECT COUNT(DISTINCT session_id) as today_uv FROM visitor_logs WHERE DATE(created_at) = CURDATE()").catch(()=>[[{today_uv:0}]]);
+    const [[{ today_uv }]] = await pool.query("SELECT COUNT(*) as today_uv FROM visitor_logs WHERE DATE(created_at) = CURDATE()").catch(()=>[[{today_uv:0}]]);
     const [[{ domain_dday }]] = await pool.query("SELECT DATEDIFF(expiry_date, CURDATE()) as domain_dday FROM infra_status WHERE service_name = 'Main-Domain' LIMIT 1").catch(()=>[[{domain_dday:0}]]);
     const [recent] = await pool.query("SELECT customer_name, hope_region, created_at FROM franchise_inquiries ORDER BY created_at DESC LIMIT 5").catch(()=>[[]]);
 
